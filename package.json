@@ -10,7 +10,8 @@
     "lint": "next lint",
     "format": "eslint src --ext .jsx,.js,.tsx,.ts  --no-error-on-unmatched-pattern --fix && stylelint --fix src/{,*/}*.{scss,css} --allow-empty-input",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "test": "vitest"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.6.1",
@@ -33,6 +34,8 @@
     "@storybook/nextjs": "8.6.7",
     "@storybook/react": "8.6.7",
     "@storybook/test": "8.6.7",
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^16.2.0",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
