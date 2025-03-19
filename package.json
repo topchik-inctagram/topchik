@@ -6,7 +6,7 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "build:production": "pnpm build",
-    "start": "next start",
+    "start": "next start -p 3000",
     "lint": "next lint",
     "format": "eslint src --ext .jsx,.js,.tsx,.ts  --no-error-on-unmatched-pattern --fix && stylelint --fix src/{,*/}*.{scss,css} --allow-empty-input",
     "storybook": "storybook dev -p 6006",
