@@ -2,7 +2,7 @@
 FROM node:20.11-alpine as dependencies
 WORKDIR /app
 COPY package*.json ./
-RUN corepack enable && pnpm install --frozen-lockfile
+RUN pnpm install --no-frozen-lockfile
 
 # Билдим приложение
 # Кэширование зависимостей — если файлы в проекте изменились,
