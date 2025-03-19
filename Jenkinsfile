@@ -1,5 +1,3 @@
-def app
-
 pipeline {
     agent any
     environment {
@@ -28,8 +26,9 @@ pipeline {
                          export NVM_DIR="$HOME/.nvm"
                          [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
                          nvm use --lts
-                         yarn install
-                         yarn test
+                         corepack enable
+                         pnpm install --frozen-lockfile
+                         pnpm test
                       '''
                   }
              }
@@ -70,7 +69,6 @@ pipeline {
                      sh "./preparingDeploy.sh ${env.REGISTRY_HOSTNAME} ${env.PROJECT} ${env.IMAGE_NAME} ${env.DEPLOYMENT_NAME} ${env.PORT} ${env.NAMESPACE}"
                      sh "cat deployment.yaml"
              }
-
         }
         stage('Deploy to Kubernetes') {
              steps {
