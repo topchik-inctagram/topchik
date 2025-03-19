@@ -1,23 +1,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: DEPLOYMENT_NAME
-  namespace: NAMESPACE
+  name: topchik-frontend-deployment
+  namespace: topchik-uk
   labels:
-    app: PROJECT
+    app: topchik-frontend
 spec:
+  replicas: 2
   selector:
     matchLabels:
-      project: PROJECT
+      project: topchik-frontend
   template:
     metadata:
-      namespace: NAMESPACE
       labels:
-        project: PROJECT
+        project: topchik-frontend
     spec:
       containers:
-        - name: PROJECT
-          image: REGISTRY_HOSTNAME/PROJECT:TAG_VERSION
+        - name: topchik-frontend
+          image: registry.hub.docker.com/topchik-frontend:latest
           ports:
-            - containerPort: PORT_CONTAINER
-
+            - containerPort: 3000
