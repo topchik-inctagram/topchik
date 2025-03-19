@@ -4,12 +4,12 @@ pipeline {
     agent any
     environment {
         ENV_TYPE = "production"
-        PORT = 3802
+        PORT = 3803
         NAMESPACE = "topchik-uk"
         REGISTRY_HOSTNAME = "topchikinctagram"
         REGISTRY = "registry.hub.docker.com"
-        PROJECT = "topchik-front"
-        DEPLOYMENT_NAME = "topchik-front-deployment"
+        PROJECT = "topchik-frontend"
+        DEPLOYMENT_NAME = "topchik-frontend-deployment"
         IMAGE_NAME = "${env.BUILD_ID}_${env.ENV_TYPE}_${env.GIT_COMMIT}"
         DOCKER_BUILD_NAME = "${env.REGISTRY_HOSTNAME}/${env.PROJECT}:${env.IMAGE_NAME}"
     }
@@ -28,9 +28,8 @@ pipeline {
                          export NVM_DIR="$HOME/.nvm"
                          [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
                          nvm use --lts
-                         corepack enable
-                         pnpm install --frozen-lockfile
-                         pnpm test
+                         yarn install
+                         yarn test
                       '''
                   }
              }
@@ -71,6 +70,7 @@ pipeline {
                      sh "./preparingDeploy.sh ${env.REGISTRY_HOSTNAME} ${env.PROJECT} ${env.IMAGE_NAME} ${env.DEPLOYMENT_NAME} ${env.PORT} ${env.NAMESPACE}"
                      sh "cat deployment.yaml"
              }
+
         }
         stage('Deploy to Kubernetes') {
              steps {

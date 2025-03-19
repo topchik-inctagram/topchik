@@ -11,6 +11,8 @@ const compat = new FlatCompat({
 
 const eslintConfig = [
   ...compat.extends("next/core-web-vitals", "next/typescript"),
+  "@it-incubator/eslint-config",
 ];
 
 export default eslintConfig;
+module.exports = eslintConfig;
