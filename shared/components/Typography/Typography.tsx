@@ -34,6 +34,7 @@ export const Typography = <T extends ElementType = 'p'>(props: TypographyProps<T
         typography: clsx(s.typography, s[variant], className),
     }
 
+    //todo move to utils
     function exhaustiveCheck(value: never) {
         return value
     }
