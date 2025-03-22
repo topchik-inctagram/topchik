@@ -1,7 +1,6 @@
 import { Meta, StoryObj } from '@storybook/react'
 import { Textarea } from './textarea'
-import { Button } from '../Button/Button'
-import React, { useRef, useState } from 'react'
+import React, { useRef } from 'react'
 
 const meta = {
   component: Textarea,
