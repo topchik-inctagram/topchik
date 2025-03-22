@@ -1,6 +1,6 @@
 import {ComponentPropsWithoutRef, ElementType, type RefObject} from 'react'
 
-import s from './typography.module.scss'
+import s from './Typography.module.scss'
 import Link from 'next/link'
 import clsx from "clsx";
 

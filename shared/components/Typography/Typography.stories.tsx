@@ -86,12 +86,14 @@ export const Semi_bold_small: Story = {
 export const Regular_link: Story = {
     args: {
         variant: 'regular_link',
+        href: '#'
     },
 }
 
 export const Small_link: Story = {
     args: {
         variant: 'small_link',
+        href: '#'
     },
 }
 
