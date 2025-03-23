@@ -19,9 +19,11 @@ export const Button = ({
   ...rest
 }: Props) => {
   // const Component = asChild ? Slot : 'button'
+
   const Component = asChild ? Slot : 'button'
   const classNames = {
     button: clsx(s.button, s[variant], fullWidth && s.fullWidth, className),
   }
+
   return <Component ref={ref} className={classNames.button} {...rest} />
 }
