@@ -9,12 +9,13 @@
     "start": "next start",
     "lint": "eslint src --ext .jsx,.js,.tsx,.ts --no-error-on-unmatched-pattern --fix && stylelint --fix src/{,*/}*.{scss,css} --allow-empty-input && next lint",
     "format": "prettier --write src",
-    "storybook": "storybook dev -p 6006",
+    "sb": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "test": "vitest"
   },
   "dependencies": {
     "@fontsource/inter": "^5.2.5",
+    "@radix-ui/react-label": "^2.1.2",
     "@radix-ui/react-slot": "^1.1.2",
     "@reduxjs/toolkit": "^2.6.1",
     "clsx": "^2.1.1",
