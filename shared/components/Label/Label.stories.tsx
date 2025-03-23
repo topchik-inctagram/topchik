@@ -12,3 +12,9 @@ const meta = {
 export default meta
 type Story = StoryObj<typeof meta>
 export const LabelStory: Story = {}
+
+export const DisabledLabelStory: Story = {
+    args: {
+        disabled: true
+    }
+}

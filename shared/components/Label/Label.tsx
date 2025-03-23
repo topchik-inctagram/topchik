@@ -5,13 +5,13 @@ import s from './Label.module.scss'
 import clsx from "clsx";
 import {Typography} from "@/shared/components";
 
-type Props = ComponentPropsWithRef<typeof LabelRadix.Root>
+type Props = {disabled?: boolean} &ComponentPropsWithRef<typeof LabelRadix.Root>
 
 export const Label = (props: Props) => {
-    const {children, className, ref, ...rest} = props
+    const {children, className, ref, disabled, ...rest} = props
 
     const classNames = {
-        label: clsx(s.label, className),
+        label: clsx(s.label, disabled && s.disabled, className),
     }
 
     return (
