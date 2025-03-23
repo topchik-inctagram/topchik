@@ -1,11 +1,17 @@
-import * as PopoverPrimitive from "@radix-ui/react-popover"
+import * as PopoverPrimitive from '@radix-ui/react-popover'
 import type {ComponentPropsWithRef} from "react";
-
+import s from './Popover.module.scss'
 type Props = ComponentPropsWithRef<typeof PopoverPrimitive.Content>
 
 const Popover = PopoverPrimitive.Root
 
-const PopoverTrigger = PopoverPrimitive.Trigger
+type PopoverTriggerProps = ComponentPropsWithRef<typeof PopoverPrimitive.Trigger>
+
+const PopoverTrigger = (props: PopoverTriggerProps) => {
+    return (
+        <PopoverPrimitive.Trigger {...props} className={s.trigger}/>
+    )
+}
 
 const PopoverContent = (props: Props) => {
     return (
