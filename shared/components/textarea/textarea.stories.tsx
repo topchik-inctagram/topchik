@@ -1,7 +1,8 @@
 import { Meta, StoryObj } from '@storybook/react'
-import { Textarea } from './textarea'
-import { Button } from '../Button/Button'
+import { Textarea } from './Textarea'
+import {Button} from '@/shared/components/Button/Button'
 import React, { useRef, useState } from 'react'
+
 
 const meta = {
   component: Textarea,
@@ -50,6 +51,42 @@ export const DisabledTextArea: Story = {
     return (
       <div style={{ width: '400px', margin: '0 auto' }}>
         <Textarea titleLabel={args.titleLabel} disabled={args.disabled} />
+      </div>
+    )
+  },
+}
+
+export const ControlledTextArea: Story = {
+  args: {
+    titleLabel: 'enter message',
+  },
+  render: args => {
+    const [value, setValue] = useState('')
+    const [displayedText, setDisplayedText] = useState('')
+
+    const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+      setValue(e.target.value)
+    }
+
+    const handleButtonClick = () => {
+      setDisplayedText(value)
+      setValue('')
+    }
+
+    return (
+      <div style={{ width: '400px', margin: '0 auto' }}>
+        <Textarea
+          titleLabel={args.titleLabel}
+          value={value}
+          onChange={handleChange}
+          placeholder="Enter your message here "
+        />
+        <Button onClick={handleButtonClick} style={{ marginTop: '10px' }}>
+          Show message
+        </Button>
+        {displayedText && (
+          <p style={{ marginTop: '10px' }}>Message: {displayedText}</p>
+        )}
       </div>
     )
   },
