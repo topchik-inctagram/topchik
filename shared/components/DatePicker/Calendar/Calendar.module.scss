@@ -1,4 +1,3 @@
-
 :global(.rdp) {
   --rdp-cell-size: 36px;
 
@@ -37,7 +36,6 @@
     width: 20px;
     height: 20px;
     color: var(--color-light-100);
-
   }
 }
 
@@ -45,7 +43,6 @@
   font-size: var(--font-size-m);
   font-weight: var(--font-weight-bold);
   line-height: var(--line-height-m);
-
 }
 
 :global(.rdp-head) {
@@ -57,22 +54,15 @@
   color: var(--color-dark-100);
 }
 
-:global(.rdp-head_cell) {
-  margin-bottom: 300px;
-}
-
 :global(.rdp-day) {
   font-size: var(--font-size-m);
   font-weight: var(--font-weight-regular);
   line-height: var(--line-height-m);
   color: var(--color-light-100);
 
-
-  &:hover:not([disabled], .rdp-day_selected){
+  &:hover:not([disabled], .rdp-day_selected) {
     background-color: var(--color-accent-700) !important;
   }
-
-
 }
 
 :global(.rdp-day_outside) {
