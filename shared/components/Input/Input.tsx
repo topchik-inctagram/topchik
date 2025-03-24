@@ -1,10 +1,11 @@
 'use client'
 
 import { ComponentPropsWithoutRef, forwardRef, useState } from 'react'
-import { Label } from '../Label'
+
 import clsx from 'clsx'
 import s from './Input.module.scss'
-import { Eye, EyeOff, Search } from '@/public'
+import { EyeOffOutline, EyeOutline, Search } from '@/public'
+import { Label } from '@/shared/components'
 
 type InputProps = {
   label?: string
@@ -23,7 +24,12 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
 
     const classNames = {
       inputRoot: clsx(s.inputRoot, fullWidth && s.fullWidth, className),
-      input: clsx(s.inputDefault, search && s.searchIcon, error && s.error),
+      input: clsx(
+        s.inputDefault,
+        search && s.inputWithSearchIcon,
+        error && s.error,
+        isPasswordType && s.inputWithEyeIcon
+      ),
     }
 
     const togglePasswordVisibility = () => {
@@ -31,10 +37,15 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
     }
     return (
       <div className={classNames.inputRoot}>
-        <Label>{label}</Label>
+        {label && (
+          <Label className={s.label} htmlFor={rest.id}>
+            {label}
+          </Label>
+        )}
         <div className={s.inputContainer}>
           {search && <Search className={s.searchIcon} />}
           <input
+            id={rest.id}
             className={classNames.input}
             placeholder={rest.placeholder}
             ref={ref}
@@ -43,8 +54,12 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
             {...rest}
           />
           {isPasswordType && (
-            <button className={s.showPassword} onClick={togglePasswordVisibility}>
-              {showPassword ? <Eye /> : <EyeOff />}
+            <button
+              disabled={rest.disabled}
+              className={s.showPassword}
+              onClick={togglePasswordVisibility}
+            >
+              {showPassword ? <EyeOutline /> : <EyeOffOutline />}
             </button>
           )}
         </div>
