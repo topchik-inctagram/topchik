@@ -1,0 +1,140 @@
+.inputRoot {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+
+  .fullWidth {
+    width: 100%;
+  }
+
+  .inputContainer {
+    position: relative;
+
+    display: flex;
+    align-items: start;
+    justify-content: flex-start;
+
+    width: 100%;
+  }
+
+  .label {
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--color-light-900);
+  }
+
+  .inputDefault {
+    width: 100%;
+    padding: 6px 12px;
+    border: 1px solid var(--color-dark-100);
+    border-radius: 2px;
+
+    font-family: inherit;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 24px;
+    color: var(--color-light-900);
+
+    background: transparent;
+    outline: 0;
+
+    &::placeholder {
+      color: var(--color-light-900);
+    }
+
+    &:hover {
+      border: 1px solid var(--color-light-900);
+      color: var(--color-light-900);
+    }
+
+    &:disabled {
+      cursor: not-allowed;
+      border: 1px solid var(--color-dark-100);
+      color: var(--color-dark-100);
+    }
+
+    &:active {
+      border: 1px solid var(--color-light-100);
+      color: var(--color-light-100);
+    }
+
+    &:focus {
+      border: 1px solid var(--color-accent-700);
+      color: var(--color-light-100);
+    }
+
+    &:active:disabled {
+      border: 1px solid var(--color-dark-100);
+    }
+  }
+
+  .searchIcon {
+    position: absolute;
+    top: 23%;
+    left: 10px;
+
+    width: 20px;
+    height: 20px;
+
+    color: var(--color-light-900);
+  }
+
+  .inputContainer:focus-within .searchIcon {
+    color: var(--color-light-100); // или любой другой активный цвет
+  }
+
+  .inputWithSearchIcon {
+    padding-left: 40px;
+  }
+
+  .showPassword {
+    cursor: pointer;
+
+    position: absolute;
+    top: 20%;
+    right: 0;
+
+    width: 24px;
+    height: 24px;
+    margin-right: 12px;
+    padding: 0;
+    border: 0;
+
+    color: var(--color-light-100);
+
+    background: transparent;
+    outline: 0;
+  }
+
+  .inputWithEyeIcon {
+    padding-right: 40px;
+  }
+
+  .inputContainer .inputDefault:disabled + .searchIcon,
+  .inputContainer .inputDefault:disabled + .showPassword {
+    cursor: not-allowed;
+    color: var(--color-dark-100);
+  }
+
+  .error {
+    border-color: var(--color-danger-500);
+    color: var(--color-light-100);
+
+    &:active {
+      border: 1px solid var(--color-danger-500);
+    }
+
+    &:focus {
+      border: 1px solid var(--color-danger-500);
+    }
+
+    &:hover {
+      border: 1px solid var(--color-danger-500);
+    }
+  }
+
+  .errorText {
+    font-size: 14px;
+    color: var(--color-danger-500);
+  }
+}
