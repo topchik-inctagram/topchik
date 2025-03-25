@@ -20,7 +20,7 @@ export const PopoverDefault: Story = {
         <Label>Date</Label>
         <Popover>
           <PopoverTrigger>
-            <Typography variant={'regular_16'} as={'span'}>
+            <Typography as="span" variant="regular_16">
               Select date
             </Typography>
             <CalendarOutline />
@@ -39,7 +39,7 @@ export const PopoverWithError: Story = {
         <Label>Date</Label>
         <Popover>
           <PopoverTrigger error>
-            <Typography variant={'regular_16'} as={'span'}>
+            <Typography as="span" variant="regular_16">
               Select date
             </Typography>
             <CalendarOutline />

@@ -8,14 +8,14 @@ import {
 } from '@/shared/components'
 import { CalendarOutline } from '@/public'
 import { type ComponentPropsWithoutRef, useEffect, useState } from 'react'
-import { type DayPicker, type DateRange } from 'react-day-picker'
+import { type DateRange, type DayPicker } from 'react-day-picker'
 import clsx from 'clsx'
 import s from './DatePicker.module.scss'
 
 type Props = {
   error?: string
   mode?: ComponentPropsWithoutRef<typeof DayPicker>['mode']
-  onChangeDate: (date: Date | DateRange | undefined) => void
+  onChangeDate: (date: Date | DateRange) => void
   dateValue: Date | DateRange | undefined
 }
 
@@ -26,14 +26,12 @@ export const DatePicker = (props: Props) => {
     error: clsx(s.error),
   }
 
-  const selectDate = 'Select date'
-  const rangeMode = mode === 'range'
-  const singleMode = mode === 'single'
+  const SELECT_DATE = 'Select date'
+  const RANGE_MODE = mode === 'range'
+  const SINGLE_MODE = mode === 'single'
 
-  // Локальное состояние для отображения дат
   const [displayValue, setDisplayValue] = useState<{ single?: string; range?: DateRange }>({})
 
-  // Обновляем отображаемые значения при изменении dateValue
   useEffect(() => {
     if (dateValue instanceof Date) {
       setDisplayValue({
@@ -73,20 +71,16 @@ export const DatePicker = (props: Props) => {
       return
     }
 
-    const currentRange = displayValue.range
+    const current = displayValue.range
 
-    if (currentRange?.from && currentRange?.to) {
-      // Сброс диапазона при выборе новой начальной даты
+    if (current?.from && current?.to) {
       onChangeDate({ from: day, to: undefined })
-    } else if (currentRange?.from) {
-      // Выбор конечной даты
-      if (currentRange.from > day) {
-        onChangeDate({ from: day, to: currentRange.from })
-      } else {
-        onChangeDate({ from: currentRange.from, to: day })
-      }
+    } else if (current?.from) {
+      onChangeDate({
+        from: day < current.from ? day : current.from,
+        to: day < current.from ? current.from : day,
+      })
     } else {
-      // Выбор начальной даты
       onChangeDate({ from: day, to: undefined })
     }
   }
@@ -95,22 +89,23 @@ export const DatePicker = (props: Props) => {
     <>
       <Label>Date</Label>
       <Popover>
-        <PopoverTrigger>
+        <PopoverTrigger error={!!error}>
           <Typography as="span" variant="regular_16">
-            {rangeMode && displayValue.range?.from && displayValue.range?.to
+            {RANGE_MODE && displayValue.range?.from && displayValue.range?.to
               ? formatRange(displayValue.range)
-              : singleMode && displayValue.single
+              : SINGLE_MODE && displayValue.single
                 ? displayValue.single
-                : selectDate}
+                : SELECT_DATE}
           </Typography>
           <CalendarOutline />
         </PopoverTrigger>
-        <PopoverContent>
-          {rangeMode && (
+        <PopoverContent sideOffset={-16}>
+          {RANGE_MODE && (
             <Calendar mode="range" selected={displayValue.range} onDayClick={handleDateChange} />
           )}
-          {singleMode && (
+          {SINGLE_MODE && (
             <Calendar
+              initialFocus
               mode="single"
               selected={displayValue.single ? new Date(displayValue.single) : undefined}
               onDayClick={handleDateChange}
@@ -126,33 +121,3 @@ export const DatePicker = (props: Props) => {
     </>
   )
 }
-//   return (
-//     <>
-//       <Label>Date</Label>
-//       <Popover>
-//         <PopoverTrigger>
-//           <Typography as="span" variant="regular_16">
-//             {rangeMode && dateToRangeSelect?.from && dateToRangeSelect?.to
-//               ? formatRange(dateToRangeSelect)
-//               : 'Select date'}
-//             {singleMode && dateToSingleSelect}
-//           </Typography>
-//           <CalendarOutline />
-//         </PopoverTrigger>
-//         <PopoverContent>
-//           {rangeMode && (
-//             <Calendar mode="range" selected={dateToRangeSelect} onDayClick={handleDateChange} />
-//           )}
-//           {mode === 'single' && (
-//             <Calendar mode="range" selected={dateToRangeSelect} onDayClick={handleDateChange} />
-//           )}
-//         </PopoverContent>
-//       </Popover>
-//       {error && (
-//         <Typography as="span" className={classNames.error} variant="small">
-//           {error}
-//         </Typography>
-//       )}
-//     </>
-//   )
-// }

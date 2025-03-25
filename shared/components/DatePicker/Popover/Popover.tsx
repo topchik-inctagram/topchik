@@ -3,8 +3,6 @@ import type { ComponentPropsWithRef } from 'react'
 import s from './Popover.module.scss'
 import clsx from 'clsx'
 
-type Props = ComponentPropsWithRef<typeof PopoverPrimitive.Content>
-
 const Popover = PopoverPrimitive.Root
 
 type PopoverTriggerProps = { fullWidth?: boolean; error?: boolean } & ComponentPropsWithRef<
@@ -19,10 +17,12 @@ const PopoverTrigger = (props: PopoverTriggerProps) => {
   return <PopoverPrimitive.Trigger {...rest} className={classNames.trigger} />
 }
 
-const PopoverContent = (props: Props) => {
+type PopoverContentProps = ComponentPropsWithRef<typeof PopoverPrimitive.Content>
+
+const PopoverContent = (props: PopoverContentProps) => {
   return (
     <PopoverPrimitive.Portal>
-      <PopoverPrimitive.Content {...props} sideOffset={-16} />
+      <PopoverPrimitive.Content {...props} />
     </PopoverPrimitive.Portal>
   )
 }
