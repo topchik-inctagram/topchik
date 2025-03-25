@@ -14,11 +14,11 @@ export default meta
 type Story = StoryObj<typeof DatePicker>
 
 const DatePickerRangeWrapper = ({
-  mode = 'range',
-  error,
+  mode,
+  error = '',
   disabled = false,
 }: {
-  mode?: 'range' | 'single'
+  mode: 'range' | 'single'
   error?: string
   disabled?: boolean
 }) => {
@@ -35,7 +35,7 @@ const DatePickerRangeWrapper = ({
 }
 
 export const DatePickerRange: Story = {
-  render: () => <DatePickerRangeWrapper />,
+  render: () => <DatePickerRangeWrapper mode="range" />,
 }
 
 export const DatePickerSingle: Story = {
@@ -47,5 +47,5 @@ export const DatePickerWithError: Story = {
 }
 
 export const DatePickerDisabled: Story = {
-  render: () => <DatePickerRangeWrapper disabled />,
+  render: () => <DatePickerRangeWrapper disabled mode="range" />,
 }

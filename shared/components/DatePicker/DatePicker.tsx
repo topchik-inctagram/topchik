@@ -15,7 +15,7 @@ import { enGB } from 'date-fns/locale/en-GB'
 
 type Props = {
   error?: string
-  mode?: ComponentPropsWithoutRef<typeof DayPicker>['mode']
+  mode: ComponentPropsWithoutRef<typeof DayPicker>['mode']
   onChangeDate: (date: Date | DateRange) => void
   dateValue: Date | DateRange | undefined
   id?: string
@@ -23,7 +23,7 @@ type Props = {
 }
 
 export const DatePicker = (props: Props) => {
-  const { error, mode = 'range', onChangeDate, id, disabled, dateValue } = props
+  const { error, mode, onChangeDate, id, disabled, dateValue } = props
 
   const classNames = {
     error: s.error,

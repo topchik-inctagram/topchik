@@ -15,38 +15,41 @@ type Story = StoryObj<typeof Popover>
 
 export const PopoverDefault: Story = {
   render: () => {
-    return (
-      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
-        <Label>Date</Label>
-        <Popover>
-          <PopoverTrigger>
-            <Typography as="span" variant="regular_16">
-              Select date
-            </Typography>
-            <CalendarOutline />
-          </PopoverTrigger>
-          <PopoverContent>Place content for the popover here.</PopoverContent>
-        </Popover>
-      </div>
-    )
+    return <PopoverRender />
+  },
+}
+
+export const PopoverFullWidthDefault: Story = {
+  render: () => {
+    return <PopoverRender fullWidth />
   },
 }
 
 export const PopoverWithError: Story = {
   render: () => {
-    return (
-      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
-        <Label>Date</Label>
-        <Popover>
-          <PopoverTrigger error>
-            <Typography as="span" variant="regular_16">
-              Select date
-            </Typography>
-            <CalendarOutline />
-          </PopoverTrigger>
-          <PopoverContent>Place content for the popover here.</PopoverContent>
-        </Popover>
-      </div>
-    )
+    return <PopoverRender error />
   },
+}
+
+function PopoverRender({
+  error = false,
+  fullWidth = false,
+}: {
+  error?: boolean
+  fullWidth?: boolean
+}) {
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
+      <Label>Date</Label>
+      <Popover>
+        <PopoverTrigger error={error} fullWidth={fullWidth}>
+          <Typography as="span" variant="regular_16">
+            Select date
+          </Typography>
+          <CalendarOutline />
+        </PopoverTrigger>
+        <PopoverContent>Place content for the popover here.</PopoverContent>
+      </Popover>
+    </div>
+  )
 }
