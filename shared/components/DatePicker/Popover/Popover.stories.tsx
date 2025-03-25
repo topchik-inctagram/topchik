@@ -4,7 +4,7 @@ import { CalendarOutline } from '@/public'
 import { Label, Popover, PopoverContent, PopoverTrigger, Typography } from '@/shared/components'
 
 const meta: Meta<typeof Popover> = {
-  title: 'Components/Popover',
+  title: 'Components/Datepicker/Popover',
   component: Popover,
   tags: ['autodocs'],
 }

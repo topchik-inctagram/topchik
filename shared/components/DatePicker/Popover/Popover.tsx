@@ -5,9 +5,11 @@ import clsx from 'clsx'
 
 const Popover = PopoverPrimitive.Root
 
-type PopoverTriggerProps = { fullWidth?: boolean; error?: boolean } & ComponentPropsWithRef<
-  typeof PopoverPrimitive.Trigger
->
+type PopoverTriggerProps = {
+  fullWidth?: boolean
+  error?: boolean
+  disabled?: boolean
+} & ComponentPropsWithRef<typeof PopoverPrimitive.Trigger>
 
 const PopoverTrigger = (props: PopoverTriggerProps) => {
   const { fullWidth, error, ...rest } = props

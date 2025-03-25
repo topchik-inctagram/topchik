@@ -32,6 +32,10 @@
   border-radius: 24px;
   background-color: var(--color-dark-100);
 
+  &:focus-visible:not(:disabled) {
+    background-color: var(--color-dark-100);
+  }
+
   svg {
     width: 20px;
     height: 20px;
@@ -63,6 +67,11 @@
   &:hover:not([disabled], .rdp-day_selected) {
     background-color: var(--color-accent-700) !important;
   }
+
+  &:focus-visible:not(:disabled) {
+    color: var(--color-light-100);
+    background-color: transparent;
+  }
 }
 
 :global(.rdp-day_outside) {
@@ -72,11 +81,21 @@
 
 .weekends {
   color: var(--color-danger-300);
+
+  &:focus-visible:not(:disabled) {
+    color: var(--color-danger-300);
+    background-color: transparent;
+  }
 }
 
 .today {
   font-weight: var(--font-weight-bold);
   color: var(--color-accent-500);
+
+  &:focus-visible:not(:disabled) {
+    color: var(--color-accent-500);
+    background-color: transparent;
+  }
 }
 
 .weekends.today {

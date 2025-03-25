@@ -5,7 +5,7 @@ import type { DateRange } from 'react-day-picker'
 import { Calendar } from '@/shared/components'
 
 const meta: Meta<typeof Calendar> = {
-  title: 'Components/Calendar',
+  title: 'Components/Datepicker/Calendar',
   component: Calendar,
   tags: ['autodocs'],
 }
@@ -20,13 +20,13 @@ export const CalendarRangeMode: Story = {
     const handleSelect = (newSelected: any) => {
       setSelected(newSelected)
     }
-    return <Calendar mode={'range'} selected={selected} onSelect={handleSelect} />
+    return <Calendar mode="range" selected={selected} onSelect={handleSelect} />
   },
 }
 
 export const CalendarSingleMode: Story = {
   render: () => {
     const [selected, setSelected] = useState<Date>()
-    return <Calendar mode={'single'} selected={selected} onSelect={setSelected} />
+    return <Calendar mode="single" selected={selected} onSelect={setSelected} />
   },
 }

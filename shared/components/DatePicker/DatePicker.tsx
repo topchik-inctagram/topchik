@@ -7,25 +7,29 @@ import {
   Typography,
 } from '@/shared/components'
 import { CalendarOutline } from '@/public'
-import { type ComponentPropsWithoutRef, useEffect, useState } from 'react'
+import { type ComponentPropsWithoutRef, useEffect, useId, useState } from 'react'
 import { type DateRange, type DayPicker } from 'react-day-picker'
-import clsx from 'clsx'
+import { format, parse } from 'date-fns'
 import s from './DatePicker.module.scss'
+import { enGB } from 'date-fns/locale/en-GB'
 
 type Props = {
   error?: string
   mode?: ComponentPropsWithoutRef<typeof DayPicker>['mode']
   onChangeDate: (date: Date | DateRange) => void
   dateValue: Date | DateRange | undefined
+  id?: string
+  disabled?: boolean
 }
 
 export const DatePicker = (props: Props) => {
-  const { error, mode = 'range', onChangeDate, dateValue } = props
+  const { error, mode = 'range', onChangeDate, id, disabled, dateValue } = props
 
   const classNames = {
-    error: clsx(s.error),
+    error: s.error,
   }
-
+  const idFromHook = useId()
+  const idForLabel = id ?? idFromHook
   const SELECT_DATE = 'Select date'
   const RANGE_MODE = mode === 'range'
   const SINGLE_MODE = mode === 'single'
@@ -35,7 +39,7 @@ export const DatePicker = (props: Props) => {
   useEffect(() => {
     if (dateValue instanceof Date) {
       setDisplayValue({
-        single: dateValue.toLocaleDateString(),
+        single: format(dateValue, 'dd/MM/yyyy', { locale: enGB }),
         range: undefined,
       })
     } else if (isDateRange(dateValue)) {
@@ -48,6 +52,7 @@ export const DatePicker = (props: Props) => {
     }
   }, [dateValue])
 
+  //todo maybe move to utils
   const isDateRange = (obj: unknown): obj is DateRange => {
     return (
       typeof obj === 'object' &&
@@ -58,10 +63,14 @@ export const DatePicker = (props: Props) => {
       (obj.to === undefined || obj.to instanceof Date)
     )
   }
+  // to fix bug for single date mode
+  const parseDateString = (dateStr: string) => {
+    return parse(dateStr, 'dd/MM/yyyy', new Date(), { locale: enGB })
+  }
 
   const formatRange = (range: DateRange) => {
-    const startDate = range.from?.toLocaleDateString() ?? ''
-    const endDate = range.to?.toLocaleDateString() ?? ''
+    const startDate = range.from ? format(range.from, 'dd/MM/yyyy') : ''
+    const endDate = range.to ? format(range.to, 'dd/MM/yyyy') : ''
     return `${startDate} - ${endDate}`
   }
 
@@ -87,9 +96,11 @@ export const DatePicker = (props: Props) => {
 
   return (
     <>
-      <Label>Date</Label>
+      <Label disabled={disabled} htmlFor={idForLabel}>
+        Date
+      </Label>
       <Popover>
-        <PopoverTrigger error={!!error}>
+        <PopoverTrigger disabled={disabled} error={!!error} id={idForLabel}>
           <Typography as="span" variant="regular_16">
             {RANGE_MODE && displayValue.range?.from && displayValue.range?.to
               ? formatRange(displayValue.range)
@@ -101,13 +112,19 @@ export const DatePicker = (props: Props) => {
         </PopoverTrigger>
         <PopoverContent sideOffset={-16}>
           {RANGE_MODE && (
-            <Calendar mode="range" selected={displayValue.range} onDayClick={handleDateChange} />
+            <Calendar
+              initialFocus
+              mode="range"
+              selected={displayValue.range}
+              onDayClick={handleDateChange}
+            />
           )}
           {SINGLE_MODE && (
             <Calendar
+              key={displayValue.single}
               initialFocus
               mode="single"
-              selected={displayValue.single ? new Date(displayValue.single) : undefined}
+              selected={displayValue.single ? parseDateString(displayValue.single) : undefined}
               onDayClick={handleDateChange}
             />
           )}
