@@ -1,49 +1,37 @@
-import { useId, ComponentPropsWithoutRef } from 'react'
+import { useId, ComponentPropsWithRef } from 'react'
 import s from './Textarea.module.scss'
 import clsx from 'clsx'
 import { Label } from '@/shared/components/Label/Label'
+
 
 export type TextareaProps = {
   id?: string
   titleLabel?: string
   error?: string
   className?: string
-  placeholder?: string
-  disabled?: boolean
-} & Omit<ComponentPropsWithoutRef<'textarea'>, 'id' | 'className' | 'placeholder' | 'disabled'>
+} & ComponentPropsWithRef<'textarea'>
 
 export const Textarea = (props: TextareaProps) => {
-  const {
-    id: passedId,
-    titleLabel,
-    error,
-    className,
-    placeholder = 'Enter message',
-    disabled = false,
-    ...rest
-  } = props
-
+  const { id, titleLabel, error, className, ...rest } = props
   const generatedId = useId()
-  const id = passedId || generatedId
+  const finalId = id || generatedId  
 
-  const containerClassName = clsx(s.textareaRoot, className)
-  const textareaClassName = clsx(s.textArea, error && s.errorBorder)
+  const classes = {
+    container: clsx(s.textareaRoot, className),
+    label: s.textAreaLabel,
+    textarea: clsx(s.textArea, error && s.errorBorder, rest.disabled && s.disabled),
+    errorText: s.textAreaError,
+  }
 
   return (
-    <div className={containerClassName}>
+    <div className={classes.container}>
       {titleLabel && (
-        <Label className={s.textAreaLabel} htmlFor={id}>
+        <Label className={classes.label} htmlFor={finalId}>
           {titleLabel}
         </Label>
       )}
-      <textarea
-        id={id}
-        placeholder={placeholder}
-        disabled={disabled}
-        className={textareaClassName}
-        {...rest}
-      />
-      {error && <span className={s.textAreaError}>{error}</span>}
+      <textarea id={finalId} className={classes.textarea} {...rest} />
+      {error && <span className={classes.errorText}>{error}</span>}
     </div>
   )
 }

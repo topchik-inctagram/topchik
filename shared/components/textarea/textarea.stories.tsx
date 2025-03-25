@@ -22,7 +22,7 @@ export const DefaultTextArea: Story = {
 
     return (
       <div style={{ width: '400px', margin: '0 auto' }}>
-        <Textarea ref={textareaRef} titleLabel={args.titleLabel} />
+        <Textarea ref={textareaRef} titleLabel={args.titleLabel} placeholder="Enter your message here "/>
       </div>
     )
   },
@@ -36,7 +36,7 @@ export const ErrorOutputInArea: Story = {
   render: args => {
     return (
       <div style={{ width: '400px', margin: '0 auto' }}>
-        <Textarea titleLabel={args.titleLabel} error={args.error} />
+        <Textarea titleLabel={args.titleLabel} error={args.error} placeholder="Enter your message here "/>
       </div>
     )
   },
@@ -50,7 +50,7 @@ export const DisabledTextArea: Story = {
   render: args => {
     return (
       <div style={{ width: '400px', margin: '0 auto' }}>
-        <Textarea titleLabel={args.titleLabel} disabled={args.disabled} />
+        <Textarea titleLabel={args.titleLabel} disabled={args.disabled} placeholder="Enter your message here "/>
       </div>
     )
   },
