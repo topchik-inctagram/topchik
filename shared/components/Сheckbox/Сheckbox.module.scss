@@ -1,15 +1,12 @@
-@mixin flex-container {
-  display: flex;
-}
-
 .container {
-  @include flex-container;
+  display: flex;
   align-items: center;
 }
 .label {
   cursor: pointer;
-  @include flex-container;
+  display: flex;
   align-self: center;
+  color: var(--color-light-100);
   &.disabled {
     cursor: initial;
     color: var(--color-dark-100);
@@ -17,7 +14,7 @@
 }
 .root {
   cursor: pointer;
-  @include flex-container;
+  display: flex;
   align-items: center;
   justify-content: center;
   width: 18px;
@@ -42,14 +39,11 @@
 
 .buttonWrapper {
   cursor: pointer;
-
-  @include flex-container;
+  display: flex;
   align-items: center;
   justify-content: center;
-
   width: 36px;
   height: 36px;
-
   border-radius: 50%;
 
   &.disabled {
