@@ -4,7 +4,7 @@ import "@fontsource/inter/400.css";
 import "@fontsource/inter/500.css";
 import "@fontsource/inter/600.css";
 import "@fontsource/inter/700.css";
-import {Toaster} from "sonner";
+
 
 
 const preview: Preview = {
@@ -18,7 +18,6 @@ const preview: Preview = {
     },
     decorators: Story => (
         <>
-            <Toaster/>
             <Story/>
         </>
     )

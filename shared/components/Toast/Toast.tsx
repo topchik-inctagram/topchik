@@ -1,4 +1,4 @@
-import {toast as sonnerToast} from 'sonner';
+
 import {Close} from "@/public";
 import {Typography} from "@/shared/components";
 import s from './Toast.module.scss'
@@ -9,8 +9,8 @@ import clsx from "clsx";
  *  so that you can call it without having to use toast.custom everytime. */
 
 
-type ToastProps = {
-    id?: string | number;
+type Props = {
+    id?: string | number
     title?: string | null;
     description: string;
     type: 'error' | 'success'
@@ -20,7 +20,9 @@ type ToastProps = {
     };
 }
 
-export const Toast = (props: Omit<ToastProps, 'id'>) => {
+
+
+export const Toast = (props: Omit<Props, 'id'>) => {
     const {title, description, type, button} = props
     const ERROR_TYPE = type === 'error'
     const ERROR_TITLE = 'Error!'
@@ -44,7 +46,7 @@ export const Toast = (props: Omit<ToastProps, 'id'>) => {
 }
 
 /** A fully custom toast that still maintains the animations and interactions. */
-export const SonnerToast = (props: ToastProps) => {
+export const SonnerToast = (props: Props) => {
     const {title, description, button, type, id} = props;
     const ERROR_TYPE = type === 'error'
     const SUCCESS_TYPE = type === 'success'

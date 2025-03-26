@@ -18,7 +18,7 @@ export const ToastWithRender: Story = {
   render: () => {
     return <Button   onClick={() => {
       Toast({
-        title: 'This is a headless toast',
+        title: 'Error!',
         type: 'error',
         description: 'You have full control of styles and jsx, while still having the animations.',
         button: {
