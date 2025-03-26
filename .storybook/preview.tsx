@@ -6,7 +6,6 @@ import "@fontsource/inter/600.css";
 import "@fontsource/inter/700.css";
 
 
-
 const preview: Preview = {
     parameters: {
         controls: {
@@ -15,12 +14,7 @@ const preview: Preview = {
                 date: /Date$/i,
             },
         },
-    },
-    decorators: Story => (
-        <>
-            <Story/>
-        </>
-    )
+    }
 };
 
 export default preview;

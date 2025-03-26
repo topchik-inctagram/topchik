@@ -1,75 +1,46 @@
-
 import {Close} from "@/public";
 import {Typography} from "@/shared/components";
 import s from './Toast.module.scss'
 import clsx from "clsx";
+import {
+    Toast as ToastRoot,
+    ToastClose,
+    ToastDescription,
+    type ToastProps,
+    ToastProvider,
+    ToastTitle,
+    ToastViewport
+} from "@radix-ui/react-toast";
 
-
-/** I recommend abstracting the toast function
- *  so that you can call it without having to use toast.custom everytime. */
-
-
-type Props = {
-    id?: string | number
-    title?: string | null;
+interface Props extends ToastProps {
     description: string;
-    type: 'error' | 'success'
-    button?: {
-        onClick: () => void;
-        label: string
-    };
+    variant: 'error' | 'success'
 }
 
-
-
-export const Toast = (props: Omit<Props, 'id'>) => {
-    const {title, description, type, button} = props
-    const ERROR_TYPE = type === 'error'
+export const Toast = (props: Props) => {
+    const {title, description, variant, className, ...rest} = props
+    const ERROR_TYPE = variant === 'error'
+    const SUCCESS_TYPE = variant === 'success'
     const ERROR_TITLE = 'Error!'
-    const BUTTON_LABEL = 'Close'
-    const defaultTitle = ERROR_TYPE ? ERROR_TITLE : null
-
-    return sonnerToast.custom((id) => {
-        console.log('IT WORKDS')
-        console.log(id)
-        return <SonnerToast
-            id={id}
-            title={title ?? defaultTitle}
-            type={type}
-            description={description}
-            button={{
-                onClick: button?.onClick ?? (() => console.log('click')),
-                label: button?.label ?? BUTTON_LABEL
-            }}
-        />
-    });
-}
-
-/** A fully custom toast that still maintains the animations and interactions. */
-export const SonnerToast = (props: Props) => {
-    const {title, description, button, type, id} = props;
-    const ERROR_TYPE = type === 'error'
-    const SUCCESS_TYPE = type === 'success'
+    const defaultTitle = ERROR_TYPE && ERROR_TITLE
     const classNames = {
-        toastWrapper: clsx(s.toastWrapper, ERROR_TYPE && s.error, SUCCESS_TYPE && s.success)
+        toastRoot: clsx(s.toastRoot, ERROR_TYPE && s.error, SUCCESS_TYPE && s.success, className),
+        closeButton: s.closeButton,
+        textContainer: s.textContainer,
+        viewPort: s.viewPort
     }
 
-    return <div className={classNames.toastWrapper}>
-            <div>
-                {title && <Typography variant={'bold_16'}>{title}</Typography>}
-                <Typography variant={'regular_16'}>{description}</Typography>
-            </div>
-        <div>
-            <button
-                onClick={() => {
-                    button?.onClick()
-                    sonnerToast.dismiss(id);
-                }}
-            >
-                <Close/>
-            </button>
-        </div>
-    </div>
+    return (
+        <ToastProvider swipeDirection={'up'}>
+            <ToastRoot duration={3000} type={'foreground'} className={classNames.toastRoot} {...rest} >
+                <div className={s.textContainer}>{ERROR_TYPE && <ToastTitle asChild><Typography
+                    variant={'bold_16'}>{title ?? defaultTitle}</Typography></ToastTitle>}
+                    <ToastDescription asChild><Typography
+                        variant={'regular_16'}>{description}</Typography></ToastDescription></div>
+                <ToastClose aria-label="Close" className={s.closeButton}><span aria-hidden><Close/></span></ToastClose>
+            </ToastRoot>
+            <ToastViewport className={s.viewPort}/>
+        </ToastProvider>
+    )
 }
-
 

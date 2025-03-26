@@ -1,76 +1,90 @@
-import type { Meta, StoryObj } from '@storybook/react'
+import type {Meta, StoryObj} from '@storybook/react'
 import {Button, Toast} from '@/shared/components'
-import {toast as sonnerToast} from 'sonner';
-import {useEffect} from "react";
+import {useRef, useState} from "react";
 
-
-const meta: Meta<typeof Toast> = {
-  title: 'Components/ToastS',
-  component: Toast,
-  tags: ['autodocs'],
-}
+const meta = {
+    title: 'Components/Toast',
+    component: Toast,
+    tags: ['autodocs'],
+} satisfies Meta<typeof Toast>
 
 export default meta
-
-type Story = StoryObj<typeof Button>
-
-export const ToastWithRender: Story = {
-  render: () => {
-    return <Button   onClick={() => {
-      Toast({
-        title: 'Error!',
-        type: 'error',
-        description: 'You have full control of styles and jsx, while still having the animations.',
-        button: {
-          onClick: () => sonnerToast.dismiss(),
-          label: 'Close'
-        },
-      });
-    }}>Render toast</Button>
-  }}
+type Story = StoryObj<typeof Toast>
 
 
-export const ToastSuccessType: Story = {
-  render: () => {
-    useEffect(() => {
-      Toast({
-        type: 'success',
-        description: 'This is a test toast'
-      });
-    }, []);
-return <></>
-  }}
-
-
-export const ToastErrorType: Story = {
-  render: () => {
-    useEffect(() => {
-      Toast({
-        type: 'error',
-        description: 'This is a test toast'
-      });
-    }, []);
-    return <></>
-  }}
-
-export const ToastErrType: Story = {
-  render: () => {
-    return <button
-        className="relative flex h-10 flex-shrink-0 items-center justify-center gap-2 overflow-hidden rounded-full bg-white px-4 text-sm font-medium shadow-sm transition-all hover:bg-[#FAFAFA] dark:bg-[#161615] dark:hover:bg-[#1A1A19] dark:text-white"
-        onClick={() => {
-          Toast({
-            title: 'This is a headless toast',
-            type: 'error',
-            description: 'You have full control of styles and jsx, while still having the animations.',
-            button: {
-              label: 'Reply',
-              onClick: () => sonnerToast.dismiss(),
-            },
-          });
-        }}
-    >
-      Render toast
-    </button>
-  }
+export const ToastSuccessAlwaysOpen: Story = {
+    args: {
+        description: 'Your settings are saved',
+        open: true,
+        variant: 'success'
+    }
 }
 
+
+export const ToastErrorAlwaysOpen: Story = {
+    args: {
+        description: 'Server is not available',
+        open: true,
+        variant: 'error'
+    }
+}
+
+export const ToastSuccess: Story = {
+    args: {
+        description: 'Your settings are saved',
+        variant: 'success'
+    }
+}
+
+export const ToastError: Story = {
+    args: {
+        description: 'Server is not available',
+        variant: 'error'
+    }
+}
+
+export const ToastWithControl: Story = {
+    render: () => {
+        const [open, setOpen] = useState(false);
+
+        return (
+            <>
+                <Button
+                    onClick={() => setOpen(true)}>
+                    Open Toast
+                </Button>
+                <Toast
+                    open={open}
+                    onOpenChange={setOpen}
+                    description="Your settings are saved"
+                    variant="success"
+                />
+            </>
+        );
+    },}
+
+export const ToastCanReopen: Story = {
+    render: () => {
+        const [open, setOpen] = useState(false);
+        const timerRef = useRef(0);
+        return (
+            <>
+            <Button
+                onClick={() => {
+                    setOpen(false);
+                    window.clearTimeout(timerRef.current);
+                    timerRef.current = window.setTimeout(() => {
+                        setOpen(true);
+                    }, 100);
+                }}>
+                    Open Toast
+                </Button>
+                <Toast
+                    open={open}
+                    onOpenChange={setOpen}
+                    description="Your settings are saved"
+                    variant="success"
+                />
+            </>
+        );
+    },}
