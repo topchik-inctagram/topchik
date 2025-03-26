@@ -1,8 +1,7 @@
 import { useId, ComponentPropsWithRef } from 'react'
 import s from './Textarea.module.scss'
 import clsx from 'clsx'
-import { Label } from '@/shared/components/Label/Label'
-import { Typography } from '@/shared/components'
+import { Label, Typography } from '@/shared/components'
 
 type Props = {
   label?: string
