@@ -1,12 +1,14 @@
 import { Meta, StoryObj } from '@storybook/react'
-import { Textarea } from './Textarea'
-import {Button} from '@/shared/components/Button/Button'
-import React, { useRef, useState } from 'react'
 
+import { type ChangeEvent, useRef, useState } from 'react'
+import { Button, Textarea } from '@/shared/components'
 
 const meta = {
   component: Textarea,
   title: 'Components/Textarea',
+  args: {
+    label: 'enter message',
+  },
 } satisfies Meta<typeof Textarea>
 
 export default meta
@@ -14,57 +16,43 @@ export default meta
 type Story = StoryObj<typeof meta>
 
 export const DefaultTextArea: Story = {
-  args: {
-    titleLabel: 'enter message',
-  },
   render: args => {
     const textareaRef = useRef<HTMLTextAreaElement>(null)
 
     return (
       <div style={{ width: '400px', margin: '0 auto' }}>
-        <Textarea ref={textareaRef} titleLabel={args.titleLabel} placeholder="Enter your message here "/>
+        <Textarea ref={textareaRef} label={args.label} placeholder="Enter your message here " />
       </div>
     )
   },
 }
 
 export const ErrorOutputInArea: Story = {
-  args: {
-    error: 'Error text',
-    titleLabel: 'enter message',
-  },
   render: args => {
     return (
       <div style={{ width: '400px', margin: '0 auto' }}>
-        <Textarea titleLabel={args.titleLabel} error={args.error} placeholder="Enter your message here "/>
+        <Textarea error={'Error text'} label={args.label} placeholder="Enter your message here " />
       </div>
     )
   },
 }
 
 export const DisabledTextArea: Story = {
-  args: {
-    disabled: true,
-    titleLabel: 'enter message',
-  },
   render: args => {
     return (
       <div style={{ width: '400px', margin: '0 auto' }}>
-        <Textarea titleLabel={args.titleLabel} disabled={args.disabled} placeholder="Enter your message here "/>
+        <Textarea placeholder="Enter your message here " label={args.label} disabled />
       </div>
     )
   },
 }
 
 export const ControlledTextArea: Story = {
-  args: {
-    titleLabel: 'enter message',
-  },
   render: args => {
     const [value, setValue] = useState('')
     const [displayedText, setDisplayedText] = useState('')
 
-    const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const handleValueChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
       setValue(e.target.value)
     }
 
@@ -76,17 +64,15 @@ export const ControlledTextArea: Story = {
     return (
       <div style={{ width: '400px', margin: '0 auto' }}>
         <Textarea
-          titleLabel={args.titleLabel}
           value={value}
-          onChange={handleChange}
+          onChange={handleValueChange}
           placeholder="Enter your message here "
+          label={args.label}
         />
         <Button onClick={handleButtonClick} style={{ marginTop: '10px' }}>
           Show message
         </Button>
-        {displayedText && (
-          <p style={{ marginTop: '10px' }}>Message: {displayedText}</p>
-        )}
+        {displayedText && <p style={{ marginTop: '10px' }}>Message: {displayedText}</p>}
       </div>
     )
   },
