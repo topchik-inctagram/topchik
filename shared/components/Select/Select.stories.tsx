@@ -14,7 +14,7 @@ type Story = StoryObj<typeof meta>
 export const Uncontrolled: Story = {
   args: {
     disabled: false,
-    label: 'Select-box',
+    label: 'Select-Box',
     value: '',
     options: [
       { value: 'apple', label: 'Apple' },
@@ -33,7 +33,7 @@ export const Controlled: Story = {
       <Select
         {...args}
         label="Select-Box"
-        value={select} 
+        value={select}
         onChange={setSelect}
         options={[
           { value: 'apple', label: 'Apple' },
