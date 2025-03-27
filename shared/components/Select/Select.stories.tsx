@@ -1,15 +1,16 @@
 import { Meta, StoryObj } from '@storybook/react'
 import { useState } from 'react'
-import Select from './Select'
+import { Select } from './Select'
 
-const meta = {
+const meta: Meta<typeof Select> = {
   component: Select,
   tags: ['autodocs'],
   title: 'Components/Select',
-} satisfies Meta<typeof Select>
+}
 
 export default meta
-type Story = StoryObj<typeof meta>
+
+type Story = StoryObj<typeof Select>
 
 export const Uncontrolled: Story = {
   args: {
@@ -27,7 +28,7 @@ export const Uncontrolled: Story = {
 
 export const Controlled: Story = {
   render: args => {
-    const [select, setSelect] = useState('')
+    const [select, setSelect] = useState<string>('')
 
     return (
       <Select

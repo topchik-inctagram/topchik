@@ -1,8 +1,10 @@
-import * as RadixSelect from '@radix-ui/react-select'
-import s from './Select.module.scss'
-import { clsx } from 'clsx'
-import { forwardRef } from 'react'
+import { Select as RadixSelect } from 'radix-ui'
+import styles from './Select.module.scss'
+import classnames from 'classnames'
+import ArrowDown from '../../../public/icons/ArrowIosDownOutline'
+import ArrowUp from '../../../public/icons/ArrowIosUp'
 import { Typography } from '../Typography'
+import { forwardRef, ReactNode, useState } from 'react'
 
 export type SelectProps = {
   onChange?: (value: string) => void
@@ -13,47 +15,72 @@ export type SelectProps = {
   options: { value: string; label: string }[]
 }
 
-const Select = forwardRef<HTMLDivElement, SelectProps>(
-  ({ className, disabled, value, onChange, label, options }, ref) => {
-    const classNames = {
-      container: clsx(s.container, className),
-      label: clsx(s.label, disabled && s.disabled),
-      select: clsx(s.select, disabled && s.disabled),
-      scrollBtn: clsx(s.scrollBtn, className),
-      content: clsx(s.content, className),
-    }
+type SelectItemProps = {
+  children: ReactNode
+  className?: string
+  value: string
+}
 
-    return (
-      <div className={classNames.container} ref={ref}>
-        <Typography className={classNames.label} as="label" variant="medium_14">
-          {label}
-        </Typography>
-        <RadixSelect.Root value={value} onValueChange={onChange}>
-          <RadixSelect.Trigger
-            className={classNames.select}
-            aria-label="Select an option"
-            disabled={disabled}
-          >
-            <RadixSelect.Value placeholder="Select-Box" />
-          </RadixSelect.Trigger>
-          <RadixSelect.Portal>
-            <RadixSelect.Content className={classNames.content}>
-              <RadixSelect.ScrollUpButton className={classNames.scrollBtn} />
-              <RadixSelect.Viewport>
-                {options.map(option => (
-                  <RadixSelect.Item key={option.value} value={option.value}>
-                    <RadixSelect.ItemText>{option.label}</RadixSelect.ItemText>
-                  </RadixSelect.Item>
-                ))}
-              </RadixSelect.Viewport>
-              <RadixSelect.ScrollDownButton />
-            </RadixSelect.Content>
-          </RadixSelect.Portal>
-          <RadixSelect.Icon />
-        </RadixSelect.Root>
-      </div>
-    )
+export const Select = ({ label, className, disabled, value, options, onChange }: SelectProps) => {
+  const [isOpen, setIsOpen] = useState(false)
+
+  const handleOpenChange = (open: boolean) => {
+    setIsOpen(open)
   }
-)
 
-export default Select
+  const handleSelectChange = (newValue: string) => {
+    if (onChange) {
+      onChange(newValue)
+    }
+  }
+  const SelectItem = forwardRef<HTMLDivElement, SelectItemProps>(
+    ({ children, className, ...props }, forwardedRef) => {
+      return (
+        <RadixSelect.Item
+          className={classnames(styles.Item, className)}
+          {...props}
+          ref={forwardedRef}
+        >
+          <RadixSelect.ItemText>{children}</RadixSelect.ItemText>
+          <RadixSelect.ItemIndicator className={styles.ItemIndicator}></RadixSelect.ItemIndicator>
+        </RadixSelect.Item>
+      )
+    }
+  )
+  return (
+    <RadixSelect.Root
+      value={value}
+      onOpenChange={handleOpenChange}
+      onValueChange={handleSelectChange}
+    >
+      <Typography as="label" variant="medium_14">
+        {label}
+      </Typography>
+      <RadixSelect.Trigger className={styles.Trigger} aria-label="Food">
+        <RadixSelect.Value placeholder="Select-Box" />
+        <RadixSelect.Icon className={styles.Icon}>
+          {isOpen ? <ArrowUp /> : <ArrowDown />}
+        </RadixSelect.Icon>
+      </RadixSelect.Trigger>
+      <RadixSelect.Portal>
+        <RadixSelect.Content className={styles.Content}>
+          <RadixSelect.ScrollUpButton className={styles.ScrollButton}>
+            <ArrowUp />
+          </RadixSelect.ScrollUpButton>
+          <RadixSelect.Viewport className={styles.Viewport}>
+            <RadixSelect.Group>
+              {options.map(option => (
+                <SelectItem key={option.value} value={option.value}>
+                  {option.label}
+                </SelectItem>
+              ))}
+            </RadixSelect.Group>
+          </RadixSelect.Viewport>
+          <RadixSelect.ScrollDownButton className={styles.ScrollButton}>
+            <ArrowDown />
+          </RadixSelect.ScrollDownButton>
+        </RadixSelect.Content>
+      </RadixSelect.Portal>
+    </RadixSelect.Root>
+  )
+}
