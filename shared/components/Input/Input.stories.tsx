@@ -60,7 +60,7 @@ export const Search: Story = {
   args: {
     placeholder: 'Searching...',
     search: true,
-    type: 'text',
+    type: 'search',
   },
   render: args => {
     const [value, setValue] = useState('')
