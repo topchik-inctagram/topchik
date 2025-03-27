@@ -111,17 +111,7 @@ type PageButtonProps = NavigationButtonProps & {
 const Dots: FC = () => {
   return <span className={classNames.dots}>&#8230;</span>
 }
-// const PageButton: FC<PageButtonProps> = ({ disabled, onClick, page, selected }) => {
-//   return (
-//     <button
-//       className={classNames.pageButton(selected)}
-//       disabled={selected || disabled}
-//       onClick={onClick}
-//     >
-//       {page}
-//     </button>
-//   )
-// }
+
 const PageButton: FC<PageButtonProps> = ({ disabled, onClick, page, selected }) => {
   return (
     <span
@@ -199,44 +189,7 @@ type MainPaginationButtonsProps = {
   onClick: (pageNumber: number) => () => void
   paginationRange: (number | string)[]
 }
-// const MainPaginationButtons: FC<MainPaginationButtonsProps> = ({
-//   currentPage,
-//   onClick,
-//   paginationRange,
-// }) => {
-//   const searchParams = useSearchParams()
 
-//   return (
-//     <>
-//       {paginationRange.map((page: number | string, index) => {
-//         const isSelected = page === currentPage
-
-//         if (typeof page !== 'number') {
-//           return <Dots key={index} />
-//         }
-
-//         const newSearchParams = new URLSearchParams(searchParams.toString())
-//         if (page === 1) {
-//           newSearchParams.delete('page')
-//         } else {
-//           newSearchParams.set('page', page.toString())
-//         }
-
-//         return (
-//           <Link
-//             key={index}
-//             href={`?${newSearchParams.toString()}`}
-//             onClick={onClick(page)}
-//             scroll={false}
-//             className={classNames.item}
-//           >
-//             <PageButton key={index} onClick={onClick(page)} page={page} selected={isSelected} />
-//           </Link>
-//         )
-//       })}
-//     </>
-//   )
-// }
 const MainPaginationButtons: FC<MainPaginationButtonsProps> = ({
   currentPage,
   onClick,
