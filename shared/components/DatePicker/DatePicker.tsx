@@ -31,8 +31,8 @@ export const DatePicker = (props: Props) => {
   const idFromHook = useId()
   const idForLabel = id ?? idFromHook
   const SELECT_DATE = 'Select date'
-  const RANGE_MODE = mode === 'range'
-  const SINGLE_MODE = mode === 'single'
+  const isRangeMode = mode === 'range'
+  const isSingleMode = mode === 'single'
 
   const [displayValue, setDisplayValue] = useState<{ single?: string; range?: DateRange }>({})
 
@@ -102,16 +102,16 @@ export const DatePicker = (props: Props) => {
       <Popover>
         <PopoverTrigger disabled={disabled} error={!!error} id={idForLabel}>
           <Typography as="span" variant="regular_16">
-            {RANGE_MODE && displayValue.range?.from && displayValue.range?.to
+            {isRangeMode && displayValue.range?.from && displayValue.range?.to
               ? formatRange(displayValue.range)
-              : SINGLE_MODE && displayValue.single
+              : isSingleMode && displayValue.single
                 ? displayValue.single
                 : SELECT_DATE}
           </Typography>
           <CalendarOutline />
         </PopoverTrigger>
         <PopoverContent sideOffset={-16}>
-          {RANGE_MODE && (
+          {isRangeMode && (
             <Calendar
               initialFocus
               mode="range"
@@ -119,7 +119,7 @@ export const DatePicker = (props: Props) => {
               onDayClick={handleDateChange}
             />
           )}
-          {SINGLE_MODE && (
+          {isSingleMode && (
             <Calendar
               key={displayValue.single}
               initialFocus

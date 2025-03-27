@@ -31,18 +31,26 @@ export const PopoverWithError: Story = {
   },
 }
 
+export const PopoverDisabled: Story = {
+  render: () => {
+    return <PopoverRender disabled />
+  },
+}
+
 function PopoverRender({
   error = false,
   fullWidth = false,
+  disabled = false,
 }: {
   error?: boolean
   fullWidth?: boolean
+  disabled?: boolean
 }) {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
-      <Label>Date</Label>
+      <Label disabled={disabled}>Date</Label>
       <Popover>
-        <PopoverTrigger error={error} fullWidth={fullWidth}>
+        <PopoverTrigger error={error} fullWidth={fullWidth} disabled={disabled}>
           <Typography as="span" variant="regular_16">
             Select date
           </Typography>
