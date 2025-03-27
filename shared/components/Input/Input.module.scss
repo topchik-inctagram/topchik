@@ -3,10 +3,6 @@
   flex-direction: column;
   gap: 4px;
 
-  .fullWidth {
-    width: 100%;
-  }
-
   .inputContainer {
     position: relative;
 
@@ -65,26 +61,110 @@
 
     &:active:disabled {
       border: 1px solid var(--color-dark-100);
+      color: var(--color-dark-100);
+    }
+
+    input:-webkit-autofill,
+    input:-webkit-autofill:hover,
+    input:-webkit-autofill:focus,
+    textarea:-webkit-autofill,
+    textarea:-webkit-autofill:hover,
+    textarea:-webkit-autofill:focus,
+    select:-webkit-autofill,
+    select:-webkit-autofill:hover,
+    select:-webkit-autofill:focus {
+      border: 1px solid var(--color-dark-300);
+
+      background: linear-gradient(
+        to bottom,
+        rgb(255 255 255 / 0%) 0%,
+        rgb(0 174 255 / 4%) 50%,
+        rgb(255 255 255 / 0%) 51%,
+        rgb(0 174 255 / 3%) 100%
+      );
+      box-shadow: 0 0 0 1000px var(--color-dark-700) inset;
+
+      transition: background-color 99999999999s ease-in-out 0s;
+
+      -webkit-text-fill-color: var(--color-light-100);
     }
   }
 
   .searchIcon {
+    cursor: pointer;
+
     position: absolute;
-    top: 23%;
+    top: 20%;
     left: 10px;
 
     width: 20px;
     height: 20px;
+    padding: 0;
+    border: 0;
 
     color: var(--color-light-900);
+
+    background-color: transparent;
+    outline: 0;
+
+    &:active {
+      color: var(--color-dark-100) !important;
+    }
+
+    &:hover {
+      color: var(--color-light-700);
+    }
+
+    &:disabled {
+      cursor: not-allowed;
+      color: var(--color-dark-100);
+    }
+
+    &:active:disabled {
+      color: var(--color-dark-100);
+    }
   }
 
   .inputContainer:focus-within .searchIcon {
-    color: var(--color-light-100); // или любой другой активный цвет
+    color: var(--color-light-100);
+  }
+
+  .inputContainer:focus-within .inputDefault {
+    border: 1px solid var(--color-accent-700);
   }
 
   .inputWithSearchIcon {
+    padding-right: 35px;
     padding-left: 40px;
+  }
+
+  .clearIcon {
+    cursor: pointer;
+
+    position: absolute;
+    top: 20%;
+    right: 1%;
+
+    padding: 0;
+    border: 0;
+
+    color: var(--color-light-100);
+
+    background: transparent;
+    outline: 0;
+
+    &:active {
+      color: var(--color-dark-100);
+    }
+
+    &:disabled {
+      cursor: not-allowed;
+      color: var(--color-dark-100);
+    }
+
+    &:active:disabled {
+      color: var(--color-dark-100);
+    }
   }
 
   .showPassword {
@@ -104,14 +184,19 @@
 
     background: transparent;
     outline: 0;
+
+    &:disabled {
+      cursor: not-allowed;
+    }
   }
 
   .inputWithEyeIcon {
     padding-right: 40px;
   }
 
-  .inputContainer .inputDefault:disabled + .searchIcon,
-  .inputContainer .inputDefault:disabled + .showPassword {
+  .inputContainer .inputDefault:disabled ~ .searchIcon,
+  .inputContainer .inputDefault:disabled ~ .showPassword,
+  .inputContainer .inputDefault:disabled ~ .clearIcon {
     cursor: not-allowed;
     color: var(--color-dark-100);
   }
@@ -134,7 +219,17 @@
   }
 
   .errorText {
-    font-size: 14px;
     color: var(--color-danger-500);
+  }
+}
+
+.inputRoot.disabled {
+  cursor: not-allowed;
+  color: var(--color-dark-100);
+
+  .label,
+  .inputDefault::placeholder {
+    cursor: not-allowed;
+    color: var(--color-dark-100);
   }
 }

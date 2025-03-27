@@ -1,70 +1,126 @@
 'use client'
 
-import { ComponentPropsWithoutRef, forwardRef, useState } from 'react'
+import { ChangeEvent, KeyboardEvent, ComponentPropsWithRef, useId, useState } from 'react'
 
 import clsx from 'clsx'
 import s from './Input.module.scss'
-import { EyeOffOutline, EyeOutline, Search } from '@/public'
-import { Label } from '@/shared/components'
+import { Close, EyeOffOutline, EyeOutline, Search } from '@/public'
+import { Label, Typography } from '@/shared/components'
 
 type InputProps = {
   label?: string
   error?: string
-  icon?: React.ReactNode
-  fullWidth?: boolean
-  className?: string
   search?: boolean
-} & ComponentPropsWithoutRef<'input'>
+  onEnterPress?: (e: KeyboardEvent<HTMLInputElement>) => void
+  onChangeValue?: (value: string) => void
+  onSearchClick?: () => void
+  onClear?: () => void
+} & ComponentPropsWithRef<'input'>
 
-export const Input = forwardRef<HTMLInputElement, InputProps>(
-  ({ label, error, icon, fullWidth, className, search, type, ...rest }, ref) => {
-    const [showPassword, setShowPassword] = useState<boolean>(false)
-    const isPasswordType = type === 'password'
-    const inputType = isPasswordType ? (showPassword ? 'text' : 'password') : type
+export const Input = ({
+  label,
+  error,
+  className,
+  search,
+  type,
+  disabled,
+  onChange,
+  onChangeValue,
+  onEnterPress,
+  onSearchClick,
+  onClear,
+  onKeyDown,
+  value,
+  ref,
+  ...rest
+}: InputProps) => {
+  const [showPassword, setShowPassword] = useState<boolean>(false)
+  const isPasswordType = type === 'password'
+  const inputType = isPasswordType ? (showPassword ? 'text' : 'password') : type
 
-    const classNames = {
-      inputRoot: clsx(s.inputRoot, fullWidth && s.fullWidth, className),
-      input: clsx(
-        s.inputDefault,
-        search && s.inputWithSearchIcon,
-        error && s.error,
-        isPasswordType && s.inputWithEyeIcon
-      ),
-    }
+  const id = useId()
 
-    const togglePasswordVisibility = () => {
-      setShowPassword(!showPassword)
-    }
-    return (
-      <div className={classNames.inputRoot}>
-        {label && (
-          <Label className={s.label} htmlFor={rest.id}>
-            {label}
-          </Label>
-        )}
-        <div className={s.inputContainer}>
-          {search && <Search className={s.searchIcon} />}
-          <input
-            id={rest.id}
-            className={classNames.input}
-            placeholder={rest.placeholder}
-            ref={ref}
-            type={inputType}
-            disabled={rest.disabled}
-            {...rest}
-          />
-          {isPasswordType && (
-            <button
-              disabled={rest.disabled}
-              className={s.showPassword}
-              onClick={togglePasswordVisibility}
-            >
-              {showPassword ? <EyeOutline /> : <EyeOffOutline />}
-            </button>
-          )}
-        </div>
-        {error && <span className={s.errorText}>{error}</span>}
-      </div>
-    )
+  const classNames = {
+    inputRoot: clsx(s.inputRoot, className, disabled && s.disabled),
+    label: s.label,
+    inputContainer: s.inputContainer,
+    input: clsx(
+      s.inputDefault,
+      search && s.inputWithSearchIcon,
+      error && s.error,
+      isPasswordType && s.inputWithEyeIcon
+    ),
+    searchIcon: s.searchIcon,
+    showPassword: s.showPassword,
+    clearIcon: s.clearIcon,
+    errorText: s.errorText,
   }
-)
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword)
+  }
+
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+    onChange?.(e)
+    onChangeValue?.(e.target.value)
+  }
+
+  const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (onEnterPress && e.key === 'Enter') {
+      onEnterPress(e)
+    }
+    onKeyDown?.(e)
+  }
+
+  return (
+    <div className={classNames.inputRoot}>
+      {label && (
+        <Label className={classNames.label} htmlFor={id}>
+          {label}
+        </Label>
+      )}
+      <div className={classNames.inputContainer}>
+        {search && (
+          <button disabled={disabled} className={classNames.searchIcon} onClick={onSearchClick}>
+            <Search />
+          </button>
+        )}
+        <input
+          id={id}
+          className={classNames.input}
+          onChange={handleInputChange}
+          onKeyDown={handleKeyDown}
+          ref={ref}
+          value={value}
+          type={inputType}
+          disabled={disabled}
+          {...rest}
+        />
+        {search && !!value && (
+          <button
+            type="button"
+            onClick={onClear}
+            className={classNames.clearIcon}
+            disabled={disabled}
+          >
+            <Close />
+          </button>
+        )}
+        {isPasswordType && (
+          <button
+            disabled={disabled}
+            className={classNames.showPassword}
+            onClick={togglePasswordVisibility}
+          >
+            {showPassword ? <EyeOutline /> : <EyeOffOutline />}
+          </button>
+        )}
+      </div>
+      {error && (
+        <Typography as="span" className={classNames.errorText} variant="small">
+          {error}
+        </Typography>
+      )}
+    </div>
+  )
+}

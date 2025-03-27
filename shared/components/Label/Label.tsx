@@ -3,7 +3,8 @@ import * as LabelRadix from '@radix-ui/react-label'
 import s from './Label.module.scss'
 
 import clsx from "clsx";
-import {Typography} from "@/shared/components";
+import { Typography } from "../Typography";
+
 
 type Props = {disabled?: boolean} &ComponentPropsWithRef<typeof LabelRadix.Root>
 
