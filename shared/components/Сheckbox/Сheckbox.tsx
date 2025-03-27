@@ -3,7 +3,7 @@ import * as CheckboxRadix from '@radix-ui/react-checkbox'
 import { Typography } from '../Typography'
 import s from './Сheckbox.module.scss'
 import { clsx } from 'clsx'
-import Check from '../../../public/icons/Recaptcha'
+import Check from '../../../public/icons/CheckMark'
 import { Label } from '../Label/Label'
 
 type CheckboxProps = {
@@ -42,7 +42,7 @@ export const Checkbox = forwardRef<HTMLButtonElement, CheckboxProps>(
               {...rest}
             >
               {checked && (
-                <CheckboxRadix.Indicator className={classNames.indicator} forceMount>
+                <CheckboxRadix.Indicator className={classNames.indicator}>
                   <Check />
                 </CheckboxRadix.Indicator>
               )}
