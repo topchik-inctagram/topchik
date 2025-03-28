@@ -3,22 +3,6 @@
   flex-direction: column;
   gap: 4px;
 
-  .inputContainer {
-    position: relative;
-
-    display: flex;
-    align-items: start;
-    justify-content: flex-start;
-
-    width: 100%;
-  }
-
-  .label {
-    font-size: 14px;
-    font-weight: 400;
-    color: var(--color-light-900);
-  }
-
   .inputDefault {
     width: 100%;
     padding: 6px 12px;
@@ -34,12 +18,7 @@
     background: transparent;
     outline: 0;
 
-    &::placeholder {
-      color: var(--color-light-900);
-    }
-
-    &:hover {
-      border: 1px solid var(--color-light-900);
+    &::placeholder:not(:disabled) {
       color: var(--color-light-900);
     }
 
@@ -49,14 +28,18 @@
       color: var(--color-dark-100);
     }
 
-    &:active {
+    &:active:not(:disabled) {
       border: 1px solid var(--color-light-100);
       color: var(--color-light-100);
     }
 
-    &:focus {
-      border: 1px solid var(--color-accent-700);
+    &:focus-visible:not(:disabled) {
       color: var(--color-light-100);
+      outline: 2px solid var(--color-accent-700);
+    }
+
+    &:hover:not(:disabled) {
+      border: 1px solid var(--color-light-900);
     }
 
     &:active:disabled {
@@ -90,12 +73,49 @@
     }
   }
 
+  .inputContainer {
+    position: relative;
+
+    display: flex;
+    align-items: start;
+    justify-content: flex-start;
+
+    width: 100%;
+  }
+
+  .inputContainer:focus-within:has(.inputDefault.error) .inputDefault {
+    border: 1px solid var(--color-danger-500);
+    outline: 2px solid var(--color-danger-500);
+  }
+
+  .inputContainer:hover:has(.inputDefault:not(:disabled)):not(:focus-within) .inputDefault {
+    border: 1px solid var(--color-light-900);
+  }
+
+  .inputContainer:has(.inputDefault:disabled) {
+    pointer-events: none;
+  }
+
+  .inputContainer:has(button:not(:disabled):active),
+  .inputContainer:has(.inputDefault:not(:disabled):active) {
+    border: 1px solid var(--color-light-900);
+    color: var(--color-light-100);
+  }
+
+  .label {
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--color-light-900);
+  }
+
   .searchIcon {
     cursor: pointer;
 
     position: absolute;
-    top: 20%;
-    left: 10px;
+    top: 9px;
+    left: 13px;
+
+    display: flex;
 
     width: 20px;
     height: 20px;
@@ -111,10 +131,6 @@
       color: var(--color-dark-100) !important;
     }
 
-    &:hover {
-      color: var(--color-light-700);
-    }
-
     &:disabled {
       cursor: not-allowed;
       color: var(--color-dark-100);
@@ -123,14 +139,15 @@
     &:active:disabled {
       color: var(--color-dark-100);
     }
+
+    svg {
+      align-self: center;
+      width: 100%;
+    }
   }
 
-  .inputContainer:focus-within .searchIcon {
+  .inputContainer:focus-within .searchIcon:not(:focus) {
     color: var(--color-light-100);
-  }
-
-  .inputContainer:focus-within .inputDefault {
-    border: 1px solid var(--color-accent-700);
   }
 
   .inputWithSearchIcon {
@@ -204,18 +221,10 @@
   .error {
     border-color: var(--color-danger-500);
     color: var(--color-light-100);
+  }
 
-    &:active {
-      border: 1px solid var(--color-danger-500);
-    }
-
-    &:focus {
-      border: 1px solid var(--color-danger-500);
-    }
-
-    &:hover {
-      border: 1px solid var(--color-danger-500);
-    }
+  .inputContainer:hover:has(.inputDefault.error):not(:focus-within) .inputDefault {
+    border: 1px solid var(--color-danger-500);
   }
 
   .errorText {

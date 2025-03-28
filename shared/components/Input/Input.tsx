@@ -10,7 +10,6 @@ import { Label, Typography } from '@/shared/components'
 type InputProps = {
   label?: string
   error?: string
-  search?: boolean
   onEnterPress?: (e: KeyboardEvent<HTMLInputElement>) => void
   onChangeValue?: (value: string) => void
   onSearchClick?: () => void
@@ -19,9 +18,9 @@ type InputProps = {
 
 export const Input = ({
   label,
+  id,
   error,
   className,
-  search,
   type,
   disabled,
   onChange,
@@ -37,8 +36,9 @@ export const Input = ({
   const [showPassword, setShowPassword] = useState<boolean>(false)
   const isPasswordType = type === 'password'
   const inputType = isPasswordType ? (showPassword ? 'text' : 'password') : type
+  const isSearchType = type === 'search'
 
-  const id = useId()
+  const generateId = useId()
 
   const classNames = {
     inputRoot: clsx(s.inputRoot, className, disabled && s.disabled),
@@ -46,7 +46,7 @@ export const Input = ({
     inputContainer: s.inputContainer,
     input: clsx(
       s.inputDefault,
-      search && s.inputWithSearchIcon,
+      isSearchType && s.inputWithSearchIcon,
       error && s.error,
       isPasswordType && s.inputWithEyeIcon
     ),
@@ -80,13 +80,13 @@ export const Input = ({
         </Label>
       )}
       <div className={classNames.inputContainer}>
-        {search && (
+        {isSearchType && (
           <button disabled={disabled} className={classNames.searchIcon} onClick={onSearchClick}>
             <Search />
           </button>
         )}
         <input
-          id={id}
+          id={id || generateId}
           className={classNames.input}
           onChange={handleInputChange}
           onKeyDown={handleKeyDown}
@@ -96,7 +96,7 @@ export const Input = ({
           disabled={disabled}
           {...rest}
         />
-        {search && !!value && (
+        {isSearchType && !!value && (
           <button
             type="button"
             onClick={onClear}

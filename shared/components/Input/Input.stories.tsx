@@ -1,32 +1,36 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import { Input } from '@/shared/components'
-import { useState } from 'react'
+import { ComponentPropsWithRef, useState } from 'react'
 
 const meta = {
   title: 'Components/Input',
   component: Input,
   tags: ['autodocs'],
-  args: {
-    disabled: false,
-    label: '',
-    placeholder: '',
-    type: 'text',
-    error: '',
-    search: false,
-  },
-  argTypes: {
-    disabled: {
-      control: 'boolean',
-    },
-  },
 } satisfies Meta<typeof Input>
 
 export default meta
 
 type Story = StoryObj<typeof Input>
 
-const InputWrapper = (args: React.ComponentProps<typeof Input>) => {
-  return <Input {...args} />
+const InputWrapper = (args: ComponentPropsWithRef<typeof Input>) => {
+  const [value, setValue] = useState('')
+  const handleSearch = () => {
+    console.log('Поиск по:', value)
+  }
+
+  const handleClear = () => {
+    setValue('')
+  }
+  return (
+    <Input
+      {...args}
+      value={value}
+      onChangeValue={setValue}
+      onClear={handleClear}
+      onEnterPress={handleSearch}
+      onSearchClick={handleSearch}
+    />
+  )
 }
 
 export const Default: Story = {
@@ -59,30 +63,10 @@ export const Email: Story = {
 export const Search: Story = {
   args: {
     placeholder: 'Searching...',
-    search: true,
     type: 'search',
   },
   render: args => {
-    const [value, setValue] = useState('')
-
-    const handleSearch = () => {
-      console.log('Поиск по:', value)
-    }
-
-    const handleClear = () => {
-      setValue('')
-    }
-
-    return (
-      <InputWrapper
-        {...args}
-        value={value}
-        onEnterPress={handleSearch}
-        onSearchClick={handleSearch}
-        onChangeValue={setValue}
-        onClear={handleClear}
-      />
-    )
+    return <InputWrapper {...args} />
   },
 }
 
