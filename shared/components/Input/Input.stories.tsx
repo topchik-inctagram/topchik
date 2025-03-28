@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import { Input } from '@/shared/components'
-import { ComponentPropsWithRef, useState } from 'react'
+import { type ComponentPropsWithRef, useState } from 'react'
 
 const meta = {
   title: 'Components/Input',
@@ -27,8 +27,7 @@ const InputWrapper = (args: ComponentPropsWithRef<typeof Input>) => {
       value={value}
       onChangeValue={setValue}
       onClear={handleClear}
-      onEnterPress={handleSearch}
-      onSearchClick={handleSearch}
+      onSearch={handleSearch}
     />
   )
 }

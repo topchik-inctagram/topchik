@@ -10,9 +10,8 @@ import { Label, Typography } from '@/shared/components'
 type InputProps = {
   label?: string
   error?: string
-  onEnterPress?: (e: KeyboardEvent<HTMLInputElement>) => void
   onChangeValue?: (value: string) => void
-  onSearchClick?: () => void
+  onSearch?: () => void
   onClear?: () => void
 } & ComponentPropsWithRef<'input'>
 
@@ -25,8 +24,7 @@ export const Input = ({
   disabled,
   onChange,
   onChangeValue,
-  onEnterPress,
-  onSearchClick,
+  onSearch,
   onClear,
   onKeyDown,
   value,
@@ -39,6 +37,8 @@ export const Input = ({
   const isSearchType = type === 'search'
 
   const generateId = useId()
+
+  const finalId = id ?? generateId
 
   const classNames = {
     inputRoot: clsx(s.inputRoot, className, disabled && s.disabled),
@@ -58,6 +58,11 @@ export const Input = ({
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword)
+
+    setTimeout(() => {
+      const inputElement = document.getElementById(finalId)
+      inputElement?.focus()
+    }, 0)
   }
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -66,8 +71,8 @@ export const Input = ({
   }
 
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
-    if (onEnterPress && e.key === 'Enter') {
-      onEnterPress(e)
+    if (onSearch && e.key === 'Enter') {
+      onSearch()
     }
     onKeyDown?.(e)
   }
@@ -75,18 +80,18 @@ export const Input = ({
   return (
     <div className={classNames.inputRoot}>
       {label && (
-        <Label className={classNames.label} htmlFor={id}>
+        <Label className={classNames.label} htmlFor={finalId}>
           {label}
         </Label>
       )}
       <div className={classNames.inputContainer}>
         {isSearchType && (
-          <button disabled={disabled} className={classNames.searchIcon} onClick={onSearchClick}>
+          <button disabled={disabled} className={classNames.searchIcon} onClick={onSearch}>
             <Search />
           </button>
         )}
         <input
-          id={id || generateId}
+          id={finalId}
           className={classNames.input}
           onChange={handleInputChange}
           onKeyDown={handleKeyDown}

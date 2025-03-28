@@ -28,7 +28,7 @@
       color: var(--color-dark-100);
     }
 
-    &:active:not(:disabled) {
+    &:active:not(:disabled, .error) {
       border: 1px solid var(--color-light-100);
       color: var(--color-light-100);
     }
@@ -38,13 +38,13 @@
       outline: 2px solid var(--color-accent-700);
     }
 
-    &:hover:not(:disabled) {
-      border: 1px solid var(--color-light-900);
-    }
-
     &:active:disabled {
       border: 1px solid var(--color-dark-100);
       color: var(--color-dark-100);
+    }
+
+    &:hover:not(:disabled, :focus-visible, .error) {
+      border: 1px solid var(--color-light-900);
     }
 
     input:-webkit-autofill,
@@ -83,22 +83,25 @@
     width: 100%;
   }
 
+  .inputContainer:hover:has(label:hover) .inputDefault {
+    border: 1px solid var(--color-dark-100); // или любой нужный сброс
+  }
+
+  .inputContainer:active:has(label:hover) .inputDefault {
+    border: 1px solid var(--color-dark-100); // или любой нужный сброс
+  }
+
   .inputContainer:focus-within:has(.inputDefault.error) .inputDefault {
     border: 1px solid var(--color-danger-500);
-    outline: 2px solid var(--color-danger-500);
+    outline: 0;
   }
 
   .inputContainer:hover:has(.inputDefault:not(:disabled)):not(:focus-within) .inputDefault {
     border: 1px solid var(--color-light-900);
   }
 
-  .inputContainer:has(.inputDefault:disabled) {
-    pointer-events: none;
-  }
-
   .inputContainer:has(button:not(:disabled):active),
   .inputContainer:has(.inputDefault:not(:disabled):active) {
-    border: 1px solid var(--color-light-900);
     color: var(--color-light-100);
   }
 
@@ -221,6 +224,10 @@
   .error {
     border-color: var(--color-danger-500);
     color: var(--color-light-100);
+
+    &:hover {
+      border-color: var(--color-danger-500);
+    }
   }
 
   .inputContainer:hover:has(.inputDefault.error):not(:focus-within) .inputDefault {
