@@ -14,19 +14,31 @@ type Story = StoryObj<typeof ScrollArea>
 // Primary Button
 export const ScrollAreaSt: Story = {
   render: () => {
-    const TAGS = Array.from({ length: 100 }).map((_, i, a) => `v1.2.0-beta.${a.length - i}`)
+    const TAGS = Array.from({ length: 20 }).map(
+      (_, i, a) =>
+        `v1.2.0-beta.v1.2.0-beta.v1.2.0-beta.v1.2.0-beta.v1.2.0-beta.v1.2.0-beta.v1.2.0-beta.v1.2.0-beta.v1.2.0-beta.v1.2.0-beta.v1.2.0-betav1.2.0-beta.v1.2.0-beta.v1.2.0-beta.v1.2.0-beta.v1.2.0-beta.v1.2.0-beta.v1.2.0-beta.v1.2.0-beta.v1.2.0-beta.v1.2.0-beta.v1.2.0-beta.${a.length - i}`
+    )
     return (
-      <Card style={{ height: 600, width: 600, overflowY: 'scroll' }}>
-        {TAGS.map(tag => (
-          <div
-            key={tag}
-            style={{ fontSize: 13, lineHeight: 18, marginTop: 10, borderTop: 1, paddingTop: 10 }}
-          >
-            {tag}
-          </div>
-        ))}
-        <ScrollArea />
-      </Card>
+      <ScrollArea>
+        <Card
+          style={{
+            height: 600,
+            width: 600,
+            overflowY: 'scroll',
+            overflowX: 'scroll',
+            textWrap: 'nowrap',
+          }}
+        >
+          {TAGS.map(tag => (
+            <div
+              key={tag}
+              style={{ fontSize: 13, lineHeight: 18, marginTop: 10, borderTop: 1, paddingTop: 10 }}
+            >
+              {tag}
+            </div>
+          ))}
+        </Card>
+      </ScrollArea>
     )
   },
 }
