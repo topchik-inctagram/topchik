@@ -1,10 +1,10 @@
-import { ComponentPropsWithRef, FC } from 'react'
-import { clsx } from 'clsx'
+import {ComponentPropsWithRef, FC} from 'react'
+import {clsx} from 'clsx'
 import s from './Pagination.module.scss'
-import { usePagination } from './usePagination'
-import { ArrowIosBack, ArrowIosForward } from '@/public'
+import {usePagination} from './usePagination'
+import {ArrowIosBack, ArrowIosForward} from '@/public'
 import Link from 'next/link'
-import { useSearchParams } from 'next/navigation'
+import {useSearchParams} from 'next/navigation'
 
 type PaginationConditionals =
     | {
@@ -74,7 +74,7 @@ export const Pagination: FC<PaginationProps> = ({
     return (
         <div className={classNames.root(className)} {...rest}>
             <div className={classNames.container}>
-                <PrevButton disabled={isFirstPage} onClick={handlePreviousPageClicked} />
+                <PrevButton disabled={isFirstPage} onClick={handlePreviousPageClicked}/>
 
                 <MainPaginationButtons
                     currentPage={page}
@@ -82,7 +82,7 @@ export const Pagination: FC<PaginationProps> = ({
                     paginationRange={paginationRange}
                 />
 
-                <NextButton disabled={isLastPage} onClick={handleNextPageClicked} />
+                <NextButton disabled={isLastPage} onClick={handleNextPageClicked}/>
             </div>
 
             {showPerPageSelect && (
@@ -111,7 +111,7 @@ type PageButtonProps = NavigationButtonProps & {
 const Dots: FC = () => {
     return <span className={classNames.dots}>&#8230;</span>
 }
-const PageButton: FC<PageButtonProps> = ({ disabled, onClick, page, selected }) => {
+const PageButton: FC<PageButtonProps> = ({disabled, onClick, page, selected}) => {
     return (
         <button
             className={classNames.pageButton(selected)}
@@ -123,7 +123,7 @@ const PageButton: FC<PageButtonProps> = ({ disabled, onClick, page, selected }) 
     )
 }
 
-const PrevButton: FC<NavigationButtonProps> = ({ disabled, onClick }) => {
+const PrevButton: FC<NavigationButtonProps> = ({disabled, onClick}) => {
     const searchParams = useSearchParams()
     const currentPage = searchParams.get('page') || '1'
 
@@ -144,13 +144,13 @@ const PrevButton: FC<NavigationButtonProps> = ({ disabled, onClick }) => {
             className={disabled ? classNames.item : undefined}
         >
             <button className={classNames.item} disabled={disabled}>
-                <ArrowIosBack className={classNames.icon} />
+                <ArrowIosBack className={classNames.icon}/>
             </button>
         </Link>
     )
 }
 
-const NextButton: FC<NavigationButtonProps> = ({ disabled, onClick }) => {
+const NextButton: FC<NavigationButtonProps> = ({disabled, onClick}) => {
     const searchParams = useSearchParams()
     const currentPage = searchParams.get('page') || '1'
 
@@ -166,7 +166,7 @@ const NextButton: FC<NavigationButtonProps> = ({ disabled, onClick }) => {
             className={disabled ? classNames.item : undefined}
         >
             <button className={classNames.item} disabled={disabled}>
-                <ArrowIosForward className={classNames.icon} />
+                <ArrowIosForward className={classNames.icon}/>
             </button>
         </Link>
     )
@@ -190,7 +190,7 @@ const MainPaginationButtons: FC<MainPaginationButtonsProps> = ({
                 const isSelected = page === currentPage
 
                 if (typeof page !== 'number') {
-                    return <Dots key={index} />
+                    return <Dots key={index}/>
                 }
 
                 const newSearchParams = new URLSearchParams(searchParams.toString())
@@ -208,7 +208,7 @@ const MainPaginationButtons: FC<MainPaginationButtonsProps> = ({
                         scroll={false}
                         className={classNames.item}
                     >
-                        <PageButton key={index} onClick={onClick(page)} page={page} selected={isSelected} />
+                        <PageButton key={index} onClick={onClick(page)} page={page} selected={isSelected}/>
                     </Link>
                 )
             })}
