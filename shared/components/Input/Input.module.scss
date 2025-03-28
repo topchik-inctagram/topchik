@@ -84,11 +84,11 @@
   }
 
   .inputContainer:hover:has(label:hover) .inputDefault {
-    border: 1px solid var(--color-dark-100); // или любой нужный сброс
+    border: 1px solid var(--color-dark-100); 
   }
 
   .inputContainer:active:has(label:hover) .inputDefault {
-    border: 1px solid var(--color-dark-100); // или любой нужный сброс
+    border: 1px solid var(--color-dark-100); 
   }
 
   .inputContainer:focus-within:has(.inputDefault.error) .inputDefault {
