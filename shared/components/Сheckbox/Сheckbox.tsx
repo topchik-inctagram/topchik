@@ -1,61 +1,58 @@
-import { FC } from 'react'
+import { forwardRef } from 'react'
+import * as CheckboxRadix from '@radix-ui/react-checkbox'
+import { Typography } from '../Typography'
 import s from './Сheckbox.module.scss'
 import { clsx } from 'clsx'
-import * as LabelRadix from '@radix-ui/react-label'
-import * as CheckboxRadix from '@radix-ui/react-checkbox'
-import Check from './check'
+import Check from '../../../public/icons/CheckMark'
+import { Label } from '../Label/Label'
 
-export type CheckboxProps = {
-  cheked?: boolean
+type CheckboxProps = {
+  checked?: boolean
   className?: string
   disabled?: boolean
   id?: string
   label?: string
-  onChange?: (cheked: boolean) => void
+  onChange?: (checked: boolean) => void
   position?: 'left'
   required?: boolean
-}
+} & React.ComponentPropsWithoutRef<typeof CheckboxRadix.Root>
 
-export const Сheckbox: FC<CheckboxProps> = ({
-  cheked,
-  className,
-  disabled,
-  id,
-  label,
-  onChange,
-  position,
-  required,
-}) => {
-  const classNames = {
-    label: clsx(s.label, disabled && s.disabled),
-    container: clsx(s.container, className),
-    indicator: s.idicator,
-    root: s.root,
-    buttonWrapper: clsx(s.buttonWrapper, disabled && s.disabled, position === 'left' && s.left),
-  }
-  return (
-    <div className={classNames.container}>
-      <LabelRadix.Root asChild>
-        <label className={classNames.label}>
+export const Checkbox = forwardRef<HTMLButtonElement, CheckboxProps>(
+  ({ checked, className, disabled, id, label, onChange, position, required, ...rest }, ref) => {
+    const classNames = {
+      label: clsx(s.label, disabled && s.disabled),
+      container: clsx(s.container, className),
+      indicator: s.indicator,
+      root: s.root,
+      buttonWrapper: clsx(s.buttonWrapper, disabled && s.disabled, position === 'left' && s.left),
+    }
+
+    return (
+      <div className={classNames.container}>
+        <Label className={classNames.label}>
           <div className={classNames.buttonWrapper}>
             <CheckboxRadix.Root
-              checked={cheked}
+              ref={ref}
+              checked={checked}
               className={classNames.root}
               disabled={disabled}
               id={id}
               onCheckedChange={onChange}
               required={required}
+              {...rest}
             >
-              {cheked && (
-                <CheckboxRadix.Indicator className={classNames.indicator} forceMount>
+              {checked && (
+                <CheckboxRadix.Indicator className={classNames.indicator}>
                   <Check />
                 </CheckboxRadix.Indicator>
               )}
             </CheckboxRadix.Root>
           </div>
-          {label}
-        </label>
-      </LabelRadix.Root>
-    </div>
-  )
-}
+          <Typography as={'label'} className={classNames.label} variant={'medium_14'}>
+            {label}
+          </Typography>
+        </Label>
+      </div>
+    )
+  }
+)
