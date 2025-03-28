@@ -1,10 +1,3 @@
-
-
 export const ScrollArea = () => {
-    return (
-        <div>
-
-        </div>
-    );
-};
-
+  return <div>hYE</div>
+}
