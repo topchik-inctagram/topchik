@@ -1,58 +1,49 @@
-import { forwardRef } from 'react'
+import { ComponentPropsWithoutRef, useId } from 'react'
 import * as CheckboxRadix from '@radix-ui/react-checkbox'
 import { Typography } from '../Typography'
 import s from './Сheckbox.module.scss'
 import { clsx } from 'clsx'
 import Check from '../../../public/icons/CheckMark'
-import { Label } from '../Label/Label'
+import { Label } from 'radix-ui'
 
-type CheckboxProps = {
-  checked?: boolean
-  className?: string
-  disabled?: boolean
-  id?: string
+export type CheckboxProps = {
   label?: string
-  onChange?: (checked: boolean) => void
-  position?: 'left'
-  required?: boolean
-} & React.ComponentPropsWithoutRef<typeof CheckboxRadix.Root>
+} & Omit<ComponentPropsWithoutRef<typeof CheckboxRadix.Root>, 'onChange'>
 
-export const Checkbox = forwardRef<HTMLButtonElement, CheckboxProps>(
-  ({ checked, className, disabled, id, label, onChange, position, required, ...rest }, ref) => {
-    const classNames = {
-      label: clsx(s.label, disabled && s.disabled),
-      container: clsx(s.container, className),
-      indicator: s.indicator,
-      root: s.root,
-      buttonWrapper: clsx(s.buttonWrapper, disabled && s.disabled, position === 'left' && s.left),
-    }
+export const Checkbox = (
+  { disabled, id, label, className, ...rest }: CheckboxProps,
+  ref: React.RefObject<HTMLButtonElement>
+) => {
+  const useID = useId()
+  const checkBoxID = id ?? useID
 
-    return (
-      <div className={classNames.container}>
-        <Label className={classNames.label}>
-          <div className={classNames.buttonWrapper}>
-            <CheckboxRadix.Root
-              ref={ref}
-              checked={checked}
-              className={classNames.root}
-              disabled={disabled}
-              id={id}
-              onCheckedChange={onChange}
-              required={required}
-              {...rest}
-            >
-              {checked && (
-                <CheckboxRadix.Indicator className={classNames.indicator}>
-                  <Check />
-                </CheckboxRadix.Indicator>
-              )}
-            </CheckboxRadix.Root>
-          </div>
-          <Typography as={'label'} className={classNames.label} variant={'medium_14'}>
+  const classNames = {
+    label: clsx(s.label, disabled && s.disabled),
+    container: clsx(s.container, className),
+    root: s.root,
+    buttonWrapper: clsx(s.buttonWrapper, disabled && s.disabled),
+  }
+
+  return (
+    <div className={classNames.container}>
+      <div className={classNames.buttonWrapper}>
+        <CheckboxRadix.Root
+          className={classNames.root}
+          disabled={disabled}
+          id={checkBoxID}
+          ref={ref}
+          {...rest}
+        >
+          <CheckboxRadix.Indicator>
+            <Check />
+          </CheckboxRadix.Indicator>
+        </CheckboxRadix.Root>
+        <Label.Root asChild htmlFor={checkBoxID}>
+          <Typography as={'label'} className={classNames.label} variant={'regular_14'}>
             {label}
           </Typography>
-        </Label>
+        </Label.Root>
       </div>
-    )
-  }
-)
+    </div>
+  )
+}
