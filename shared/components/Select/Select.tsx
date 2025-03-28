@@ -33,6 +33,7 @@ export const Select = ({ label, className, disabled, value, options, onChange }:
       onChange(newValue)
     }
   }
+
   const SelectItem = forwardRef<HTMLDivElement, SelectItemProps>(
     ({ children, className, ...props }, forwardedRef) => {
       return (
@@ -47,6 +48,7 @@ export const Select = ({ label, className, disabled, value, options, onChange }:
       )
     }
   )
+
   return (
     <RadixSelect.Root
       value={value}
@@ -63,10 +65,7 @@ export const Select = ({ label, className, disabled, value, options, onChange }:
         </RadixSelect.Icon>
       </RadixSelect.Trigger>
       <RadixSelect.Portal>
-        <RadixSelect.Content className={styles.Content}>
-          <RadixSelect.ScrollUpButton className={styles.ScrollButton}>
-            <ArrowUp />
-          </RadixSelect.ScrollUpButton>
+        <RadixSelect.Content side="bottom" align="start" className={styles.Content}>
           <RadixSelect.Viewport className={styles.Viewport}>
             <RadixSelect.Group>
               {options.map(option => (
@@ -76,9 +75,6 @@ export const Select = ({ label, className, disabled, value, options, onChange }:
               ))}
             </RadixSelect.Group>
           </RadixSelect.Viewport>
-          <RadixSelect.ScrollDownButton className={styles.ScrollButton}>
-            <ArrowDown />
-          </RadixSelect.ScrollDownButton>
         </RadixSelect.Content>
       </RadixSelect.Portal>
     </RadixSelect.Root>

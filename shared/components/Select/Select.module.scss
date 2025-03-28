@@ -6,10 +6,8 @@
   justify-content: space-between;
   padding: 0 15px;
   background: none;
+  position: relative;
   border: 1px solid var(--color-dark-100);
-    &[data-placeholder] {
-    color: var(--color-accent-500);
-  }
   &:hover {
     border: 1px solid var(--color-accent-500);
   }
@@ -17,10 +15,14 @@
 
 .Content {
   cursor: pointer;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  z-index: 10;
 }
 
 .Viewport {
- margin-top: 3  0px;
+  margin-top: 20px;
 }
 
 .Item {
@@ -34,18 +36,16 @@
   padding: 0 35px 0 25px;
   position: relative;
   user-select: none;
+ 
   &[data-disabled] {
     color: var(--mauve-8);
     pointer-events: none;
   }
+  &:hover,
   &[data-highlighted] {
-    outline: none;
-    background-color: var(--violet-9);
-    color: var(--violet-1);
+    color: var(--color-accent-500);
   }
 }
-
-
 
 .ItemIndicator {
   position: absolute;
@@ -54,11 +54,4 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-}
-
-.ScrollButton {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--violet-11);
 }
