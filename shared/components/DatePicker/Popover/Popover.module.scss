@@ -1,0 +1,36 @@
+.trigger {
+  cursor: pointer;
+
+  display: flex;
+  column-gap: 24px;
+  justify-content: space-between;
+
+  padding: 6px 12px;
+  border: 1px solid var(--color-dark-300);
+  border-radius: 2px;
+
+  background-color: transparent;
+
+  &:focus-visible {
+    border: 1px solid var(--color-accent-700);
+    outline: 1px solid var(--color-accent-700);
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    color: var(--color-light-900);
+
+    svg {
+      color: var(--color-light-100);
+    }
+  }
+}
+
+.fullWidth {
+  width: 100%;
+}
+
+.error {
+  border: 1px solid var(--color-danger-500);
+  color: var(--color-danger-500);
+}
