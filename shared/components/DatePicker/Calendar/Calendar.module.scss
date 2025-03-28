@@ -1,0 +1,196 @@
+.root {
+  position: relative;
+
+  width: fit-content;
+  padding: 16px 24px;
+  border: 1px solid var(--color-dark-300);
+  border-radius: 2px;
+
+  background-color: var(--color-dark-500);
+
+  .headCell {
+    padding-top: 12px;
+    padding-bottom: 12px;
+  }
+}
+
+.head {
+  background-color: red;
+}
+
+.table {
+  border-collapse: collapse;
+}
+
+.cell {
+  width: 36px;
+  height: 36px;
+  padding: 0;
+
+  text-align: center;
+  vertical-align: middle;
+}
+
+.daySelected {
+  border-radius: 50%;
+}
+
+.dayRangeStart,
+.dayRangeEnd,
+.dayRangeMiddle,
+.daySelected {
+  width: 100%;
+  height: 100%;
+  background-color: var(--color-accent-900);
+
+  &:hover {
+    background-color: var(--color-accent-700);
+  }
+}
+
+.daySelected.dayRangeStart {
+  border-radius: 50px 0 0 50px;
+}
+
+.daySelected.dayRangeMiddle {
+  border-radius: 0;
+}
+
+.daySelected.dayRangeEnd {
+  border-radius: 0 50px 50px 0;
+}
+
+.nav {
+  pointer-events: none;
+
+  position: absolute;
+  top: 9px;
+  right: 25px;
+
+  display: flex;
+  align-items: center;
+
+  width: fit-content;
+}
+
+.navButton {
+  pointer-events: auto;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border-radius: 24px;
+
+  background-color: var(--color-dark-100);
+
+  &:focus-visible:not(:disabled) {
+    outline: 2px solid var(--color-accent-300);
+  }
+
+  svg {
+    width: 20px;
+    height: 20px;
+    color: var(--color-light-100);
+  }
+}
+
+.root .navButton:hover:not([disabled]) {
+  background-color: var(--color-dark-100);
+
+  svg {
+    color: var(--color-accent-300);
+  }
+}
+
+.captionLabel {
+  font-size: var(--font-size-m);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-m);
+}
+
+.headRow {
+  margin: 12px 0;
+
+  font-size: var(--font-size-m);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-m);
+  color: var(--color-dark-100);
+}
+
+.day {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+
+  font-size: var(--font-size-m);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-m);
+  color: var(--color-light-100);
+
+  &:focus-visible:not(:disabled) {
+    color: var(--color-light-100);
+    background-color: transparent;
+    outline: 2px solid var(--color-accent-300);
+  }
+}
+
+.root .day:hover:not(:disabled) {
+  background-color: var(--color-accent-700);
+}
+
+.dayOutside {
+  color: var(--color-light-900);
+  opacity: 1;
+
+  &.daySelected,
+  &.dayRangeEnd,
+  &.dayRangeStart {
+    color: var(--color-light-100);
+  }
+
+  &.dayRangeMiddle {
+    color: var(--color-light-900);
+  }
+}
+
+.weekend {
+  color: var(--color-danger-300);
+
+  &:focus-visible:not(:disabled) {
+    color: var(--color-danger-300);
+    background-color: transparent;
+    outline: 2px solid var(--color-accent-300);
+  }
+}
+
+.today {
+  font-weight: var(--font-weight-bold);
+  color: var(--color-accent-500);
+
+  &:focus-visible:not(:disabled) {
+    color: var(--color-accent-500);
+    background-color: transparent;
+  }
+
+  &:hover:not([disabled], .selected) {
+    color: var(--color-accent-100);
+    background-color: var(--color-accent-700);
+  }
+
+  &.daySelected {
+    color: var(--color-light-100);
+  }
+
+  &.weekend {
+    font-weight: var(--font-weight-bold);
+    color: var(--color-accent-500);
+
+    &.daySelected {
+      color: var(--color-light-100);
+    }
+  }
+}
