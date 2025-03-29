@@ -184,9 +184,13 @@
   &.daySelected {
     color: var(--color-light-100);
   }
-}
 
-.weekend .today {
-  font-weight: var(--font-weight-bold);
-  color: var(--color-accent-500);
+  &.weekend {
+    font-weight: var(--font-weight-bold);
+    color: var(--color-accent-500);
+
+    &.daySelected {
+      color: var(--color-light-100);
+    }
+  }
 }
