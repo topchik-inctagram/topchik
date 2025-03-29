@@ -33,7 +33,7 @@
       color: var(--color-light-100);
     }
 
-    &:focus-visible:not(:disabled, .error) {
+    &:focus-visible:not(:disabled) {
       color: var(--color-light-100);
       outline: 2px solid var(--color-accent-700);
     }
@@ -216,9 +216,9 @@
     border-color: var(--color-danger-500);
     color: var(--color-light-100);
 
-    &:hover {
-      border-color: var(--color-danger-500);
-    }
+    // &:hover {
+    //   border-color: var(--color-danger-500);
+    // }
   }
 
   .inputContainer:hover:has(.inputDefault.error):not(:focus-within) .inputDefault {

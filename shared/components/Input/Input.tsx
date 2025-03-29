@@ -11,7 +11,7 @@ type InputProps = {
   label?: string
   error?: string
   onChangeValue?: (value: string) => void
-  onSearch?: () => void
+  onKeyEnter?: () => void
   onClear?: () => void
 } & ComponentPropsWithRef<'input'>
 
@@ -24,7 +24,7 @@ export const Input = ({
   disabled,
   onChange,
   onChangeValue,
-  onSearch,
+  onKeyEnter,
   onClear,
   onKeyDown,
   value,
@@ -71,8 +71,8 @@ export const Input = ({
   }
 
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
-    if (onSearch && e.key === 'Enter') {
-      onSearch()
+    if (onKeyEnter && e.key === 'Enter') {
+      onKeyEnter()
     }
     onKeyDown?.(e)
   }
@@ -86,7 +86,7 @@ export const Input = ({
       )}
       <div className={classNames.inputContainer}>
         {isSearchType && (
-          <button disabled={disabled} className={classNames.searchIcon} onClick={onSearch}>
+          <button disabled={disabled} className={classNames.searchIcon} onClick={onKeyEnter}>
             <Search />
           </button>
         )}

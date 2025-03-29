@@ -27,7 +27,7 @@ const InputWrapper = (args: ComponentPropsWithRef<typeof Input>) => {
       value={value}
       onChangeValue={setValue}
       onClear={handleClear}
-      onSearch={handleSearch}
+      onKeyEnter={handleSearch}
     />
   )
 }
