@@ -1,6 +1,7 @@
 import { Meta, StoryObj } from '@storybook/react'
 import { useState } from 'react'
-import { RadioGroup } from './Radiogroup'
+import { RadioGroup } from '@/shared/components'
+import { RadioItem } from './RadioItem'
 
 const meta = {
   component: RadioGroup,
@@ -9,31 +10,22 @@ const meta = {
 } satisfies Meta<typeof RadioGroup>
 
 export default meta
-
 type Story = StoryObj<typeof meta>
-const userGradeOptions = [
-  { label: 'Pre-junior', value: 'pre-junior' },
-  { label: 'Junior', value: 'junior' },
-  { label: 'Junior +', value: 'junior-plus' },
-]
+
 export const ControlledRadioGroup: Story = {
-  args: {
-    options: userGradeOptions,
-  },
   render: args => {
-    const [selectedOption, setSelectedOption] = useState(
-      userGradeOptions[0] || { label: '', value: '' }
-    )
-    const handleOptionChange = (value: string) => {
-      const option = userGradeOptions.find(option => option.label === value)
-      option && setSelectedOption(option)
-    }
+    const [selectedValue, setSelectedValue] = useState('pre-junior')
+
     return (
       <div>
-        <RadioGroup {...args} value={selectedOption.label} onValueChange={handleOptionChange} />
-        <span
-          style={{ marginTop: '15px', display: 'inline-block' }}
-        >{`Selected option: ${selectedOption.value}`}</span>
+        <RadioGroup {...args} value={selectedValue} onValueChange={setSelectedValue}>
+          <RadioItem value="pre-junior">Pre-junior</RadioItem>
+          <RadioItem value="junior">Junior</RadioItem>
+          <RadioItem value="junior-plus">Junior +</RadioItem>
+        </RadioGroup>
+        <span style={{ marginTop: '15px', display: 'inline-block' }}>
+          {`Selected option: ${selectedValue}`}
+        </span>
       </div>
     )
   },
@@ -41,14 +33,27 @@ export const ControlledRadioGroup: Story = {
 
 export const DefaultValueRadioGroup: Story = {
   args: {
-    defaultValue: 'Junior',
-    options: userGradeOptions,
+    defaultValue: 'pre-junior',
   },
+  render: args => (
+    <RadioGroup {...args}>
+      <RadioItem value="pre-junior">Pre-junior</RadioItem>
+      <RadioItem value="junior">Junior</RadioItem>
+      <RadioItem value="junior-plus">Junior +</RadioItem>
+    </RadioGroup>
+  ),
 }
+
 export const DisabledRadioGroup: Story = {
   args: {
-    defaultValue: 'Junior',
-    options: userGradeOptions,
+    defaultValue: 'pre-junior',
     disabled: true,
   },
+  render: args => (
+    <RadioGroup {...args}>
+      <RadioItem disabled value="pre-junior">Pre-junior</RadioItem>
+      <RadioItem disabled value="junior">Junior</RadioItem>
+      <RadioItem disabled value="junior-plus">Junior +</RadioItem>
+    </RadioGroup>
+  ),
 }
