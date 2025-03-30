@@ -1,17 +1,17 @@
 import { ComponentPropsWithoutRef, useId } from 'react'
 import * as CheckboxRadix from '@radix-ui/react-checkbox'
-import { Typography } from '../Typography'
 import s from './Сheckbox.module.scss'
 import { clsx } from 'clsx'
-import Check from '../../../public/icons/CheckMark'
-import { Label } from 'radix-ui'
+import CheckIcon from '../../../public/icons/CheckMark'
+import { Label } from '../Label/Label'
 
 export type CheckboxProps = {
   label?: string
-} & Omit<ComponentPropsWithoutRef<typeof CheckboxRadix.Root>, 'onChange'>
+  checked?: boolean
+} & ComponentPropsWithoutRef<typeof CheckboxRadix.Root>
 
 export const Checkbox = (
-  { disabled, id, label, className, ...rest }: CheckboxProps,
+  { disabled, id, label, className, checked, ...rest }: CheckboxProps,
   ref: React.RefObject<HTMLButtonElement>
 ) => {
   const useID = useId()
@@ -21,6 +21,7 @@ export const Checkbox = (
     label: clsx(s.label, disabled && s.disabled),
     container: clsx(s.container, className),
     root: s.root,
+    indicator: s.indicator,
     buttonWrapper: clsx(s.buttonWrapper, disabled && s.disabled),
   }
 
@@ -30,20 +31,21 @@ export const Checkbox = (
         <CheckboxRadix.Root
           className={classNames.root}
           disabled={disabled}
+          checked={checked}
           id={checkBoxID}
           ref={ref}
           {...rest}
         >
-          <CheckboxRadix.Indicator>
-            <Check />
-          </CheckboxRadix.Indicator>
+          {checked && (
+            <CheckboxRadix.Indicator className={classNames.indicator}>
+              <CheckIcon />
+            </CheckboxRadix.Indicator>
+          )}
         </CheckboxRadix.Root>
-        <Label.Root asChild htmlFor={checkBoxID}>
-          <Typography as={'label'} className={classNames.label} variant={'regular_14'}>
-            {label}
-          </Typography>
-        </Label.Root>
       </div>
+      <Label className={classNames.label} htmlFor={checkBoxID}>
+        {label}
+      </Label>
     </div>
   )
 }

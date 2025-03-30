@@ -1,6 +1,7 @@
 import { Meta, StoryObj } from '@storybook/react'
-import { Checkbox } from './Сheckbox'
+
 import { useState } from 'react'
+import { Checkbox } from './Сheckbox'
 
 const meta = {
   component: Checkbox,
@@ -18,6 +19,10 @@ export const Uncontrolled: Story = {
 }
 
 export const Controlled: Story = {
+  args: {
+    checked: false,
+  },
+
   render: args => {
     const [checked, setChecked] = useState(false)
 
