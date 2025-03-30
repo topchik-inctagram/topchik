@@ -21,7 +21,7 @@ export const ScrollArea = (props: ScrollAreaProps) => {
   }
 
   return (
-    <Root className={classNames.root} {...rest}>
+    <Root {...rest} className={classNames.root}>
       <ScrollAreaViewport className={classNames.viewPort}>{children}</ScrollAreaViewport>
       <ScrollAreaScrollbar className={classNames.scrollBar} orientation="vertical">
         <ScrollAreaThumb className={classNames.areaThumb} />
