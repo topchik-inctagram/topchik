@@ -1,67 +1,51 @@
 import * as TabsPrimitive from '@radix-ui/react-tabs'
-import { clsx } from 'clsx'
-import { forwardRef } from 'react'
 import s from './Tabs.module.scss'
 
-type TabItem = {
-    value: string
-    label: string
-    disabled?: boolean
-    content?: React.ReactNode
-}
-
-type TabsVariant = 'default' | 'outline'
-
-type TabsProps = {
-    items: TabItem[]
-    variant?: TabsVariant
-    defaultValue?: string
-    className?: string
-    fullWidth?: boolean
-}
-
-export const Tabs = forwardRef<HTMLDivElement, TabsProps>(
-    ({ items, variant = 'default', defaultValue, className, fullWidth, ...props }, ref) => {
-        return (
-            <TabsPrimitive.Root
-                className={clsx(s.tabsRoot, className)}
-                defaultValue={defaultValue}
-                ref={ref}
-                {...props}
-            >
-                <TabsPrimitive.List
-                    className={clsx(s.tabsList, {
-                        [s.outlineVariant]: variant === 'outline',
-                        [s.fullWidth]: fullWidth,
-                    })}
-                >
-                    {items.map((item) => (
-                        <TabsPrimitive.Trigger
-                            key={item.value}
-                            value={item.value}
-                            className={clsx(s.tab, {
-                                [s.outlineTab]: variant === 'outline',
-                                [s.disabled]: item.disabled,
-                            })}
-                            disabled={item.disabled}
-                        >
-                            {item.label}
-                        </TabsPrimitive.Trigger>
-                    ))}
-                </TabsPrimitive.List>
-
-                {items.map((item) => (
-                    <TabsPrimitive.Content
-                        key={item.value}
-                        value={item.value}
-                        className={s.tabContent}
-                    >
-                        {item.content || `${item.label} content`}
-                    </TabsPrimitive.Content>
-                ))}
-            </TabsPrimitive.Root>
-        )
-    }
+export const Tabs = ({
+  className = '',
+  ...props
+}: React.ComponentProps<typeof TabsPrimitive.Root>) => (
+  <TabsPrimitive.Root className={`${s.tabsRoot} ${className}`.trim()} {...props} />
 )
 
-Tabs.displayName = 'Tabs'
+type TabsListProps = React.ComponentProps<typeof TabsPrimitive.List> & {
+  variant?: 'default' | 'outline'
+  fullWidth?: boolean
+}
+
+export const TabsList = ({
+  variant = 'default',
+  fullWidth = false,
+  className = '',
+  ...props
+}: TabsListProps) => {
+  const listClasses = [
+    s.tabsList,
+    variant === 'outline' ? s.outlineVariant : '',
+    fullWidth ? s.fullWidth : '',
+    className,
+  ]
+    .filter(Boolean)
+    .join(' ')
+
+  return <TabsPrimitive.List className={listClasses} {...props} />
+}
+
+type TabProps = React.ComponentProps<typeof TabsPrimitive.Trigger> & {
+  variant?: 'default' | 'outline'
+}
+
+export const Tab = ({ variant = 'default', className = '', ...props }: TabProps) => {
+  const tabClasses = [s.tab, variant === 'outline' ? s.outlineTab : '', className]
+    .filter(Boolean)
+    .join(' ')
+
+  return <TabsPrimitive.Trigger className={tabClasses} {...props} />
+}
+
+export const TabsContent = ({
+  className = '',
+  ...props
+}: React.ComponentProps<typeof TabsPrimitive.Content>) => (
+  <TabsPrimitive.Content className={`${s.tabContent} ${className}`.trim()} {...props} />
+)

@@ -1,36 +1,16 @@
 import type { Meta, StoryObj } from '@storybook/react'
-import { Tabs } from './Tabs'
+import { Tab, Tabs, TabsContent, TabsList } from './Tabs'
 
 const meta: Meta<typeof Tabs> = {
   title: 'Components/Tabs',
-  component: Tabs,
   tags: ['autodocs'],
-  args: {
-    items: [
-      { value: 'default', label: 'Default' },
-      { value: 'active', label: 'Active' },
-      { value: 'hover', label: 'Hover' },
-      { value: 'focus', label: 'Focus' },
-      { value: 'disabled', label: 'Disabled', disabled: true }
-    ],
-    defaultValue: 'active'
-  },
-  argTypes: {
-    variant: {
-      options: ['default', 'outline'],
-      control: { type: 'radio' },
-    },
-    fullWidth: {
-      control: { type: 'boolean' },
-    },
-  },
   parameters: {
     backgrounds: { default: 'dark' },
     pseudo: {
-      hover: ['hover'],
-      focus: ['focus']
-    }
-  }
+      hover: ['[data-state=inactive]:hover'],
+      focus: ['[data-state=inactive]:focus'],
+    },
+  },
 }
 
 export default meta
@@ -38,13 +18,51 @@ export default meta
 type Story = StoryObj<typeof Tabs>
 
 export const DefaultVariant: Story = {
-  args: {
-    variant: 'default'
-  }
+  render: () => (
+    <Tabs defaultValue="active">
+      <TabsList>
+        <Tab value="default">Default</Tab>
+        <Tab value="active">Active</Tab>
+        <Tab value="hover">Hover</Tab>
+        <Tab value="focus">Focus</Tab>
+        <Tab disabled value="disabled">
+          Disabled
+        </Tab>
+      </TabsList>
+      <TabsContent value="default">Default content</TabsContent>
+      <TabsContent value="active">Active content</TabsContent>
+      <TabsContent value="hover">Hover content</TabsContent>
+      <TabsContent value="focus">Focus content</TabsContent>
+      <TabsContent value="disabled">Disabled content</TabsContent>
+    </Tabs>
+  ),
 }
 
 export const OutlineVariant: Story = {
-  args: {
-    variant: 'outline'
-  }
+  render: () => (
+    <Tabs defaultValue="active">
+      <TabsList variant="outline">
+        <Tab value="default" variant="outline">
+          Default
+        </Tab>
+        <Tab value="active" variant="outline">
+          Active
+        </Tab>
+        <Tab value="hover" variant="outline">
+          Hover
+        </Tab>
+        <Tab value="focus" variant="outline">
+          Focus
+        </Tab>
+        <Tab disabled value="disabled" variant="outline">
+          Disabled
+        </Tab>
+      </TabsList>
+      <TabsContent value="default">Default content</TabsContent>
+      <TabsContent value="active">Active content</TabsContent>
+      <TabsContent value="hover">Hover content</TabsContent>
+      <TabsContent value="focus">Focus content</TabsContent>
+      <TabsContent value="disabled">Disabled content</TabsContent>
+    </Tabs>
+  ),
 }
