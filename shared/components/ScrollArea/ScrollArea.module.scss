@@ -1,0 +1,27 @@
+.root {
+}
+
+.viewPort {
+}
+
+.scrollBar {
+  touch-action: none;
+  user-select: none;
+  display: flex;
+
+  &:hover {
+  }
+
+  &[data-orientation='vertical'] {
+  }
+
+  &[data-orientation='horizontal'] {
+  }
+}
+
+.areaThumb {
+}
+
+.corner {
+  background-color: red;
+}
