@@ -47,7 +47,6 @@ export const DefaultValueRadioGroup: Story = {
 export const DisabledRadioGroup: Story = {
   args: {
     defaultValue: 'pre-junior',
-    disabled: true,
   },
   render: args => (
     <RadioGroup {...args}>

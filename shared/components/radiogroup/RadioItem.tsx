@@ -1,4 +1,4 @@
-import { ReactNode } from 'react'
+import { ComponentPropsWithRef, ReactNode } from 'react'
 import * as RadioGroupPrimitive from '@radix-ui/react-radio-group'
 import clsx from 'clsx'
 import s from './RadioGroup.module.scss'
@@ -8,7 +8,7 @@ export type RadioItemProps = {
   value: string
   disabled?: boolean
   children: ReactNode
-}
+}& ComponentPropsWithRef<typeof RadioGroupPrimitive.Item>;
 
 export const RadioItem = (props: RadioItemProps) => {
   const { value, disabled, children, ...rest } = props
