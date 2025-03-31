@@ -1,4 +1,4 @@
-import s from './Sidebar.module.scss'
+import s from './Navbar.module.scss'
 import Link from 'next/link'
 import { clsx } from 'clsx'
 import {
@@ -11,12 +11,14 @@ import {
   Search,
   TrendUpOutline,
 } from '@/public'
+import { Typography } from '@/shared/components'
 
 type Props = {
   className?: string
+  isMobile?: boolean
 }
 
-export const Sidebar = (props: Props) => {
+export const Navbar = (props: Props) => {
   const { className, ...rest } = props
 
   const classNames = {
@@ -30,47 +32,47 @@ export const Sidebar = (props: Props) => {
       <ul>
         <div className={classNames.firstContainer}>
           <li>
-            <Link href="#">
+            <Typography as={Link} href="#">
               <HomeOutline /> Feed
-            </Link>
+            </Typography>
           </li>
           <li>
-            <Link href="#">
+            <Typography as={Link} href="#" variant="medium_14">
               <PlusSquareOutline /> Create
-            </Link>
+            </Typography>
           </li>
           <li>
-            <Link href="#">
+            <Typography as={Link} href="#" variant="medium_14">
               <Person /> My Profile
-            </Link>
+            </Typography>
           </li>
           <li>
-            <Link href="#">
+            <Typography as={Link} href="#" variant="medium_14">
               <MessageCircleOutline /> Messenger
-            </Link>
+            </Typography>
           </li>
           <li>
-            <Link href="#">
+            <Typography as={Link} href="#" variant="medium_14">
               <Search /> Search
-            </Link>
+            </Typography>
           </li>
         </div>
         <div className={classNames.secondContainer}>
           <li>
-            <Link href="#">
+            <Typography as={Link} href="#" variant="medium_14">
               <TrendUpOutline /> Statistics
-            </Link>
+            </Typography>
           </li>
           <li>
-            <Link href="#">
+            <Typography as={Link} href="#" variant="medium_14">
               <BookmarkOutline /> Favorites
-            </Link>
+            </Typography>
           </li>
         </div>
         <li>
-          <Link href="#">
+          <Typography as={Link} href="#" variant="medium_14">
             <LogOut /> Log Out
-          </Link>
+          </Typography>
         </li>
       </ul>
     </nav>
