@@ -1,12 +1,12 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import { useState } from 'react'
 import { Button } from '../Button'
-import './ModalWrapper.module.scss'
-import { ModalWrapper } from './ModalWrapper'
+import './Modal.module.scss'
+import { Modal } from './Modal'
 
-const meta: Meta<typeof ModalWrapper> = {
+const meta: Meta<typeof Modal> = {
   title: 'Components/UI/ModalRadix',
-  component: ModalWrapper,
+  component: Modal,
   tags: ['autodocs'],
   argTypes: {
     size: {
@@ -20,7 +20,7 @@ const meta: Meta<typeof ModalWrapper> = {
 }
 
 export default meta
-type Story = StoryObj<typeof ModalWrapper>
+type Story = StoryObj<typeof Modal>
 
 const ModalWithControls = (args: Story['args']) => {
   const [isOpen, setIsOpen] = useState(false)
@@ -28,10 +28,10 @@ const ModalWithControls = (args: Story['args']) => {
   return (
     <>
       <Button onClick={() => setIsOpen(true)}>Открыть модалку</Button>
-      <ModalWrapper
+      <Modal
         {...args}
         open={isOpen}
-        onClose={() => setIsOpen(false)}
+        onOpenChange={() => setIsOpen(false)}
         title={args?.title || 'Заголовок модалки'}
         className="modal-header-override"
       >
@@ -39,7 +39,7 @@ const ModalWithControls = (args: Story['args']) => {
           <p>Содержимое модального окна</p>
           <Button onClick={() => setIsOpen(false)}>Закрыть</Button>
         </div>
-      </ModalWrapper>
+      </Modal>
     </>
   )
 }
