@@ -31,7 +31,6 @@ export const ModalWrapper = ({
     closeButton: s.IconButton,
     body: s.ModalBody,
   }
-
   return (
     <Dialog.Root open={open} onOpenChange={onClose} {...rest}>
       <Dialog.Portal>
