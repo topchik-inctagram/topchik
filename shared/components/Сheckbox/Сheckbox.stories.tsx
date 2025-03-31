@@ -1,38 +1,61 @@
 import { Meta, StoryObj } from '@storybook/react'
-
 import { useState } from 'react'
 import { Checkbox } from './Сheckbox'
 
 const meta = {
   component: Checkbox,
   tags: ['autodocs'],
-  title: 'Components/Checkbox',
+  title: 'Components/UI/Checkbox',
+  argTypes: {
+    disabled: {
+      control: 'boolean',
+      description: 'Disable checkbox interaction',
+    },
+    label: {
+      control: 'text',
+      description: 'Label text for the checkbox',
+    },
+    checked: {
+      control: 'boolean',
+      description: 'Controlled checked state',
+    },
+    onCheckedChange: {
+      action: 'checked',
+      description: 'Callback when checked state changes',
+    },
+  },
 } satisfies Meta<typeof Checkbox>
 
 export default meta
 type Story = StoryObj<typeof meta>
-export const Uncontrolled: Story = {
+
+export const Default: Story = {
   args: {
-    disabled: false,
-    label: 'Check - box',
+    label: 'Check-Box',
+    checked: true,
   },
 }
 
-export const Controlled: Story = {
+export const RecaptchaMode: Story = {
   args: {
+    label: 'I’m not a robot',
     checked: false,
+    recaptchaMode: true,
   },
-
   render: args => {
-    const [checked, setChecked] = useState(false)
+    const [loading, setLoading] = useState(false)
+    const [verified, setVerified] = useState(false)
+
+    const handleChange = async (checked: boolean) => {
+      setLoading(true)
+      await new Promise(resolve => setTimeout(resolve, 2000))
+      setLoading(false)
+      setVerified(true)
+      return true
+    }
 
     return (
-      <Checkbox
-        {...args}
-        checked={checked}
-        label={'Check - box'}
-        onChange={() => setChecked(!checked)}
-      />
+      <Checkbox {...args} onCheckedChange={handleChange} disabled={loading} checked={verified} />
     )
   },
 }
