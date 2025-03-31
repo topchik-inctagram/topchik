@@ -1,4 +1,4 @@
-import { ComponentPropsWithoutRef, useId } from 'react'
+import { ComponentPropsWithRef, useId } from 'react'
 import * as CheckboxRadix from '@radix-ui/react-checkbox'
 import s from './Сheckbox.module.scss'
 import { clsx } from 'clsx'
@@ -7,8 +7,7 @@ import { Label } from '../Label/Label'
 
 export type CheckboxProps = {
   label?: string
-  checked?: boolean
-} & ComponentPropsWithoutRef<typeof CheckboxRadix.Root>
+} & ComponentPropsWithRef<typeof CheckboxRadix.Root>
 
 export const Checkbox = (
   { disabled, id, label, className, checked, ...rest }: CheckboxProps,
