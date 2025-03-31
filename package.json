@@ -43,8 +43,8 @@
     "@types/node": "^22.13.14",
     "@types/react": "^19.0.12",
     "@types/react-dom": "^19.0.4",
-    "@vitest/browser": "^3.0.9",
-    "@vitest/coverage-v8": "^3.0.9",
+    "@vitest/browser": "^3.1.1",
+    "@vitest/coverage-v8": "^3.1.1",
     "eslint": "^9.23.0",
     "eslint-config-next": "15.2.3",
     "eslint-plugin-storybook": "^0.11.6",
@@ -54,7 +54,7 @@
     "storybook": "8.6.7",
     "stylelint": "^16.17.0",
     "typescript": "^5.8.2",
-    "vitest": "^3.0.9"
+    "vitest": "^3.1.1"
   },
   "eslintConfig": {
     "extends": [
