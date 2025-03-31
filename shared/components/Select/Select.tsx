@@ -2,7 +2,7 @@ import * as SelectRadix from '@radix-ui/react-select'
 import { clsx } from 'clsx'
 import ArrowDown from '../../../public/icons/ArrowIosDownOutline'
 import ArrowUp from '../../../public/icons/ArrowIosUp'
-import { ComponentPropsWithoutRef, ReactNode, useState } from 'react'
+import { ComponentPropsWithRef, ReactNode, Ref, useState } from 'react'
 import s from './Select.module.scss'
 import { Label } from '../Label/Label'
 
@@ -16,15 +16,11 @@ export type SelectProps = {
   className?: string
   options: SelectOption[]
   placeholder?: string
-  disabled?: boolean
   label?: string
   errorMessage?: string
-  value?: string
-  onChangeSelect?: (value: string) => void
-  defaultValue?: string
-  ref?: React.Ref<HTMLButtonElement>
+  ref?: Ref<HTMLButtonElement>
   pagination?: boolean
-} & ComponentPropsWithoutRef<typeof SelectRadix.Root>
+} & ComponentPropsWithRef<typeof SelectRadix.Root>
 
 export const Select = (props: SelectProps) => {
   const {
