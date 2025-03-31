@@ -1,3 +1,8 @@
+ul {
+  padding: 0;
+  list-style-type: none;
+}
+
 .desktopNav {
   top: 0;
   right: 0;
@@ -11,6 +16,10 @@
   border-right: 1px solid var(--color-dark-300);
 
   background-color: transparent;
+
+  ul {
+    margin: 0 0 0 60px;
+  }
 }
 
 .desktopContainer {
@@ -25,12 +34,6 @@
 
 .desktopSecondContainer {
   margin-bottom: 180px;
-}
-
-ul {
-  margin: 0 0 0 60px;
-  padding: 0;
-  list-style-type: none;
 }
 
 a {
@@ -61,7 +64,22 @@ li {
 }
 
 .mobileNav {
+  right: 0;
+  bottom: 0;
+  left: 0;
+
   width: 360px;
   height: 60px;
   border-top: 1px solid var(--color-dark-300);
+}
+
+.mobileContainer {
+  display: flex;
+  justify-content: space-between;
+  margin: 0;
+  padding: 18px 48px;
+
+  ul {
+    margin: 0;
+  }
 }
