@@ -1,12 +1,12 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import { useState } from 'react'
-import { ModalRadix } from './ModalRadix'
 import { Button } from '../Button'
-import './ModalRadix.module.scss' // Создадим этот файл ниже
+import './ModalWrapper.module.scss'
+import { ModalWrapper } from './ModalWrapper'
 
-const meta: Meta<typeof ModalRadix> = {
+const meta: Meta<typeof ModalWrapper> = {
   title: 'Components/UI/ModalRadix',
-  component: ModalRadix,
+  component: ModalWrapper,
   tags: ['autodocs'],
   argTypes: {
     size: {
@@ -17,43 +17,32 @@ const meta: Meta<typeof ModalRadix> = {
       control: { type: 'boolean' },
     },
   },
-  parameters: {
-    // Глобальное переопределение стилей
-    styles: `
-      .modal-header-override {
-        padding: 12px 24px !important;
-      }
-    `,
-  },
 }
 
 export default meta
-type Story = StoryObj<typeof ModalRadix>
+type Story = StoryObj<typeof ModalWrapper>
 
-// Компонент-обертка с контролем состояния
 const ModalWithControls = (args: Story['args']) => {
   const [isOpen, setIsOpen] = useState(false)
 
   return (
     <>
       <Button onClick={() => setIsOpen(true)}>Открыть модалку</Button>
-      <ModalRadix
+      <ModalWrapper
         {...args}
         open={isOpen}
         onClose={() => setIsOpen(false)}
         title={args?.title || 'Заголовок модалки'}
-        className="modal-header-override" // Применяем наш класс
+        className="modal-header-override"
       >
         <div style={{ padding: '20px' }}>
           <p>Содержимое модального окна</p>
           <Button onClick={() => setIsOpen(false)}>Закрыть</Button>
         </div>
-      </ModalRadix>
+      </ModalWrapper>
     </>
   )
 }
-
-// Основные истории
 export const SmallModal: Story = {
   render: args => <ModalWithControls {...args} size="sm" />,
   args: {

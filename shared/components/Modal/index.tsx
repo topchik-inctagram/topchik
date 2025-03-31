@@ -1,1 +1,1 @@
-export * from './ModalRadix'
+export * from './ModalWrapper'
