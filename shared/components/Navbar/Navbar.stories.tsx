@@ -11,4 +11,14 @@ export default meta
 
 type Story = StoryObj<typeof Navbar>
 
-export const SidebarStory: Story = {}
+export const DesktopSidebar: Story = {
+  args: {
+    isMobile: false,
+  },
+}
+
+export const MobileSidebar: Story = {
+  args: {
+    isMobile: true,
+  },
+}
