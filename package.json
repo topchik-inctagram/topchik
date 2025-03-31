@@ -7,7 +7,7 @@
     "build": "next build",
     "build:production": "pnpm build",
     "start": "next start",
-    "lint": "eslint src --ext .jsx,.js,.tsx,.ts --no-error-on-unmatched-pattern --fix && stylelint --fix src/{,*/}*.{scss,css} --allow-empty-input && next lint",
+    "lint": "eslint . --ext .jsx,.js,.tsx,.ts --no-error-on-unmatched-pattern --fix && stylelint --fix ./{,*/}*.{scss,css} --allow-empty-input && next lint",
     "format": "prettier --write src",
     "sb": "storybook dev -p 6006",
     "build-storybook": "storybook build",
