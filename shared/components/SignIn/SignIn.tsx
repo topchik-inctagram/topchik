@@ -31,7 +31,7 @@ export const SignIn = ({ onSubmit }: Props) => {
   //todo add Devtool when it will be fixed by dev
   return (
     <Card className={s.cardContainer}>
-      <Typography as="h1" className={s.title} variant="h1">
+      <Typography as="h2" className={s.title} variant="h1">
         Sign In
       </Typography>
       <div className={s.svgContainer}>
