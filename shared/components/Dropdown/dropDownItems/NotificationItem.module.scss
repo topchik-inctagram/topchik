@@ -1,0 +1,26 @@
+.notification {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 14px;
+}
+
+.header {
+  display: flex;
+  gap: 3px;
+  align-items: center;
+}
+
+.title {
+  font-weight: 600;
+}
+
+.tag {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--color-accent-500);
+}
+
+.date {
+  color: var(--color-dark-100);
+}
