@@ -53,6 +53,12 @@ a {
     color: var(--color-accent-500);
   }
 
+  &:focus-visible {
+    padding-right: 5px;
+    border-radius: 2px;
+    outline: 2px solid var(--color-accent-700);
+  }
+
   &[data-disabled='disabled'] {
     cursor: not-allowed;
     color: var(--color-dark-100);
