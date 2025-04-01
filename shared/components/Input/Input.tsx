@@ -1,6 +1,6 @@
 'use client'
 
-import { ChangeEvent, KeyboardEvent, ComponentPropsWithRef, useId, useState } from 'react'
+import { type ChangeEvent, type KeyboardEvent, type ComponentPropsWithRef, useId, useState } from 'react'
 
 import clsx from 'clsx'
 import s from './Input.module.scss'
@@ -86,35 +86,35 @@ export const Input = ({
       )}
       <div className={classNames.inputContainer}>
         {isSearchType && (
-          <button disabled={disabled} className={classNames.searchIcon} onClick={onKeyEnter}>
+          <button className={classNames.searchIcon} disabled={disabled} onClick={onKeyEnter}>
             <Search />
           </button>
         )}
         <input
-          id={finalId}
+          ref={ref}
           className={classNames.input}
+          disabled={disabled}
+          id={finalId}
+          type={inputType}
+          value={value}
           onChange={handleInputChange}
           onKeyDown={handleKeyDown}
-          ref={ref}
-          value={value}
-          type={inputType}
-          disabled={disabled}
           {...rest}
         />
         {isSearchType && !!value && (
           <button
-            type="button"
-            onClick={onClear}
             className={classNames.clearIcon}
             disabled={disabled}
+            type="button"
+            onClick={onClear}
           >
             <Close />
           </button>
         )}
         {isPasswordType && (
           <button
-            disabled={disabled}
             className={classNames.showPassword}
+            disabled={disabled}
             onClick={togglePasswordVisibility}
           >
             {showPassword ? <EyeOutline /> : <EyeOffOutline />}
