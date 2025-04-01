@@ -1,58 +1,89 @@
-import { forwardRef } from 'react'
+import { ComponentPropsWithRef, useState, useId, Ref } from 'react'
 import * as CheckboxRadix from '@radix-ui/react-checkbox'
-import { Typography } from '../Typography'
 import s from './Сheckbox.module.scss'
 import { clsx } from 'clsx'
-import Check from '../../../public/icons/CheckMark'
+import CheckIcon from '../../../public/icons/CheckMark'
 import { Label } from '../Label/Label'
 
-type CheckboxProps = {
-  checked?: boolean
-  className?: string
-  disabled?: boolean
-  id?: string
+export type CheckboxProps = {
   label?: string
-  onChange?: (checked: boolean) => void
-  position?: 'left'
-  required?: boolean
-} & React.ComponentPropsWithoutRef<typeof CheckboxRadix.Root>
+  onCheckedChange?: (checked: boolean) => Promise<boolean> | void
+  ref?: Ref<HTMLButtonElement>
+  recaptchaMode?: boolean
+} & ComponentPropsWithRef<typeof CheckboxRadix.Root>
 
-export const Checkbox = forwardRef<HTMLButtonElement, CheckboxProps>(
-  ({ checked, className, disabled, id, label, onChange, position, required, ...rest }, ref) => {
-    const classNames = {
-      label: clsx(s.label, disabled && s.disabled),
-      container: clsx(s.container, className),
-      indicator: s.indicator,
-      root: s.root,
-      buttonWrapper: clsx(s.buttonWrapper, disabled && s.disabled, position === 'left' && s.left),
+export const Checkbox = ({
+  disabled,
+  id,
+  label,
+  className,
+  checked: externalChecked,
+  onCheckedChange,
+  ref,
+  recaptchaMode = false,
+  ...rest
+}: CheckboxProps) => {
+  const [isLoading, setIsLoading] = useState(false)
+  const [isVerified, setIsVerified] = useState(false)
+  const [internalChecked, setInternalChecked] = useState(false)
+  const useID = useId()
+  const checkBoxID = id ?? useID
+
+  const checked = recaptchaMode ? internalChecked : externalChecked
+
+  const handleCheckedChange = async (newChecked: boolean) => {
+    if (recaptchaMode) {
+      setInternalChecked(true)
     }
 
-    return (
-      <div className={classNames.container}>
-        <Label className={classNames.label}>
-          <div className={classNames.buttonWrapper}>
-            <CheckboxRadix.Root
-              ref={ref}
-              checked={checked}
-              className={classNames.root}
-              disabled={disabled}
-              id={id}
-              onCheckedChange={onChange}
-              required={required}
-              {...rest}
-            >
-              {checked && (
-                <CheckboxRadix.Indicator className={classNames.indicator}>
-                  <Check />
-                </CheckboxRadix.Indicator>
-              )}
-            </CheckboxRadix.Root>
-          </div>
-          <Typography as={'label'} className={classNames.label} variant={'medium_14'}>
-            {label}
-          </Typography>
-        </Label>
-      </div>
-    )
+    if (onCheckedChange) {
+      setIsLoading(true)
+      try {
+        const success = await onCheckedChange(newChecked)
+        setIsVerified(!!success)
+        if (recaptchaMode) {
+          setInternalChecked(!!success)
+        }
+      } finally {
+        setIsLoading(false)
+      }
+    }
   }
-)
+
+  const classNames = {
+    label: clsx(s.label, disabled && s.disabled),
+    container: clsx(s.container, className),
+    root: clsx(s.root, recaptchaMode && s.recaptchaRoot, isLoading && s.hidden),
+    indicator: s.indicator,
+    buttonWrapper: clsx(s.buttonWrapper, disabled && s.disabled),
+    loader: s.loader,
+  }
+
+  return (
+    <div className={classNames.container}>
+      <div className={classNames.buttonWrapper}>
+        {isLoading && recaptchaMode && <span className={classNames.loader}></span>}
+
+        <CheckboxRadix.Root
+          className={classNames.root}
+          disabled={disabled || isLoading}
+          checked={isVerified || checked}
+          onCheckedChange={handleCheckedChange}
+          id={checkBoxID}
+          ref={ref}
+          data-verified={isVerified}
+          {...rest}
+        >
+          <CheckboxRadix.Indicator className={classNames.indicator}>
+            {(isVerified || checked) && <CheckIcon />}
+          </CheckboxRadix.Indicator>
+        </CheckboxRadix.Root>
+      </div>
+      {label && (
+        <Label className={classNames.label} htmlFor={checkBoxID}>
+          {label}
+        </Label>
+      )}
+    </div>
+  )
+}
