@@ -1,0 +1,59 @@
+.item {
+  cursor: pointer;
+
+  display: flex;
+  gap: 15px;
+  align-items: center;
+
+  padding: 8px 12px;
+  border-radius: 2px;
+}
+
+.icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 18px;
+  height: 18px;
+
+  svg {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.label {
+  font-size: 14px;
+  line-height: 1;
+}
+
+.dots {
+  cursor: pointer;
+
+  position: relative;
+
+  display: flex;
+
+  padding: 0;
+  border: none;
+
+  background: transparent;
+
+  svg {
+    width: 24px;
+    height: 24px;
+  }
+
+  &:hover {
+    color: var(--color-accent-500);
+  }
+
+  &:active {
+    color: var(--color-accent-500);
+  }
+
+  &:focus {
+    color: var(--color-accent-500);
+  }
+}
