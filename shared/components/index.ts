@@ -8,3 +8,4 @@ export * from './Textarea'
 export * from './Input'
 export * from './Dropdown'
 
+export * from './Сheckbox'

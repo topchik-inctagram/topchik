@@ -1,4 +1,4 @@
-import { useId, ComponentPropsWithRef } from 'react'
+import { useId, type ComponentPropsWithRef } from 'react'
 import s from './Textarea.module.scss'
 import clsx from 'clsx'
 import { Label, Typography } from '@/shared/components'
@@ -27,9 +27,9 @@ export const Textarea = (props: Props) => {
           {label}
         </Label>
       )}
-      <textarea id={finalId} className={classNames.textarea} {...rest} />
+      <textarea className={classNames.textarea} id={finalId} {...rest} />
       {error && (
-        <Typography as={'span'} variant={'regular_14'} className={classNames.errorText}>
+        <Typography as="span" className={classNames.errorText} variant="regular_14">
           {error}
         </Typography>
       )}

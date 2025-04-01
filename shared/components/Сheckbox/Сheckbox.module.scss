@@ -1,0 +1,153 @@
+.container {
+  display: flex;
+  align-items: center;
+}
+
+.label {
+  cursor: pointer;
+  user-select: none;
+
+  display: flex;
+  align-items: center;
+
+  margin-left: 10px;
+
+  color: var(--color-light-100);
+
+  &.disabled {
+    cursor: initial;
+    color: var(--color-dark-100);
+  }
+}
+
+.root {
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 18px;
+  height: 18px;
+  border: 2px solid var(--color-light-900);
+  border-radius: 2px;
+
+  background-color: var(--color-dark-900);
+
+  transition: all 0.2s ease;
+
+  &:focus {
+    outline: none;
+  }
+
+  &:disabled {
+    cursor: initial;
+    border-color: var(--color-dark-100);
+  }
+
+  &[data-state='checked'] {
+    border-color: var(--color-light-100);
+    background-color: var(--color-light-100);
+
+    &:disabled {
+      background-color: var(--color-light-100);
+    }
+  }
+
+  &.recaptchaRoot {
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--color-light-100);
+    border-radius: 1px;
+
+    background-color: var(--color-light-100);
+
+    &[data-state='checked'] {
+      border-color: var(--color-light-100);
+      background-color: var(--color-light-100);
+    }
+  }
+
+  &.hidden {
+    position: absolute;
+    opacity: 0;
+  }
+}
+
+.buttonWrapper {
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 36px;
+  height: 36px;
+  margin-left: 9px;
+  border-radius: 50%;
+
+  &.disabled {
+    cursor: initial;
+  }
+}
+
+.indicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .recaptchaRoot[data-verified='true'] & svg path {
+    fill: #19983be6;
+  }
+}
+
+.loader {
+  position: relative;
+
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+
+  animation: rotate 1s linear infinite;
+}
+
+.loader::before {
+  content: '';
+
+  position: absolute;
+  inset: 0;
+
+  box-sizing: border-box;
+  border: 5px solid var(--color-accent-500);
+  border-radius: 50%;
+
+  animation: prixclipfix 6s linear infinite;
+}
+
+@keyframes rotate {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes prixclipfix {
+  0% {
+    clip-path: polygon(50% 50%, 0 0, 0 0, 0 0, 0 0, 0 0);
+  }
+
+  25% {
+    clip-path: polygon(50% 50%, 0 0, 100% 0, 100% 0, 100% 0, 100% 0);
+  }
+
+  50% {
+    clip-path: polygon(50% 50%, 0 0, 100% 0, 100% 100%, 100% 100%, 100% 100%);
+  }
+
+  75% {
+    clip-path: polygon(50% 50%, 0 0, 100% 0, 100% 100%, 0 100%, 0 100%);
+  }
+
+  100% {
+    clip-path: polygon(50% 50%, 0 0, 100% 0, 100% 100%, 0 100%, 0 0);
+  }
+}

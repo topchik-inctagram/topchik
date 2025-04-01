@@ -50,7 +50,7 @@ function PopoverRender({
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
       <Label disabled={disabled}>Date</Label>
       <Popover>
-        <PopoverTrigger error={error} fullWidth={fullWidth} disabled={disabled}>
+        <PopoverTrigger disabled={disabled} error={error} fullWidth={fullWidth}>
           <Typography as="span" variant="regular_16">
             Select date
           </Typography>
