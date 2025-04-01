@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from '@storybook/react'
+import { type Meta, type StoryObj } from '@storybook/react'
 import { useState } from 'react'
 import { Checkbox } from './Сheckbox'
 
@@ -55,7 +55,7 @@ export const RecaptchaMode: Story = {
     }
 
     return (
-      <Checkbox {...args} onCheckedChange={handleChange} disabled={loading} checked={verified} />
+      <Checkbox {...args} checked={verified} disabled={loading} onCheckedChange={handleChange} />
     )
   },
 }

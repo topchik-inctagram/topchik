@@ -8,7 +8,7 @@
     "build": "next build",
     "build:production": "pnpm build",
     "start": "next start",
-    "lint": "eslint . .jsx,.js,.tsx,.ts --no-error-on-unmatched-pattern --fix && stylelint --fix ./{,*/}*.{scss,css} --allow-empty-input && next lint --no-cache",
+    "lint": "eslint . .jsx,.js,.tsx,.ts --no-error-on-unmatched-pattern --fix && stylelint --fix \"**/*.{css,scss}\" --allow-empty-input && next lint --no-cache",
     "format": "prettier --write .",
     "sb": "storybook dev -p 6006",
     "build-storybook": "storybook build",
