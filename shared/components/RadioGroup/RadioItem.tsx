@@ -4,14 +4,10 @@ import clsx from 'clsx'
 import s from './RadioGroup.module.scss'
 import { Label } from '@/shared/components'
 
-export type RadioItemProps = {
-  value: string
-  disabled?: boolean
-  children: ReactNode
-}& ComponentPropsWithRef<typeof RadioGroupPrimitive.Item>;
+type Props = ComponentPropsWithRef<typeof RadioGroupPrimitive.Item>
 
-export const RadioItem = (props: RadioItemProps) => {
-  const { value, disabled, children, ...rest } = props
+export const RadioItem = (props: Props) => {
+  const { disabled, children, ...rest } = props
 
   const classNames = {
     itemWrapper: clsx(s.itemWrapper),
@@ -23,12 +19,7 @@ export const RadioItem = (props: RadioItemProps) => {
   return (
     <div className={classNames.itemWrapper}>
       <Label className={classNames.label}>
-        <RadioGroupPrimitive.Item
-          value={value}
-          disabled={disabled}
-          className={classNames.radioItem}
-          {...rest}
-        >
+        <RadioGroupPrimitive.Item disabled={disabled} className={classNames.radioItem} {...rest}>
           <RadioGroupPrimitive.Indicator className={classNames.radioIndicator} />
         </RadioGroupPrimitive.Item>
         {children}
