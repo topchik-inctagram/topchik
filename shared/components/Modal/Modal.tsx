@@ -9,8 +9,6 @@ type ModalSize = 'lg' | 'md' | 'sm'
 type Props = {
   title: string
   size?: ModalSize
-  children?: ReactNode
-  className?: string
 } & ComponentPropsWithRef<typeof Dialog.Root>
 
 export const Modal = ({
