@@ -91,7 +91,7 @@ export const SignUp = ({ onSubmit }: Props) => {
         />
         <ControlledCheckbox control={control} name="termsAndPolicy" />
         <Button fullWidth className={s.buttonSignIn} type="submit">
-          Sign In
+          Sign Up
         </Button>
       </form>
       <Typography className={s.noAccountP} variant="regular_16">

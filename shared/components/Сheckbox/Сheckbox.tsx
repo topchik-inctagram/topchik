@@ -1,14 +1,13 @@
-import { type ComponentPropsWithRef, useState, useId, type Ref } from 'react'
+import { type ComponentPropsWithRef, useId, useState } from 'react'
 import * as CheckboxRadix from '@radix-ui/react-checkbox'
 import s from './Сheckbox.module.scss'
 import { clsx } from 'clsx'
-import CheckIcon from '../../../public/icons/CheckMark'
-import { Label } from '../Label/Label'
+import { CheckmarkOutline } from '@/public'
+import { Label } from '@/shared/components'
 
 export type CheckboxProps = {
   label?: string
   onCheckedChange?: (checked: boolean) => Promise<boolean> | void
-  ref?: Ref<HTMLButtonElement>
   recaptchaMode?: boolean
 } & ComponentPropsWithRef<typeof CheckboxRadix.Root>
 
@@ -19,7 +18,6 @@ export const Checkbox = ({
   className,
   checked: externalChecked,
   onCheckedChange,
-  ref,
   recaptchaMode = false,
   ...rest
 }: CheckboxProps) => {
@@ -65,7 +63,6 @@ export const Checkbox = ({
         {isLoading && recaptchaMode && <span className={classNames.loader}></span>}
 
         <CheckboxRadix.Root
-          ref={ref}
           checked={isVerified || checked}
           className={classNames.root}
           data-verified={isVerified}
@@ -75,7 +72,7 @@ export const Checkbox = ({
           {...rest}
         >
           <CheckboxRadix.Indicator className={classNames.indicator}>
-            {(isVerified || checked) && <CheckIcon />}
+            {(isVerified || checked) && <CheckmarkOutline />}
           </CheckboxRadix.Indicator>
         </CheckboxRadix.Root>
       </div>
