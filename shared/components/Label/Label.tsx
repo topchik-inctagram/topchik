@@ -15,8 +15,8 @@ export const Label = (props: Props) => {
   }
 
   return (
-    <LabelRadix.Root {...rest} asChild className={classNames.label} ref={ref}>
-      <Typography as={'label'} variant={'regular_14'}>
+    <LabelRadix.Root {...rest} ref={ref} asChild className={classNames.label}>
+      <Typography as="label" variant="regular_14">
         {children}
       </Typography>
     </LabelRadix.Root>

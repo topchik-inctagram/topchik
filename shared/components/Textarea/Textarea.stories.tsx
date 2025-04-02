@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from '@storybook/react'
+import { type Meta, type StoryObj } from '@storybook/react'
 
 import { type ChangeEvent, useRef, useState } from 'react'
 import { Button, Textarea } from '@/shared/components'
@@ -31,7 +31,7 @@ export const ErrorOutputInArea: Story = {
   render: args => {
     return (
       <div style={{ width: '400px', margin: '0 auto' }}>
-        <Textarea error={'Error text'} label={args.label} placeholder="Enter your message here " />
+        <Textarea error="Error text" label={args.label} placeholder="Enter your message here " />
       </div>
     )
   },
@@ -41,7 +41,7 @@ export const DisabledTextArea: Story = {
   render: args => {
     return (
       <div style={{ width: '400px', margin: '0 auto' }}>
-        <Textarea placeholder="Enter your message here " label={args.label} disabled />
+        <Textarea disabled label={args.label} placeholder="Enter your message here " />
       </div>
     )
   },
@@ -64,12 +64,12 @@ export const ControlledTextArea: Story = {
     return (
       <div style={{ width: '400px', margin: '0 auto' }}>
         <Textarea
+          label={args.label}
+          placeholder="Enter your message here "
           value={value}
           onChange={handleValueChange}
-          placeholder="Enter your message here "
-          label={args.label}
         />
-        <Button onClick={handleButtonClick} style={{ marginTop: '10px' }}>
+        <Button style={{ marginTop: '10px' }} onClick={handleButtonClick}>
           Show message
         </Button>
         {displayedText && <p style={{ marginTop: '10px' }}>Message: {displayedText}</p>}

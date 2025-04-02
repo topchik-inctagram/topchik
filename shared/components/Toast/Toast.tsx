@@ -31,16 +31,16 @@ export const Toast = (props: Props) => {
   }
 
   return (
-    <ToastProvider swipeDirection={'up'}>
-      <ToastRoot duration={3000} type={'foreground'} className={classNames.toastRoot} {...rest}>
+    <ToastProvider swipeDirection="up">
+      <ToastRoot className={classNames.toastRoot} duration={3000} type="foreground" {...rest}>
         <div className={s.textContainer}>
           {isError && (
             <ToastTitle asChild>
-              <Typography variant={'bold_16'}>{title ?? defaultTitle}</Typography>
+              <Typography variant="bold_16">{title ?? defaultTitle}</Typography>
             </ToastTitle>
           )}
           <ToastDescription asChild>
-            <Typography variant={'regular_16'}>{description}</Typography>
+            <Typography variant="regular_16">{description}</Typography>
           </ToastDescription>
         </div>
         <ToastClose aria-label="Close" className={s.closeButton}>
