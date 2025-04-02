@@ -2,11 +2,9 @@ import * as SelectRadix from '@radix-ui/react-select'
 import { clsx } from 'clsx'
 import ArrowDown from '../../../public/icons/ArrowIosDownOutline'
 import ArrowUp from '../../../public/icons/ArrowIosUp'
-import { ComponentPropsWithRef, ReactNode, Ref, useState } from 'react'
+import { ComponentPropsWithRef, ReactNode, Ref } from 'react'
 import s from './Select.module.scss'
 import { Label } from '../Label/Label'
-import RussFlag from '../../../public/icons/FlagRussia'
-import UKFlag from '../../../public/icons/FlagUnitedKingdom'
 
 export type SelectOption = {
   value: string
@@ -16,11 +14,13 @@ export type SelectOption = {
 
 export type SelectProps = {
   className?: string
-  options: SelectOption
+  options: SelectOption[]
   placeholder?: string
   label?: string
   ref?: Ref<HTMLButtonElement>
   onChangeSelect: (value: string) => void
+  pagination?: boolean
+  errorMessage?: string
 } & ComponentPropsWithRef<typeof SelectRadix.Root>
 
 export const Select = (props: SelectProps) => {
@@ -33,21 +33,26 @@ export const Select = (props: SelectProps) => {
     value,
     onChangeSelect,
     ref,
+    pagination = false,
+    errorMessage,
     ...rest
   } = props
 
+  const selectedOption = options.find(opt => opt.value === value)
+
   return (
     <div className={clsx(s.selectWrapper, className, { [s.pagination]: pagination })}>
-      {label && <Label>{label}</Label>}
-      <SelectRadix.Root value={value} disabled={disabled} {...rest}>
+      {label && !pagination && <Label>{label}</Label>}
+      <SelectRadix.Root value={value} onValueChange={onChangeSelect} disabled={disabled} {...rest}>
         <SelectRadix.Trigger ref={ref} className={clsx(s.trigger, errorMessage && s.error)}>
           <div className={s.valueContainer}>
+            {selectedOption?.icon && <span className={s.selectedIcon}>{selectedOption.icon}</span>}
             <SelectRadix.Value placeholder={placeholder}>
-              {value && options.find(opt => opt.value === value)?.label}
+              {selectedOption?.label || placeholder}
             </SelectRadix.Value>
           </div>
           <SelectRadix.Icon className={s.icon}>
-            {isOpen ? <ArrowUp /> : <ArrowDown />}
+            <ArrowDown className={s.arrowDown} />
           </SelectRadix.Icon>
         </SelectRadix.Trigger>
 

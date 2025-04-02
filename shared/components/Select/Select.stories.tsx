@@ -1,8 +1,8 @@
 import { Meta, StoryObj } from '@storybook/react'
 import { useState } from 'react'
 import { Select } from './Select'
-import RussFlag from '../../../public/icons/FlagRussia'
-import UKFlag from '../../../public/icons/FlagUnitedKingdom'
+import RU from '../../../public/icons/FlagRussia'
+import EN from '../../../public/icons/FlagUnitedKingdom'
 
 const meta: Meta<typeof Select> = {
   component: Select,
@@ -48,25 +48,41 @@ export const Controlled: Story = {
     )
   },
 }
-
-export const Pagination: Story = {
+export const PaginationVariant: Story = {
+  args: {
+    pagination: true,
+    options: [
+      { value: '5', label: '5' },
+      { value: '10', label: '10' },
+      { value: '20', label: '20' },
+      { value: '30', label: '30' },
+      { value: '40', label: '40' },
+    ],
+  },
   render: args => {
-    const [pageSize, setPageSize] = useState<string>('10')
+    const [value, setValue] = useState(args.options[1].value)
+    return (
+      <div>
+        <Select {...args} value={value} onChangeSelect={setValue} />
+      </div>
+    )
+  },
+}
+
+export const LanguageSwitcher: Story = {
+  render: () => {
+    const [language, setLanguage] = useState('RU')
+    const languages = [
+      { value: 'RU', label: 'Russian', icon: <RU /> },
+      { value: 'EN', label: 'English', icon: <EN /> },
+    ]
 
     return (
       <Select
-        {...args}
-        pagination={true}
-        label="Items per page"
-        value={pageSize}
-        onChangeSelect={setPageSize}
-        options={[
-          { value: '5', label: '5' },
-          { value: '10', label: '10' },
-          { value: '20', label: '20' },
-          { value: '50', label: '50' },
-          { value: '100', label: '100' },
-        ]}
+        options={languages}
+        value={language}
+        onChangeSelect={setLanguage}
+        placeholder="Select language"
       />
     )
   },
