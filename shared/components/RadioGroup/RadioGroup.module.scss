@@ -1,0 +1,97 @@
+button {
+  all: unset;
+}
+
+.wrapper {
+  position: relative;
+}
+
+.RadioGroupRoot {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  box-sizing: border-box;
+
+  .RadioGroupItem {
+    box-sizing: border-box;
+    width: 24px;
+    height: 24px;
+    border: 2px solid var(--color-light-100);
+    border-radius: 100%;
+
+    background-color: var(--color-dark-900);
+
+    &:hover {
+      background-color: var(--color-dark-300);
+      box-shadow: 0 0 0 6px var(--color-dark-300);
+    }
+
+    &:focus {
+      background-color: var(--color-dark-500);
+      box-shadow: 0 0 0 6px var(--color-dark-500);
+    }
+
+    &:active {
+      background-color: var(--color-dark-100);
+      box-shadow: 0 0 0 6px var(--color-dark-300);
+    }
+
+    .RadioGroupIndicator {
+      position: relative;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      width: 100%;
+      height: 100%;
+
+      &::after {
+        content: '';
+
+        display: block;
+
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+
+        background-color: var(--color-light-100);
+      }
+    }
+
+    &:disabled {
+      cursor: not-allowed;
+      border: 2px solid var(--color-dark-100);
+      background-color: var(--color-dark-900);
+
+      &:hover {
+        box-shadow: none;
+      }
+
+      .RadioGroupIndicator {
+        &::after {
+          background-color: var(--color-dark-300);
+        }
+      }
+    }
+  }
+
+  .Label {
+    cursor: pointer;
+
+    display: flex;
+    gap: 8px;
+    align-items: center;
+
+    padding-left: 15px;
+
+    font-size: 15px;
+    line-height: 1;
+    color: white;
+  }
+
+  .LabelColorDisabled {
+    cursor: not-allowed;
+    color: var(--color-dark-300);
+  }
+}
