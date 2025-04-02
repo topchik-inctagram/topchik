@@ -42,7 +42,7 @@ export const Select = (props: SelectProps) => {
 
   return (
     <div className={clsx(s.selectWrapper, className, { [s.pagination]: pagination })}>
-      {label && !pagination && <Label>{label}</Label>}
+      <Label>{label}</Label>
       <SelectRadix.Root value={value} onValueChange={onChangeSelect} disabled={disabled} {...rest}>
         <SelectRadix.Trigger ref={ref} className={clsx(s.trigger, errorMessage && s.error)}>
           <div className={s.valueContainer}>
