@@ -10,4 +10,5 @@ export * from './Navbar'
 export * from './SignIn'
 export * from './Сheckbox'
 export * from './Controlled'
+export * from './CreateNewPassword'
 
