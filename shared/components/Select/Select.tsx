@@ -1,25 +1,23 @@
 import * as SelectRadix from '@radix-ui/react-select'
 import { clsx } from 'clsx'
 import ArrowDown from '../../../public/icons/ArrowIosDownOutline'
-import ArrowUp from '../../../public/icons/ArrowIosUp'
 import { ComponentPropsWithRef, ReactNode, Ref } from 'react'
 import s from './Select.module.scss'
-import { Label } from '../Label/Label'
+import { Label } from '@/shared/components'
 
-export type SelectOption = {
+type SelectOption = {
   value: string
   label: string
   icon?: ReactNode
 }
 
-export type SelectProps = {
+type SelectProps = {
   className?: string
   options: SelectOption[]
   placeholder?: string
   label?: string
   ref?: Ref<HTMLButtonElement>
-  onChangeSelect: (value: string) => void
-  pagination?: boolean
+  isPagination?: boolean
   errorMessage?: string
 } & ComponentPropsWithRef<typeof SelectRadix.Root>
 
@@ -31,9 +29,8 @@ export const Select = (props: SelectProps) => {
     disabled,
     label,
     value,
-    onChangeSelect,
     ref,
-    pagination = false,
+    isPagination = false,
     errorMessage,
     ...rest
   } = props
@@ -41,9 +38,9 @@ export const Select = (props: SelectProps) => {
   const selectedOption = options.find(opt => opt.value === value)
 
   return (
-    <div className={clsx(s.selectWrapper, className, { [s.pagination]: pagination })}>
+    <div className={clsx(s.selectWrapper, className, isPagination && s.pagination)}>
       <Label>{label}</Label>
-      <SelectRadix.Root value={value} onValueChange={onChangeSelect} disabled={disabled} {...rest}>
+      <SelectRadix.Root value={value} disabled={disabled} {...rest}>
         <SelectRadix.Trigger ref={ref} className={clsx(s.trigger, errorMessage && s.error)}>
           <div className={s.valueContainer}>
             {selectedOption?.icon && <span className={s.selectedIcon}>{selectedOption.icon}</span>}

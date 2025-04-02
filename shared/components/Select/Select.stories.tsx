@@ -37,7 +37,7 @@ export const Controlled: Story = {
         {...args}
         label="Select-Box"
         value={select}
-        onChangeSelect={setSelect}
+        onValueChange={setSelect}
         options={[
           { value: 'apple', label: 'Apple' },
           { value: 'orange', label: 'Orange' },
@@ -50,7 +50,7 @@ export const Controlled: Story = {
 }
 export const PaginationVariant: Story = {
   args: {
-    pagination: true,
+    isPagination: true,
     options: [
       { value: '5', label: '5' },
       { value: '10', label: '10' },
@@ -63,7 +63,7 @@ export const PaginationVariant: Story = {
     const [value, setValue] = useState(args.options[1].value)
     return (
       <div>
-        <Select {...args} value={value} onChangeSelect={setValue} />
+        <Select {...args} value={value} onValueChange={setValue} />
       </div>
     )
   },
@@ -81,7 +81,7 @@ export const LanguageSwitcher: Story = {
       <Select
         options={languages}
         value={language}
-        onChangeSelect={setLanguage}
+        onValueChange={setLanguage}
         placeholder="Select language"
       />
     )
