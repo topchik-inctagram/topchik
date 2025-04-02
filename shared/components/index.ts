@@ -12,4 +12,5 @@ export * from './SignIn'
 export * from './Сheckbox'
 export * from './Controlled'
 export * from './CreateNewPassword'
+export * from './Header'
 
