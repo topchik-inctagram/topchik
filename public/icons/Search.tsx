@@ -20,7 +20,7 @@ const SvgComponent = (
         </g>
         <defs>
             <clipPath id="clip0_306_4723">
-                <rect width={24} height={24} fill="white" />
+                <rect width={24} height={24} fill="currentColor" />
             </clipPath>
         </defs>
     </svg>
