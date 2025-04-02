@@ -1,6 +1,8 @@
 import { Meta, StoryObj } from '@storybook/react'
 import { useState } from 'react'
 import { Select } from './Select'
+import RussFlag from '../../../public/icons/FlagRussia'
+import UKFlag from '../../../public/icons/FlagUnitedKingdom'
 
 const meta: Meta<typeof Select> = {
   component: Select,
@@ -35,12 +37,35 @@ export const Controlled: Story = {
         {...args}
         label="Select-Box"
         value={select}
-        onChange={setSelect}
+        onChangeSelect={setSelect}
         options={[
           { value: 'apple', label: 'Apple' },
           { value: 'orange', label: 'Orange' },
           { value: 'banana', label: 'Banana' },
           { value: 'grape', label: 'Grape' },
+        ]}
+      />
+    )
+  },
+}
+
+export const Pagination: Story = {
+  render: args => {
+    const [pageSize, setPageSize] = useState<string>('10')
+
+    return (
+      <Select
+        {...args}
+        pagination={true}
+        label="Items per page"
+        value={pageSize}
+        onChangeSelect={setPageSize}
+        options={[
+          { value: '5', label: '5' },
+          { value: '10', label: '10' },
+          { value: '20', label: '20' },
+          { value: '50', label: '50' },
+          { value: '100', label: '100' },
         ]}
       />
     )

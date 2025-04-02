@@ -43,11 +43,11 @@
   transition: all 0.2s ease;
 
   &:hover {
-    border: 2px solid var(--color-accent-500);
+    border: 1px solid var(--color-light-100);
   }
 
   &:focus {
-    outline: 2px solid var(--color-info-700);
+    outline: 2px solid var(--color-accent-500);
   }
 
   &:disabled {
