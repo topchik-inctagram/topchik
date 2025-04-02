@@ -106,6 +106,7 @@
 
 .miniOutlined {
   width: 100px;
+  height: 36px;
   color: var(--color-accent-500);
 
   &:active {
@@ -128,7 +129,6 @@
 
 .fullWidth {
   width: 100%;
-  padding: 6px 0;
 }
 
 .languageButton {

@@ -1,0 +1,240 @@
+.inputRoot {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+
+  .inputDefault {
+    width: 100%;
+    padding: 6px 12px;
+    border: 1px solid var(--color-dark-100);
+    border-radius: 2px;
+
+    font-family: inherit;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 24px;
+    color: var(--color-light-900);
+
+    background: transparent;
+    outline: 0;
+
+    &::placeholder:not(:disabled) {
+      color: var(--color-light-900);
+    }
+
+    &:disabled {
+      cursor: not-allowed;
+      border: 1px solid var(--color-dark-100);
+      color: var(--color-dark-100);
+    }
+
+    &:active:not(:disabled, .error) {
+      border: 1px solid var(--color-light-100);
+      color: var(--color-light-100);
+    }
+
+    &:focus-visible:not(:disabled) {
+      color: var(--color-light-100);
+      outline: 2px solid var(--color-accent-700);
+    }
+
+    &:active:disabled {
+      border: 1px solid var(--color-dark-100);
+      color: var(--color-dark-100);
+    }
+
+    &:hover:not(:disabled, :focus-visible, .error) {
+      border: 1px solid var(--color-light-900);
+    }
+
+    input:-webkit-autofill,
+    input:-webkit-autofill:hover,
+    input:-webkit-autofill:focus,
+    textarea:-webkit-autofill,
+    textarea:-webkit-autofill:hover,
+    textarea:-webkit-autofill:focus,
+    select:-webkit-autofill,
+    select:-webkit-autofill:hover,
+    select:-webkit-autofill:focus {
+      border: 1px solid var(--color-dark-300);
+
+      background: linear-gradient(
+        to bottom,
+        rgb(255 255 255 / 0%) 0%,
+        rgb(0 174 255 / 4%) 50%,
+        rgb(255 255 255 / 0%) 51%,
+        rgb(0 174 255 / 3%) 100%
+      );
+      box-shadow: 0 0 0 1000px var(--color-dark-700) inset;
+
+      transition: background-color 99999999999s ease-in-out 0s;
+
+      -webkit-text-fill-color: var(--color-light-100);
+    }
+  }
+
+  .inputContainer {
+    position: relative;
+
+    display: flex;
+    align-items: start;
+    justify-content: flex-start;
+
+    width: 100%;
+  }
+
+  .inputContainer:hover:has(label:hover) .inputDefault {
+    border: 1px solid var(--color-dark-100);
+  }
+
+  .inputContainer:hover:has(.inputDefault:not(:disabled)):not(:focus-within) .inputDefault {
+    border: 1px solid var(--color-light-900);
+  }
+
+  .inputContainer:has(button:not(:disabled):active),
+  .inputContainer:has(.inputDefault:not(:disabled):active) {
+    color: var(--color-light-100);
+  }
+
+  .label {
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--color-light-900);
+  }
+
+  .searchIcon {
+    cursor: pointer;
+
+    position: absolute;
+    top: 9px;
+    left: 13px;
+
+    display: flex;
+
+    width: 20px;
+    height: 20px;
+    padding: 0;
+    border: 0;
+
+    color: var(--color-light-900);
+
+    background-color: transparent;
+    outline: 0;
+
+    &:active {
+      color: var(--color-dark-100) !important;
+    }
+
+    &:disabled {
+      cursor: not-allowed;
+      color: var(--color-dark-100);
+    }
+
+    &:active:disabled {
+      color: var(--color-dark-100);
+    }
+
+    svg {
+      align-self: center;
+      width: 100%;
+    }
+  }
+
+  .inputContainer:focus-within .searchIcon:not(:focus) {
+    color: var(--color-light-100);
+  }
+
+  .inputWithSearchIcon {
+    padding-right: 35px;
+    padding-left: 40px;
+  }
+
+  .clearIcon {
+    cursor: pointer;
+
+    position: absolute;
+    top: 20%;
+    right: 1%;
+
+    padding: 0;
+    border: 0;
+
+    color: var(--color-light-100);
+
+    background: transparent;
+    outline: 0;
+
+    &:active {
+      color: var(--color-dark-100);
+    }
+
+    &:disabled {
+      cursor: not-allowed;
+      color: var(--color-dark-100);
+    }
+
+    &:active:disabled {
+      color: var(--color-dark-100);
+    }
+  }
+
+  .showPassword {
+    cursor: pointer;
+
+    position: absolute;
+    top: 20%;
+    right: 0;
+
+    width: 24px;
+    height: 24px;
+    margin-right: 12px;
+    padding: 0;
+    border: 0;
+
+    color: var(--color-light-100);
+
+    background: transparent;
+    outline: 0;
+
+    &:disabled {
+      cursor: not-allowed;
+    }
+  }
+
+  .inputWithEyeIcon {
+    padding-right: 40px;
+  }
+
+  .inputContainer .inputDefault:disabled ~ .searchIcon,
+  .inputContainer .inputDefault:disabled ~ .showPassword,
+  .inputContainer .inputDefault:disabled ~ .clearIcon {
+    cursor: not-allowed;
+    color: var(--color-dark-100);
+  }
+
+  .error {
+    border-color: var(--color-danger-500);
+    color: var(--color-light-100);
+
+    // &:hover {
+    //   border-color: var(--color-danger-500);
+    // }
+  }
+
+  .inputContainer:hover:has(.inputDefault.error):not(:focus-within) .inputDefault {
+    border: 1px solid var(--color-danger-500);
+  }
+
+  .errorText {
+    color: var(--color-danger-500);
+  }
+}
+
+input[type='search'] {
+  &::-webkit-search-decoration,
+  &::-webkit-search-cancel-button,
+  &::-webkit-search-results-button,
+  &::-webkit-search-results-decoration {
+    appearance: none;
+  }
+}
