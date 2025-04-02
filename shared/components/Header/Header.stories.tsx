@@ -18,9 +18,6 @@ export const LoggedIn: Story = {
     onLanguageChange: (lang: string) => {
       console.log(`Lang: ${lang}`)
     },
-    onBellClick: () => {
-      console.log('Bell clicked')
-    },
   },
 }
 
@@ -30,12 +27,6 @@ export const LoggedOut: Story = {
     selectedLanguage: 'russian',
     onLanguageChange: (lang: string) => {
       console.log(`Lang: ${lang}`)
-    },
-    onSignUp: () => {
-      console.log('Sign up')
-    },
-    onLogin: () => {
-      console.log('Log in')
     },
   },
 }
