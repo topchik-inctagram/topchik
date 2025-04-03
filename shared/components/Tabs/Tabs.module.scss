@@ -1,120 +1,86 @@
-.tabsRoot {
+.root {
   display: flex;
   flex-direction: column;
   width: 100%;
 }
 
-.tabsList {
+.list {
   display: flex;
+  gap: 30px;
+
   margin: 0;
   padding: 0;
+  border-bottom: 2px solid var(--color-dark-100);
+
   list-style: none;
-  gap: 8px;
-  border-bottom: 1px solid var(--color-dark-300);
-  padding-bottom: 2px;
 
-  &.fullWidth {
-    width: 100%;
-
-    .tab {
-      flex: 1;
-      text-align: center;
-    }
-  }
-
-  &.outlineVariant {
-    border-bottom: none;
-    gap: 4px;
+  &:has(.trigger[data-disabled]) {
+    opacity: 0.5;
   }
 }
 
-.tab {
-  all: unset;
-  position: relative;
-  padding: 8px 16px;
+.trigger {
   cursor: pointer;
-  font-size: 14px;
-  font-weight: 500;
-  color: var(--color-light-100);
-  transition: all 0.2s ease;
-  border-radius: 2px 2px 0 0;
-  background: transparent;
 
-  &:not([data-state='active']):not([disabled]) {
-    color: var(--color-light-100);
-  }
+  box-sizing: border-box;
+  padding: 6px 24px;
+  border: none;
+  border-bottom: 2px solid transparent;
 
-  &[data-state='active']:not([disabled]) {
-    color: var(--color-accent-500);
-
-    &::after {
-      content: '';
-      position: absolute;
-      bottom: -2px;
-      left: 0;
-      width: 100%;
-      height: 2px;
-      background: var(--color-accent-500);
-    }
-  }
-
-  &:hover:not([disabled]):not([data-state='active']) {
-    background: rgba(0, 102, 255, 0.05);
-    color: var(--color-accent-300);
-  }
-
-  &:focus-visible:not([disabled]) {
-    outline: 2px solid var(--color-accent-700);
-    outline-offset: 2px;
-    border-radius: 2px;
-  }
-
-  &[disabled] {
-    color: var(--color-dark-400) !important;
-    cursor: not-allowed !important;
-    background: transparent !important;
-
-    &::after {
-      display: none !important;
-    }
-  }
-}
-
-.outlineTab {
-  border: 1px solid transparent;
-  border-radius: 4px;
+  font-size: 16px;
+  font-weight: 600;
   color: var(--color-dark-100);
 
-  &[data-state='active']:not([disabled]) {
+  background: inherit;
+
+  transition:
+    color 0.2s,
+    border-color 0.2s;
+
+  &:focus {
+    outline: var(--color-accent-900);
+  }
+
+  &[data-state='active'] {
+    margin-bottom: -1.5px;
+    border-bottom: 2px solid var(--color-accent-500);
     color: var(--color-accent-500);
-    border-color: var(--color-accent-500);
-    background: rgba(0, 102, 255, 0.05);
+
+    &:not([data-disabled]):hover {
+      border-bottom: 2px solid var(--color-accent-500);
+      color: var(--color-accent-500);
+      background: var(--color-accent-900);
+    }
+
+    &:not([data-disabled]):active {
+      color: var(--color-accent-500);
+      background: var(--color-accent-900);
+    }
+
+    &:not([data-disabled]):focus {
+      outline: var(--color-accent-900);
+    }
   }
 
-  &:hover:not([disabled]):not([data-state='active']) {
-    color: var(--color-accent-300);
-    border-color: var(--color-accent-300);
-    background: var(--color-dark-700);
+  &:not([data-state='active'], [data-disabled]):hover {
+    color: var(--color-dark-100);
+    background: var(--color-accent-900);
   }
 
-  &:focus-visible:not([disabled]) {
-    outline: 2px solid var(--color-accent-700);
-    outline-offset: -2px;
+  &:not([data-state='active'], [data-disabled]):active {
+    color: var(--color-dark-100);
+    background: var(--color-accent-900);
   }
 
-  &[disabled] {
-    color: var(--color-dark-400) !important;
-    border: none !important;
-    background: transparent !important;
+  &:not([data-state='active'], [data-disabled]):focus {
+    outline: var(--color-accent-900);
+  }
+
+  &[data-disabled] {
+    cursor: not-allowed;
   }
 }
 
-.tabContent {
-  padding: 16px 0;
-  animation: fadeIn 0.2s ease;
-
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(4px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
+.content {
+  padding: 12px;
 }
