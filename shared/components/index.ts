@@ -8,12 +8,7 @@ export * from './ScrollArea'
 export * from './Toast'
 export * from './Textarea'
 export * from './Input'
-export * from './Navbar'
-export * from './SignIn'
 export * from './Сheckbox'
 export * from './Controlled'
-export * from './CreateNewPassword'
-export * from './Header'
 export * from './Modal'
-
-
+export * from './PageContainer'
