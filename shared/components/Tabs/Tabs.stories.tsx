@@ -1,11 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/react'
-import { Tab, Tabs, TabsContent, TabsList } from './Tabs'
+import { TabsContent, TabsList, TabsRoot, TabsTrigger } from './Tabs'
 
-const meta: Meta<typeof Tabs> = {
+const meta: Meta<typeof TabsRoot> = {
   title: 'Components/Tabs',
   tags: ['autodocs'],
   parameters: {
-    backgrounds: { default: 'dark' },
+    backgrounds: { default: '#0d0d0d' },
     pseudo: {
       hover: ['[data-state=inactive]:hover'],
       focus: ['[data-state=inactive]:focus'],
@@ -15,54 +15,76 @@ const meta: Meta<typeof Tabs> = {
 
 export default meta
 
-type Story = StoryObj<typeof Tabs>
+type Story = StoryObj<typeof TabsRoot>
 
 export const DefaultVariant: Story = {
   render: () => (
-    <Tabs defaultValue="active">
+    <TabsRoot defaultValue="general">
       <TabsList>
-        <Tab value="default">Default</Tab>
-        <Tab value="active">Active</Tab>
-        <Tab value="hover">Hover</Tab>
-        <Tab value="focus">Focus</Tab>
-        <Tab disabled value="disabled">
-          Disabled
-        </Tab>
+        <TabsTrigger value="general">General information</TabsTrigger>
+        <TabsTrigger value="devices">Devices</TabsTrigger>
+        <TabsTrigger value="account">Account Management</TabsTrigger>
+        <TabsTrigger value="payments">My payments</TabsTrigger>
       </TabsList>
-      <TabsContent value="default">Default content</TabsContent>
-      <TabsContent value="active">Active content</TabsContent>
-      <TabsContent value="hover">Hover content</TabsContent>
-      <TabsContent value="focus">Focus content</TabsContent>
-      <TabsContent value="disabled">Disabled content</TabsContent>
-    </Tabs>
+      <TabsContent  style={{ marginTop: '12px' }} value="general">
+        General content
+      </TabsContent>
+      <TabsContent style={{ marginTop: '12px' }} value="devices">
+        Devices content
+      </TabsContent>
+      <TabsContent style={{ marginTop: '12px' }} value="account">
+        <h3>Account type:</h3>
+        <div style={{ border: '1px solid #333', padding: 16, background: '#171717' }}>
+          <div>
+            <input type="radio" id="personal" name="account" defaultChecked />
+            <label htmlFor="personal" style={{ marginLeft: 8 }}>
+              Personal
+            </label>
+          </div>
+          <div style={{ marginTop: 8 }}>
+            <input type="radio" id="business" name="account" />
+            <label htmlFor="business" style={{ marginLeft: 8 }}>
+              Business
+            </label>
+          </div>
+        </div>
+      </TabsContent>
+      <TabsContent aria-disabled style={{ marginTop: '12px' }} value="payments">
+        Payment info goes here
+      </TabsContent>
+    </TabsRoot>
   ),
 }
 
-export const OutlineVariant: Story = {
+export const DisabledVariant: Story = {
   render: () => (
-    <Tabs defaultValue="active">
-      <TabsList variant="outline">
-        <Tab value="default" variant="outline">
-          Default
-        </Tab>
-        <Tab value="active" variant="outline">
-          Active
-        </Tab>
-        <Tab value="hover" variant="outline">
-          Hover
-        </Tab>
-        <Tab value="focus" variant="outline">
-          Focus
-        </Tab>
-        <Tab disabled value="disabled" variant="outline">
-          Disabled
-        </Tab>
+    <TabsRoot defaultValue="general">
+      <TabsList>
+        <TabsTrigger value="general" disabled>
+          General information
+        </TabsTrigger>
+        <TabsTrigger value="devices" disabled>
+          Devices
+        </TabsTrigger>
+        <TabsTrigger value="account" disabled>
+          Account Management
+        </TabsTrigger>
+        <TabsTrigger value="payments" disabled>
+          My payments
+        </TabsTrigger>
       </TabsList>
-      <TabsContent value="default">Default content</TabsContent>
-      <TabsContent value="active">Active content</TabsContent>
-      <TabsContent value="hover">Hover content</TabsContent>
-      <TabsContent value="focus">Focus content</TabsContent>
-      <TabsContent value="disabled">Disabled content</TabsContent>
-    </Tabs>
+      <TabsContent style={{ marginTop: '12px', opacity: '0.6' }} value="general">
+        General content
+      </TabsContent>
+      <TabsContent style={{ marginTop: '12px', opacity: '0.6' }} value="devices">
+        Devices content
+      </TabsContent>
+      <TabsContent style={{ marginTop: '12px', opacity: '0.6' }} value="account">
+        Account
+      </TabsContent>
+      <TabsContent aria-disabled style={{ marginTop: '12px', opacity: '0.6' }} value="payments">
+        Payment info goes here
+      </TabsContent>
+    </TabsRoot>
   ),
 }
