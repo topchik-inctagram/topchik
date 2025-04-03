@@ -1,51 +1,91 @@
 import * as TabsPrimitive from '@radix-ui/react-tabs'
 import s from './Tabs.module.scss'
+import clsx from 'clsx'
+import { ComponentPropsWithRef } from 'react'
+import * as Label from '@radix-ui/react-label'
+import { Typography } from '../Typography'
 
-export const Tabs = ({
-  className = '',
-  ...props
-}: React.ComponentProps<typeof TabsPrimitive.Root>) => (
-  <TabsPrimitive.Root className={`${s.tabsRoot} ${className}`.trim()} {...props} />
-)
+type TabsRootProps = {
+  label?: string
+} & ComponentPropsWithRef<typeof TabsPrimitive.Root>
 
-type TabsListProps = React.ComponentProps<typeof TabsPrimitive.List> & {
-  variant?: 'default' | 'outline'
-  fullWidth?: boolean
+export const TabsRoot = ({
+  label,
+  className,
+  children,
+  ref,
+  defaultValue,
+  ...rest
+}: TabsRootProps) => {
+  const classNames = {
+    label: s.label,
+    root: clsx(s.root, className),
+  }
+
+  return (
+    <TabsPrimitive.Root className={classNames.root} ref={ref} defaultValue={defaultValue} {...rest}>
+      {label && (
+        <Label.Root asChild className={classNames.label}>
+          <Typography as={'label'} variant={'regular_16'}>
+            {label}
+          </Typography>
+        </Label.Root>
+      )}
+      {children}
+    </TabsPrimitive.Root>
+  )
 }
 
-export const TabsList = ({
-  variant = 'default',
-  fullWidth = false,
-  className = '',
-  ...props
-}: TabsListProps) => {
-  const listClasses = [
-    s.tabsList,
-    variant === 'outline' ? s.outlineVariant : '',
-    fullWidth ? s.fullWidth : '',
-    className,
-  ]
-    .filter(Boolean)
-    .join(' ')
+TabsRoot.displayName = 'TabsRoot'
 
-  return <TabsPrimitive.List className={listClasses} {...props} />
+type ListProps = TabsPrimitive.TabsListProps
+
+export const TabsList = ({ className, children, ...rest }: ListProps) => {
+  const classNames = {
+    list: clsx(s.list),
+  }
+
+  return (
+    <TabsPrimitive.List className={classNames.list} {...rest}>
+      {children}
+    </TabsPrimitive.List>
+  )
 }
 
-type TabProps = React.ComponentProps<typeof TabsPrimitive.Trigger> & {
-  variant?: 'default' | 'outline'
+TabsList.displayName = 'TabsList'
+
+type TabsProps = ComponentPropsWithRef<typeof TabsPrimitive.Trigger>
+
+export const TabsTrigger = ({ children, className, ref, value, ...rest }: TabsProps) => {
+  const classNames = {
+    trigger: s.trigger,
+  }
+
+  return (
+    <TabsPrimitive.Trigger asChild value={value} className={classNames.trigger} {...rest}>
+      <Typography as={'button'} variant={'h3'}>
+        {children}
+      </Typography>
+    </TabsPrimitive.Trigger>
+  )
 }
 
-export const Tab = ({ variant = 'default', className = '', ...props }: TabProps) => {
-  const tabClasses = [s.tab, variant === 'outline' ? s.outlineTab : '', className]
-    .filter(Boolean)
-    .join(' ')
-
-  return <TabsPrimitive.Trigger className={tabClasses} {...props} />
-}
+TabsTrigger.displayName = 'TabsTrigger'
 
 export const TabsContent = ({
-  className = '',
-  ...props
-}: React.ComponentProps<typeof TabsPrimitive.Content>) => (
-  <TabsPrimitive.Content className={`${s.tabContent} ${className}`.trim()} {...props} />
-)
+  className,
+  children,
+  value,
+  ...rest
+}: TabsPrimitive.TabsContentProps) => {
+  const classNames = {
+    content: (s.content, className),
+  }
+  return (
+    <TabsPrimitive.Content className={classNames.content} value={value} {...rest}>
+      {children}
+    </TabsPrimitive.Content>
+  )
+}
+
+TabsContent.displayName = 'TabsContent'
