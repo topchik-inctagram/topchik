@@ -70,7 +70,7 @@ DropdownSeparator.displayName = 'DropdownSeparator'
 type DropdownArrowProps = Omit<ComponentPropsWithoutRef<'div'>, 'onChange'>
 
 export const DropdownArrow = forwardRef<React.ComponentRef<'div'>, DropdownArrowProps>(
-  ({ children, className, ...rest }, ref) => {
+  ({ className, ...rest }, ref) => {
     const classNames = {
       arrow: clsx(s.arrow, className),
     }
