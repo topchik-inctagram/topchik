@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from '@storybook/react'
+import { type Meta, type StoryObj } from '@storybook/react'
 import { Dropdown, DropdownArrow, DropdownItem, DropdownLabel, DropdownSeparator } from './'
 import { NotificationItem } from './dropDownItems/notificationItem/NotificationItem'
 import { NotificationBell } from './dropDownItems/notificationItem/notificationBell/NotificationBell'
@@ -7,6 +7,7 @@ import {
   ActionDropdownItem,
 } from './dropDownItems/actionDropdownItem/ActionDropdownItem'
 import { Edit2Outline, TrashOutline } from '@/public'
+import { ScrollArea } from '@/shared/components'
 
 const meta = {
   component: Dropdown,
@@ -31,16 +32,16 @@ export const DropdownMenuForActions: Story = {
         <Dropdown {...args} style={{ padding: '13px 12px' }}>
           <DropdownItem style={{ padding: '0' }}>
             <ActionDropdownItem
-              style={{ padding: '4px' }}
               icon={<Edit2Outline />}
               label="Edit Post"
+              style={{ padding: '6px' }}
             />
           </DropdownItem>
           <DropdownItem style={{ padding: '0' }}>
             <ActionDropdownItem
-              style={{ padding: '4px' }}
               icon={<TrashOutline />}
               label="Delete Post"
+              style={{ padding: '6px' }}
             />
           </DropdownItem>
         </Dropdown>
@@ -60,65 +61,65 @@ export const DropdownMenuForNotifications: Story = {
   render: args => {
     return (
       <div style={{ marginLeft: '320px' }}>
-        <Dropdown {...args}>
-          <div style={{ maxHeight: '410px', overflowY: 'auto' }}>
-            <DropdownLabel>Уведомления</DropdownLabel>
-            <DropdownSeparator />
-            <DropdownItem>
+        <Dropdown {...args} style={{ height: '450px' }}>
+          <DropdownLabel>Уведомления</DropdownLabel>
+          <DropdownSeparator style={{ marginRight: '10px' }} />
+          <ScrollArea>
+            <DropdownItem style={{ marginRight: '10px' }}>
               <NotificationItem
-                title="Новое уведомление!"
-                tag="Новое"
-                message="Следующий платеж у вас спишется через 1 день"
                 date="1 день назад"
+                message="Следующий платеж у вас спишется через 1 день"
+                tag="Новое"
+                title="Новое уведомление!"
               />
             </DropdownItem>
 
-            <DropdownSeparator />
-            <DropdownItem>
+            <DropdownSeparator style={{ marginRight: '10px' }} />
+            <DropdownItem style={{ marginRight: '10px' }}>
               <NotificationItem
-                title="Новое уведомление!"
-                tag="Новое"
-                message="Ваша подписка истекает через 7 дней"
                 date="1 день назад"
+                message="Ваша подписка истекает через 7 дней"
+                tag="Новое"
+                title="Новое уведомление!"
               />
             </DropdownItem>
-            <DropdownSeparator />
-            <DropdownItem>
+            <DropdownSeparator style={{ marginRight: '10px' }} />
+            <DropdownItem style={{ marginRight: '10px' }}>
               <NotificationItem
-                title="Новое уведомление!"
-                tag="Новое"
-                message="Ваша подписка истекает через 7 дней"
                 date="1 день назад"
+                message="Ваша подписка истекает через 7 дней"
+                tag="Новое"
+                title="Новое уведомление!"
               />
             </DropdownItem>
-            <DropdownSeparator />
-            <DropdownItem>
+            <DropdownSeparator style={{ marginRight: '10px' }} />
+            <DropdownItem style={{ marginRight: '10px' }}>
               <NotificationItem
-                title="Новое уведомление!"
-                tag="Новое"
-                message="Ваша подписка истекает через 7 дней"
                 date="1 день назад"
+                message="Ваша подписка истекает через 7 дней"
+                tag="Новое"
+                title="Новое уведомление!"
               />
             </DropdownItem>
-            <DropdownSeparator />
-            <DropdownItem>
+            <DropdownSeparator style={{ marginRight: '10px' }} />
+            <DropdownItem style={{ marginRight: '10px' }}>
               <NotificationItem
-                title="Новое уведомление!"
-                tag="Новое"
-                message="Ваша подписка истекает через 7 дней"
                 date="1 день назад"
+                message="Ваша подписка истекает через 7 дней"
+                tag="Новое"
+                title="Новое уведомление!"
               />
             </DropdownItem>
-            <DropdownSeparator />
-            <DropdownItem>
+            <DropdownSeparator style={{ marginRight: '10px' }} />
+            <DropdownItem style={{ marginRight: '10px' }}>
               <NotificationItem
-                title="Новое уведомление!"
-                tag="Новое"
-                message="Ваша подписка истекает через 7 дней"
                 date="1 день назад"
+                message="Ваша подписка истекает через 7 дней"
+                tag="Новое"
+                title="Новое уведомление!"
               />
             </DropdownItem>
-          </div>
+          </ScrollArea>
           <DropdownArrow />
         </Dropdown>
       </div>
