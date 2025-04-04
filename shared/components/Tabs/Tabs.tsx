@@ -56,9 +56,9 @@ TabsList.displayName = 'TabsList'
 
 type TabsProps = ComponentPropsWithRef<typeof TabsPrimitive.Trigger>
 
-export const TabsTrigger = ({ children, className, ref, value, ...rest }: TabsProps) => {
+export const TabsTrigger = ({ className, children, ref, value, ...rest }: TabsProps) => {
   const classNames = {
-    trigger: s.trigger,
+    trigger: clsx(s.trigger, className),
   }
 
   return (
