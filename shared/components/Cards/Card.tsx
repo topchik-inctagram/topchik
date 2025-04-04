@@ -1,5 +1,5 @@
-import {type ComponentPropsWithRef, type ElementType} from 'react'
-import {clsx} from 'clsx'
+import { type ComponentPropsWithRef, type ElementType } from 'react'
+import { clsx } from 'clsx'
 import s from './Сard.module.scss'
 
 type Props<T extends ElementType = 'div'> = {

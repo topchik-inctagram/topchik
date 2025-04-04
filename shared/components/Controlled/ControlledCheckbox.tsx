@@ -1,3 +1,5 @@
+'use client'
+
 import { Checkbox, type CheckboxProps } from '@/shared/components'
 import { type FieldValues, useController, type UseControllerProps } from 'react-hook-form'
 
