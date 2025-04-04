@@ -1,0 +1,22 @@
+.link {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: flex-start;
+
+  width: 100%;
+  margin-bottom: 23px;
+  padding: 0 64px;
+
+  color: var(--color-light-100);
+  text-decoration: none;
+}
+
+.title {
+  margin-bottom: 20px;
+}
+
+.content {
+  width: 958px;
+  text-align: center;
+}
