@@ -1,3 +1,5 @@
+'use client'
+
 import { Button, Card, ControlledInput, Typography } from '@/shared/components'
 import Link from 'next/link'
 import { Github, Google } from '@/public'

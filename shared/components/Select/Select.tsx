@@ -1,52 +1,89 @@
-import * as RadixSelect from '@radix-ui/react-select';
-import s from './Select.module.scss';
-import { clsx } from 'clsx';
-import { FC } from 'react';
-import { Typography } from '../Typography';
+import * as SelectRadix from '@radix-ui/react-select'
+import { clsx } from 'clsx'
+import ArrowDown from '../../../public/icons/ArrowIosDownOutline'
+import { type ComponentPropsWithRef, type ReactNode, type Ref } from 'react'
+import s from './Select.module.scss'
+import { Label } from '@/shared/components'
 
-export type SelectProps = {
-  onChange?: (value: string) => void;
-  className?: string;
-  disabled?: boolean;
-  value: string;
-  label: string;
-  options: { value: string; label: string }[]; 
-};
+type SelectOption = {
+  value: string
+  label: string
+  icon?: ReactNode
+}
 
-const Select: FC<SelectProps> = ({ className, disabled, value, onChange, label, options }) => {
-  const classNames = {
-    container: clsx(s.container, className),
-    label: clsx(s.label, disabled && s.disabled),
-  };
+type SelectProps = {
+  className?: string
+  options: SelectOption[]
+  placeholder?: string
+  label?: string
+  ref?: Ref<HTMLButtonElement>
+  isPagination?: boolean
+  errorMessage?: string
+} & ComponentPropsWithRef<typeof SelectRadix.Root>
+
+export const Select = (props: SelectProps) => {
+  const {
+    className,
+    options,
+    placeholder = 'Select-Box',
+    disabled,
+    label,
+    value,
+    ref,
+    isPagination = false,
+    errorMessage,
+    ...rest
+  } = props
+
+  const selectedOption = options.find(opt => opt.value === value)
 
   return (
-    <div className={classNames.container}>
-      <RadixSelect.Root value={value} onValueChange={onChange}>
-        <Typography className={classNames.label} as="label" variant="medium_14">
-          {label}
-        </Typography>
-        <RadixSelect.Trigger aria-label="Select an option" disabled={disabled}>
-          <RadixSelect.Value placeholder="Choose an option" />
-        </RadixSelect.Trigger>
+    <div className={clsx(s.selectWrapper, className, isPagination && s.pagination)}>
+      <Label>{label}</Label>
+      <SelectRadix.Root value={value} disabled={disabled} {...rest}>
+        <SelectRadix.Trigger ref={ref} className={clsx(s.trigger, errorMessage && s.error)}>
+          <div className={s.valueContainer}>
+            {selectedOption?.icon && <span className={s.selectedIcon}>{selectedOption.icon}</span>}
+            <SelectRadix.Value placeholder={placeholder}>
+              {selectedOption?.label || placeholder}
+            </SelectRadix.Value>
+          </div>
+          <SelectRadix.Icon className={s.icon}>
+            <ArrowDown className={s.arrowDown} />
+          </SelectRadix.Icon>
+        </SelectRadix.Trigger>
 
-        <RadixSelect.Portal>
-          <RadixSelect.Content>
-            <RadixSelect.ScrollUpButton />
-            <RadixSelect.Viewport>
-              {options.map((option) => (
-                <RadixSelect.Item key={option.value} value={option.value}>
-                  <RadixSelect.ItemText>{option.label}</RadixSelect.ItemText>
-                </RadixSelect.Item>
+        <SelectRadix.Portal>
+          <SelectRadix.Content className={s.content} position="popper" sideOffset={5}>
+            <SelectRadix.Viewport className={s.viewport}>
+              {options.map(option => (
+                <SelectItem key={option.value} value={option.value}>
+                  <div className={s.optionContent}>
+                    {option.icon && <span className={s.optionIcon}>{option.icon}</span>}
+                    {option.label}
+                  </div>
+                </SelectItem>
               ))}
-            </RadixSelect.Viewport>
-            <RadixSelect.ScrollDownButton />
-          </RadixSelect.Content>
-        </RadixSelect.Portal>
-
-        <RadixSelect.Icon />
-      </RadixSelect.Root>
+            </SelectRadix.Viewport>
+          </SelectRadix.Content>
+        </SelectRadix.Portal>
+      </SelectRadix.Root>
     </div>
-  );
-};
+  )
+}
 
-export default Select;
+const SelectItem = ({
+  children,
+  className,
+  ...props
+}: {
+  children: ReactNode
+  className?: string
+  value: string
+}) => {
+  return (
+    <SelectRadix.Item className={clsx(s.item, className)} {...props}>
+      <SelectRadix.ItemText>{children}</SelectRadix.ItemText>
+    </SelectRadix.Item>
+  )
+}

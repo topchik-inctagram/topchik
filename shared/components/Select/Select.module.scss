@@ -1,0 +1,181 @@
+.trigger {
+  all: unset;
+
+  cursor: pointer;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+
+  width: 100%;
+  padding: 6px 12px;
+  border: 1px solid var(--color-dark-300);
+  border-radius: 4px;
+
+  font-size: 14px;
+  color: var(--color-light-100);
+
+  transition: all 0.2s ease;
+
+  &:hover {
+    border: 1px solid var(--color-light-100);
+  }
+
+  &:focus {
+    outline: 2px solid var(--color-accent-500);
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+
+  &[data-placeholder] {
+    color: var(--color-dark-100);
+  }
+}
+
+.trigger[data-state='open'] {
+  .arrowDown {
+    display: none;
+  }
+
+  .arrowUp {
+    display: block;
+  }
+}
+
+.trigger[data-state='closed'] {
+  .arrowDown {
+    display: block;
+  }
+
+  .arrowUp {
+    display: none;
+  }
+}
+
+.selectWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 210px;
+}
+
+.selectWrapper.pagination {
+  width: 50px;
+
+  .trigger {
+    justify-content: space-between;
+    width: 50px;
+    min-width: 50px;
+    padding: 2px 4px;
+
+    .valueContainer {
+      overflow: hidden;
+      width: calc(100% - 20px);
+      text-align: center;
+      text-overflow: ellipsis;
+    }
+  }
+}
+
+.content {
+  z-index: 1000;
+
+  overflow: hidden;
+
+  width: 210px;
+  border: 1px solid var(--color-dark-300);
+  border-radius: 6px;
+
+  background-color: var(--color-dark-700);
+  box-shadow: 0 4px 12px rgb(0 0 0 / 20%);
+
+  &.paginationContent {
+    width: 50px;
+  }
+}
+
+.icon {
+  display: flex;
+  margin-left: 8px;
+  background-color: transparent;
+}
+
+.item {
+  all: unset;
+
+  cursor: pointer;
+  user-select: none;
+
+  position: relative;
+
+  display: flex;
+  align-items: center;
+
+  padding: 6px 8px 6px 24px;
+  border-radius: 3px;
+
+  font-size: 14px;
+  line-height: 1;
+  color: var(--color-light-100);
+
+  &[data-highlighted] {
+    color: var(--color-accent-500);
+    background: var(--color-dark-300);
+    outline: none;
+  }
+}
+
+.itemIndicator {
+  position: absolute;
+  left: 6px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 16px;
+}
+
+.label {
+  font-size: 14px;
+  color: var(--color-light-100);
+}
+
+.optionContent {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.optionIcon {
+  display: flex;
+  align-items: center;
+}
+
+.scrollButton {
+  cursor: default;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  height: 24px;
+
+  color: var(--color-light-100);
+
+  background-color: var(--color-dark-700);
+}
+
+.viewport {
+  padding: 4px;
+}
+
+.selectedIcon {
+  display: flex;
+  width: 16px;
+  height: 16px;
+  margin-right: 4px;
+}

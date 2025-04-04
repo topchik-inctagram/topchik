@@ -91,5 +91,8 @@ export {default as FlagRussia} from './FlagRussia'
 export {default as FlagUnitedKingdom} from './FlagUnitedKingdom'
 export {default as Paypal} from './Paypal'
 export {default as Stripe} from './Stripe'
-export {default as Paid} from './Paid'
+export {default as Paid} from './Paid';
+export {default as DoneAllOutline} from './DoneAllOutline';
+export {default as ArrowBackOutline} from './ArrowBackOutline'
+export {default as ArrowForwardOutline} from './ArrowForwardOutline'
 export {default as Checkmark} from './CheckMark'

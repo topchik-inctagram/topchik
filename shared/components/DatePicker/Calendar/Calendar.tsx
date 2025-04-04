@@ -1,3 +1,5 @@
+'use client'
+
 import { type ComponentPropsWithoutRef, useMemo } from 'react'
 
 import { ArrowIosBackOutline, ArrowIosForwardOutline } from '@/public'
