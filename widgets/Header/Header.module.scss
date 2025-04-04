@@ -1,0 +1,79 @@
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 10px 60px;
+  border-bottom: 1px solid var(--color-dark-300);
+
+  background-color: var(--color-dark-700);
+}
+
+.brand {
+  cursor: pointer;
+
+  font-family: Inter, sans-serif;
+  font-size: 26px;
+  font-weight: 600;
+  line-height: 36px;
+  color: var(--color-light-100);
+}
+
+.controls {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.languageSelector select {
+  padding: 4px 8px;
+  border: 1px solid var(--color-dark-300);
+  border-radius: 4px;
+
+  color: var(--color-light-100);
+
+  background-color: transparent;
+}
+
+.bellWrapper {
+  cursor: pointer;
+
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.bellIcon {
+  width: 20px;
+  height: 20px;
+  color: var(--color-light-100);
+  transition: color 0.2s ease;
+
+  &:hover {
+    color: var(--color-accent-500);
+  }
+}
+
+.badge {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  min-width: 16px;
+  height: 16px;
+  padding: 0 4px;
+  border-radius: 999px;
+
+  font-size: 10px;
+  font-weight: bold;
+  line-height: 1;
+  color: white;
+
+  background-color: red;
+}

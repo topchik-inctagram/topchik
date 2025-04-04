@@ -1,0 +1,65 @@
+.root {
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+}
+
+.viewPort {
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+}
+
+.scrollBar {
+  /* disable browser handling of all panning and zooming gestures on touch devices */
+  touch-action: none;
+  cursor: pointer;
+
+  /* ensures no selection */
+  user-select: none;
+
+  display: flex;
+
+  background: transparent;
+
+  &[data-orientation='vertical'] {
+    width: 4px;
+  }
+
+  &[data-orientation='horizontal'] {
+    flex-direction: column;
+    height: 4px;
+  }
+}
+
+.areaThumb {
+  position: relative;
+  flex: 1;
+  border-radius: 3px;
+  background: var(--color-dark-300);
+
+  /* increase target size for touch devices https://www.w3.org/WAI/WCAG21/Understanding/target-size.html */
+
+  /* https://www.radix-ui.com/primitives/docs/components/scroll-area */
+  &::before {
+    content: '';
+
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    width: 100%;
+    min-width: 44px;
+    height: 100%;
+    min-height: 44px;
+  }
+
+  &:hover {
+    background: var(--color-light-900);
+  }
+}
+
+.corner {
+  background: transparent;
+}

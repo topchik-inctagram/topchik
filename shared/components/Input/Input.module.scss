@@ -1,7 +1,7 @@
 .inputRoot {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  width: 100%;
 
   .inputDefault {
     width: 100%;
@@ -18,7 +18,7 @@
     background: transparent;
     outline: 0;
 
-    &::placeholder:not(:disabled) {
+    &:not(:disabled)::placeholder {
       color: var(--color-light-900);
     }
 

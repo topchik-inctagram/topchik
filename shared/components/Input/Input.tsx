@@ -1,13 +1,19 @@
 'use client'
 
-import { type ChangeEvent, type KeyboardEvent, type ComponentPropsWithRef, useId, useState } from 'react'
+import {
+  type ChangeEvent,
+  type KeyboardEvent,
+  type ComponentPropsWithRef,
+  useId,
+  useState,
+} from 'react'
 
 import clsx from 'clsx'
 import s from './Input.module.scss'
 import { Close, EyeOffOutline, EyeOutline, Search } from '@/public'
 import { Label, Typography } from '@/shared/components'
 
-type InputProps = {
+export type InputProps = {
   label?: string
   error?: string
   onChangeValue?: (value: string) => void

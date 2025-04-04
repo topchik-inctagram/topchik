@@ -1,4 +1,6 @@
-import { ComponentPropsWithRef, useState, useId, Ref } from 'react'
+'use client'
+
+import { type ComponentPropsWithRef, useState, useId, type Ref } from 'react'
 import * as CheckboxRadix from '@radix-ui/react-checkbox'
 import s from './Сheckbox.module.scss'
 import { clsx } from 'clsx'
@@ -65,13 +67,13 @@ export const Checkbox = ({
         {isLoading && recaptchaMode && <span className={classNames.loader}></span>}
 
         <CheckboxRadix.Root
-          className={classNames.root}
-          disabled={disabled || isLoading}
-          checked={isVerified || checked}
-          onCheckedChange={handleCheckedChange}
-          id={checkBoxID}
           ref={ref}
+          checked={isVerified || checked}
+          className={classNames.root}
           data-verified={isVerified}
+          disabled={disabled || isLoading}
+          id={checkBoxID}
+          onCheckedChange={handleCheckedChange}
           {...rest}
         >
           <CheckboxRadix.Indicator className={classNames.indicator}>
