@@ -1,5 +1,5 @@
-import { CreateNewPassword, SignIn } from '@/shared/components'
 import type { Meta, StoryObj } from '@storybook/react'
+import { CreateNewPassword } from '@/features'
 
 const meta = {
   component: CreateNewPassword,
