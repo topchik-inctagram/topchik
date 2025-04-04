@@ -1,6 +1,6 @@
 import * as Dialog from '@radix-ui/react-dialog'
 import s from './Modal.module.scss'
-import { ComponentPropsWithRef, ReactNode } from 'react'
+import { type ComponentPropsWithRef } from 'react'
 import clsx from 'clsx'
 import { CloseOutline } from '@/public'
 
@@ -9,6 +9,7 @@ type ModalSize = 'lg' | 'md' | 'sm'
 type Props = {
   title: string
   size?: ModalSize
+  className?: string
 } & ComponentPropsWithRef<typeof Dialog.Root>
 
 export const Modal = ({
@@ -36,7 +37,7 @@ export const Modal = ({
           <div className={classNames.header}>
             <Dialog.Title className={classNames.title}>{title}</Dialog.Title>
             <Dialog.Close asChild>
-              <CloseOutline className={classNames.closeButton} aria-label="Close" />
+              <CloseOutline aria-label="Close" className={classNames.closeButton} />
             </Dialog.Close>
           </div>
           <hr />
