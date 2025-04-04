@@ -1,5 +1,5 @@
-import { SignUp } from '@/shared/components'
 import type { Meta, StoryObj } from '@storybook/react'
+import { SignUp } from '@/features'
 
 const meta = {
   component: SignUp,
@@ -10,7 +10,7 @@ const meta = {
 export default meta
 type Story = StoryObj<typeof SignUp>
 
-export const SignInForm: Story = {
+export const SignUpForm: Story = {
   render: () => {
     const callback = (data: any) => console.log(data)
 

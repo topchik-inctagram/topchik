@@ -1,14 +1,14 @@
 'use client'
 
-import { type ComponentPropsWithRef, useState, useId, type Ref } from 'react'
+import { type ComponentPropsWithRef, useState, useId, type Ref, type ReactNode } from 'react'
 import * as CheckboxRadix from '@radix-ui/react-checkbox'
 import s from './Сheckbox.module.scss'
 import { clsx } from 'clsx'
-import CheckIcon from '../../../public/icons/CheckMark'
 import { Label } from '../Label/Label'
+import { CheckmarkOutline } from '@/public/icons'
 
 export type CheckboxProps = {
-  label?: string
+  label?: string | ReactNode
   onCheckedChange?: (checked: boolean) => Promise<boolean> | void
   ref?: Ref<HTMLButtonElement>
   recaptchaMode?: boolean
@@ -77,7 +77,7 @@ export const Checkbox = ({
           {...rest}
         >
           <CheckboxRadix.Indicator className={classNames.indicator}>
-            {(isVerified || checked) && <CheckIcon />}
+            {(isVerified || checked) && <CheckmarkOutline />}
           </CheckboxRadix.Indicator>
         </CheckboxRadix.Root>
       </div>

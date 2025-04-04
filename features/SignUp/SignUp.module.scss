@@ -4,6 +4,10 @@
   padding: 24px;
 }
 
+.googleGithubLinks {
+  height: 36px;
+}
+
 .title {
   text-align: center;
 }
@@ -13,6 +17,15 @@
   flex-direction: column;
   align-items: flex-end;
   width: 100%;
+}
+
+.inputsContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+
+  width: 100%;
+  margin-bottom: 12px;
 }
 
 .svgContainer {
@@ -36,20 +49,24 @@
   }
 }
 
-.emailInput {
-  margin-bottom: 24px;
-}
-
-.passwordInput {
-  margin-bottom: 36px;
-}
-
-.buttonSignIn {
-  margin-top: 24px;
+.buttonSignUp {
+  margin-top: 12px;
   margin-bottom: 18px;
 }
 
 .noAccountP {
   margin-bottom: 6px;
   text-align: center;
+}
+
+.termsAndService {
+  white-space: nowrap;
+}
+
+.termsAndServiceLink {
+  color: var(--color-accent-300);
+
+  &:visited {
+    color: var(--color-accent-300);
+  }
 }
