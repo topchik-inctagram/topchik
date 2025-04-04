@@ -28,12 +28,20 @@ export const DropdownMenuForActions: Story = {
   render: args => {
     return (
       <div style={{ marginLeft: '150px' }}>
-        <Dropdown {...args}>
-          <DropdownItem>
-            <ActionDropdownItem icon={<Edit2Outline />} label="Edit Post" />
+        <Dropdown {...args} style={{ padding: '13px 12px' }}>
+          <DropdownItem style={{ padding: '0' }}>
+            <ActionDropdownItem
+              style={{ padding: '4px' }}
+              icon={<Edit2Outline />}
+              label="Edit Post"
+            />
           </DropdownItem>
-          <DropdownItem>
-            <ActionDropdownItem icon={<TrashOutline />} label="Delete Post" />
+          <DropdownItem style={{ padding: '0' }}>
+            <ActionDropdownItem
+              style={{ padding: '4px' }}
+              icon={<TrashOutline />}
+              label="Delete Post"
+            />
           </DropdownItem>
         </Dropdown>
       </div>
@@ -51,7 +59,7 @@ export const DropdownMenuForNotifications: Story = {
   },
   render: args => {
     return (
-      <div style={{ marginLeft: '300px' }}>
+      <div style={{ marginLeft: '320px' }}>
         <Dropdown {...args}>
           <div style={{ maxHeight: '410px', overflowY: 'auto' }}>
             <DropdownLabel>Уведомления</DropdownLabel>
