@@ -18,6 +18,7 @@ type SelectProps = {
   label?: string
   ref?: Ref<HTMLButtonElement>
   isPagination?: boolean
+  isLanguageSwitcher?: boolean
   errorMessage?: string
 } & ComponentPropsWithRef<typeof SelectRadix.Root>
 
@@ -31,6 +32,7 @@ export const Select = (props: SelectProps) => {
     value,
     ref,
     isPagination = false,
+    isLanguageSwitcher = false,
     errorMessage,
     ...rest
   } = props
@@ -38,9 +40,16 @@ export const Select = (props: SelectProps) => {
   const selectedOption = options.find(opt => opt.value === value)
 
   return (
-    <div className={clsx(s.selectWrapper, className, isPagination && s.pagination)}>
-      <Label>{label}</Label>
-      <SelectRadix.Root value={value} disabled={disabled} {...rest}>
+    <div
+      className={clsx(
+        s.selectWrapper,
+        className,
+        isPagination && s.pagination,
+        isLanguageSwitcher && s.languageSwitcher
+      )}
+    >
+      {label && <Label>{label}</Label>}
+      <SelectRadix.Root disabled={disabled} value={value} {...rest}>
         <SelectRadix.Trigger ref={ref} className={clsx(s.trigger, errorMessage && s.error)}>
           <div className={s.valueContainer}>
             {selectedOption?.icon && <span className={s.selectedIcon}>{selectedOption.icon}</span>}

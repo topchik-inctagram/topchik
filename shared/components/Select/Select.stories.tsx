@@ -1,8 +1,8 @@
-import { Meta, StoryObj } from '@storybook/react'
+import { type Meta, type StoryObj } from '@storybook/react'
 import { useState } from 'react'
 import { Select } from './Select'
-import RU from '../../../public/icons/FlagRussia'
-import EN from '../../../public/icons/FlagUnitedKingdom'
+import RussiaFlag from '@/public/icons/FlagRussia'
+import UnitedKingdomFlag from '@/public/icons/FlagUnitedKingdom'
 
 const meta: Meta<typeof Select> = {
   component: Select,
@@ -36,18 +36,19 @@ export const Controlled: Story = {
       <Select
         {...args}
         label="Select-Box"
-        value={select}
-        onValueChange={setSelect}
         options={[
           { value: 'apple', label: 'Apple' },
           { value: 'orange', label: 'Orange' },
           { value: 'banana', label: 'Banana' },
           { value: 'grape', label: 'Grape' },
         ]}
+        value={select}
+        onValueChange={setSelect}
       />
     )
   },
 }
+
 export const PaginationVariant: Story = {
   args: {
     isPagination: true,
@@ -73,16 +74,17 @@ export const LanguageSwitcher: Story = {
   render: () => {
     const [language, setLanguage] = useState('RU')
     const languages = [
-      { value: 'RU', label: 'Russian', icon: <RU /> },
-      { value: 'EN', label: 'English', icon: <EN /> },
+      { value: 'RU', label: 'Russian', icon: <RussiaFlag /> },
+      { value: 'EN', label: 'English', icon: <UnitedKingdomFlag /> },
     ]
 
     return (
       <Select
+        isLanguageSwitcher
         options={languages}
+        placeholder="Select language"
         value={language}
         onValueChange={setLanguage}
-        placeholder="Select language"
       />
     )
   },

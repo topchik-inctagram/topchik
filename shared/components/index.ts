@@ -13,4 +13,4 @@ export * from './Tabs'
 export * from './Controlled'
 export * from './Modal'
 export * from './PageContainer'
-
+export * from './Select'
