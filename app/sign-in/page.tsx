@@ -2,13 +2,20 @@
 
 import { SignIn } from '@/features'
 import { PageContainer } from '@/shared/components'
+import { useLoginMutation } from '@/features/api/auth'
 
-const Page = () => {
+const SignInPage = () => {
+  const [login] = useLoginMutation()
+
+  const loginHandler = (data: any) => {
+    login(data)
+  }
+
   return (
-    <PageContainer mt={'36px'}>
-      <SignIn onSubmit={() => {}} />
+    <PageContainer mt="36px">
+      <SignIn onSubmit={loginHandler} />
     </PageContainer>
   )
 }
 
-export default Page
+export default SignInPage

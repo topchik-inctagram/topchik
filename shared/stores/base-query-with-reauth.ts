@@ -1,4 +1,4 @@
-import { router } from '@/router'
+import { redirect } from 'next/navigation'
 import {
   type BaseQueryFn,
   type FetchArgs,
@@ -9,14 +9,14 @@ import { Mutex } from 'async-mutex'
 const mutex = new Mutex()
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: 'https://api.flashcards.andrii.es',
+  baseUrl: 'https://inctagram.work',
   credentials: 'include',
 })
 
 export const baseQueryWithReauth: BaseQueryFn<
-    FetchArgs | string,
-    unknown,
-    FetchBaseQueryError
+  FetchArgs | string,
+  unknown,
+  FetchBaseQueryError
 > = async (args, api, extraOptions) => {
   await mutex.waitForUnlock()
 
@@ -29,17 +29,17 @@ export const baseQueryWithReauth: BaseQueryFn<
       const refreshResult = await baseQuery(
         {
           method: 'POST',
-          url: '/v1/auth/refresh-token',
+          url: '/api/v1/auth/update-tokens',
         },
         api,
         extraOptions
       )
 
-      if (refreshResult.meta?.response?.status === 204) {
+      if (refreshResult.meta?.response?.status === 200) {
         // retry the initial query
         result = await baseQuery(args, api, extraOptions)
       } else {
-        await router.navigate('/sign-in')
+        redirect('/sign-in')
       }
       release()
     } else {
