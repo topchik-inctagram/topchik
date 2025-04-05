@@ -2,7 +2,15 @@
   cursor: pointer;
   border: 0;
   background: transparent;
-  outline: 0;
+
+  &[data-state='open'] {
+    color: var(--color-accent-700);
+  }
+
+  &:focus-visible {
+    border-radius: 8px;
+    outline: 2px solid var(--color-accent-700);
+  }
 }
 
 .content {
@@ -29,19 +37,33 @@
   font-size: 16px;
   font-weight: 500;
   line-height: 24px;
-
-  outline: transparent;
 }
 
 .item {
   cursor: pointer;
-  padding: 12px 8px 4px 4px;
+  margin-left: 4px;
+  padding: 12px 8px 4px 0;
   outline: 0;
+
+  &:hover {
+    border-radius: 8px;
+    background-color: var(--color-dark-300);
+    box-shadow:
+      4px 0 0 0 var(--color-dark-300),
+      -4px 0 0 0 var(--color-dark-300);
+  }
+
+  &:active {
+    background-color: var(--color-dark-700);
+    box-shadow:
+      4px 0 0 0 var(--color-dark-700),
+      -4px 0 0 0 var(--color-dark-700);
+  }
 }
 
 .separator {
   height: 1px;
-  margin: 12px 4px 0;
+  margin: 0 4px;
   background-color: var(--color-dark-100);
 }
 

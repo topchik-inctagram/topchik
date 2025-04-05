@@ -20,29 +20,17 @@ type Story = StoryObj<typeof meta>
 
 export const DropdownMenuForActions: Story = {
   args: {
-    trigger: (
-      <button>
-        <ActionDropdownDots />
-      </button>
-    ),
+    trigger: <ActionDropdownDots />,
   },
   render: args => {
     return (
       <div style={{ marginLeft: '150px' }}>
-        <Dropdown {...args} style={{ padding: '13px 12px' }}>
+        <Dropdown {...args} style={{ padding: '6px 12px' }}>
           <DropdownItem style={{ padding: '0' }}>
-            <ActionDropdownItem
-              icon={<Edit2Outline />}
-              label="Edit Post"
-              style={{ padding: '6px' }}
-            />
+            <ActionDropdownItem icon={<Edit2Outline />} text="Edit Post" />
           </DropdownItem>
           <DropdownItem style={{ padding: '0' }}>
-            <ActionDropdownItem
-              icon={<TrashOutline />}
-              label="Delete Post"
-              style={{ padding: '6px' }}
-            />
+            <ActionDropdownItem icon={<TrashOutline />} text="Delete Post" />
           </DropdownItem>
         </Dropdown>
       </div>
@@ -52,16 +40,12 @@ export const DropdownMenuForActions: Story = {
 
 export const DropdownMenuForNotifications: Story = {
   args: {
-    trigger: (
-      <button>
-        <NotificationBell count={3} />
-      </button>
-    ),
+    trigger: <NotificationBell count={3} />,
   },
   render: args => {
     return (
       <div style={{ marginLeft: '320px' }}>
-        <Dropdown {...args} style={{ height: '450px' }}>
+        <Dropdown {...args} style={{ height: '440px' }}>
           <DropdownLabel>Уведомления</DropdownLabel>
           <DropdownSeparator style={{ marginRight: '10px' }} />
           <ScrollArea>

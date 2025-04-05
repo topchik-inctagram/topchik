@@ -1,4 +1,4 @@
-import { ComponentPropsWithoutRef, ReactNode } from 'react'
+import { ComponentPropsWithRef, ReactNode } from 'react'
 import { Typography } from '@/shared/components'
 import s from './ActionDropdownItem.module.scss'
 import clsx from 'clsx'
@@ -6,13 +6,13 @@ import { MoreHorizontalOutline } from '@/public'
 
 type ActionDropdownItemProps = {
   icon: ReactNode
-  label: string
-} & ComponentPropsWithoutRef<'div'> &
-  Omit<ComponentPropsWithoutRef<'div'>, 'onChange'>
+  text: string
+} & ComponentPropsWithRef<'div'> &
+  Omit<ComponentPropsWithRef<'div'>, 'onChange'>
 
 export const ActionDropdownItem = ({
   icon,
-  label,
+  text,
   className,
   onClick,
   ...rest
@@ -20,14 +20,14 @@ export const ActionDropdownItem = ({
   const classNames = {
     item: clsx(s.item, className),
     icon: s.icon,
-    label: s.label,
+    text: s.text,
   }
 
   return (
     <div className={classNames.item} {...rest} onClick={onClick}>
       <span className={classNames.icon}>{icon}</span>
-      <Typography as="span" variant="regular_14" className={classNames.label}>
-        {label}
+      <Typography as="p" variant="regular_14" className={classNames.text}>
+        {text}
       </Typography>
     </div>
   )

@@ -12,6 +12,18 @@
     width: 28px;
     height: 28px;
   }
+
+  &:hover {
+    color: var(--color-accent-500);
+  }
+
+  &:active {
+    color: var(--color-accent-500);
+  }
+
+  &:focus {
+    color: var(--color-accent-500);
+  }
 }
 
 .notification {
