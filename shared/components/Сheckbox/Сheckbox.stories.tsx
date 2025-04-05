@@ -7,7 +7,7 @@ const meta = {
   tags: ['autodocs'],
   title: 'Components/UI/Checkbox',
   args: {
-    label: 'Checkbox',
+    label: 'Check-box',
   },
   argTypes: {
     disabled: {
@@ -38,28 +38,18 @@ export const Checked: Story = {
   },
 }
 
-export const Unchecked: Story = {
-  args: {
-    checked: false,
-  },
-}
-
-export const Indeterminate: Story = {
-  args: {
-    checked: 'indeterminate',
-  },
-}
-
-export const Controlled: Story = {
+export const RecaptchaExample: Story = {
   render: () => {
-    return <CheckboxWrapper />
+    const [checked, setChecked] = useState(false)
+    
+    return (
+      <Checkbox 
+        isRecaptcha 
+        checked={checked}
+        label={'Reacaptcha'} 
+        onCheckedChange={() => setChecked(!checked)}
+        onRecaptchaComplete={() => console.log('reCAPTCHA verified')}
+      />
+    )
   },
-}
-
-function CheckboxWrapper() {
-  const [checked, setChecked] = useState(false)
-
-  return (
-    <Checkbox checked={checked} label="Controlled" onCheckedChange={() => setChecked(!checked)} />
-  )
 }

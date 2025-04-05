@@ -1,47 +1,85 @@
-'use client'
-
-import { type ComponentPropsWithRef, useId } from 'react'
+import { type ComponentPropsWithRef, useId, useState, useEffect } from 'react'
 import * as CheckboxRadix from '@radix-ui/react-checkbox'
 import s from './Сheckbox.module.scss'
 import { clsx } from 'clsx'
-import { CheckmarkOutline } from '@/public'
+import { CheckmarkOutline, CheckmarkRecaptcha } from '@/public'
 import { Label } from '@/shared/components'
 
 export type CheckboxProps = {
   label?: string
+  isRecaptcha?: boolean
+  onRecaptchaComplete?: () => void
 } & ComponentPropsWithRef<typeof CheckboxRadix.Root>
 
-export const Checkbox = ({ disabled, id, label, className, checked, ...rest }: CheckboxProps) => {
-  const useID = useId()
-  const checkBoxID = id ?? useID
+export const Checkbox = ({
+  disabled,
+  id,
+  label,
+  className,
+  checked: externalChecked,
+  isRecaptcha = false,
+  onRecaptchaComplete,
+  ...rest
+}: CheckboxProps) => {
+  const generatedId = useId()
+  const checkboxId = id ?? generatedId
+  const [internalChecked, setInternalChecked] = useState(false)
+  const [isVerified, setIsVerified] = useState(false)
+  const checked = isRecaptcha 
+    ? isVerified || internalChecked 
+    : externalChecked ?? internalChecked
+
+  const handleCheckedChange = (newChecked: boolean) => {
+    if (disabled) return
+    
+    if (isRecaptcha) {
+      if (!isVerified) {
+        setInternalChecked(newChecked)
+        setIsVerified(newChecked)
+        if (newChecked) {
+          onRecaptchaComplete?.()
+        }
+      }
+    } else {
+      setInternalChecked(newChecked)
+    }
+  }
+
   const classNames = {
-    label: clsx(s.label, disabled && s.disabled),
     container: clsx(s.container, className),
-    root: clsx(s.root),
+    root: clsx(
+      s.root,
+      disabled && s.disabled,
+      isRecaptcha && s.recaptchaRoot,
+      isVerified && s.verified
+    ),
     indicator: s.indicator,
-    buttonWrapper: clsx(s.buttonWrapper, disabled && s.disabled),
-    loader: s.loader,
+    label: clsx(s.label, disabled && s.disabled),
   }
 
   return (
     <div className={classNames.container}>
       <CheckboxRadix.Root
         {...rest}
-        checked={checked}
         className={classNames.root}
+        checked={checked}
         disabled={disabled}
-        id={checkBoxID}
+        id={checkboxId}
+        data-recaptcha={isRecaptcha}
+        data-verified={isVerified}
+        onCheckedChange={handleCheckedChange}
       >
         <CheckboxRadix.Indicator className={classNames.indicator}>
-          {checked === true && <CheckmarkOutline />}
-          {checked === 'indeterminate' && <span className={classNames.loader}></span>}
+          {isRecaptcha ? (
+            <CheckmarkRecaptcha />
+          ) : (
+            <CheckmarkOutline />
+          )}
         </CheckboxRadix.Indicator>
       </CheckboxRadix.Root>
-      {label && (
-        <Label className={classNames.label} htmlFor={checkBoxID}>
+        <Label className={classNames.label} htmlFor={checkboxId}>
           {label}
         </Label>
-      )}
     </div>
   )
 }

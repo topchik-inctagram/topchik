@@ -1,5 +1,6 @@
 .container {
   display: flex;
+  gap: 10px;
   align-items: center;
 }
 
@@ -9,8 +10,6 @@
 
   display: flex;
   align-items: center;
-
-  margin-left: 10px;
 
   color: var(--color-light-100);
 
@@ -23,71 +22,73 @@
 .root {
   cursor: pointer;
 
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  width: 18px;
-  height: 18px;
-  border: 2px solid var(--color-light-900);
-  border-radius: 2px;
-
-  background-color: var(--color-dark-900);
-
-  transition: all 0.2s ease;
-
-  &:focus {
-    outline: none;
-  }
-
-  &:disabled {
-    cursor: initial;
-    border-color: var(--color-dark-100);
-  }
-
-  &[data-state='checked'] {
-    border-color: var(--color-light-100);
-    background-color: var(--color-light-100);
-
-    &:disabled {
-      background-color: var(--color-light-100);
-    }
-  }
-
-  &.recaptchaRoot {
-    width: 20px;
-    height: 20px;
-    border: 2px solid var(--color-light-100);
-    border-radius: 1px;
-
-    background-color: var(--color-light-100);
-
-    &[data-state='checked'] {
-      border-color: var(--color-light-100);
-      background-color: var(--color-light-100);
-    }
-  }
-
-  &.hidden {
-    position: absolute;
-    opacity: 0;
-  }
-}
-
-.buttonWrapper {
   position: relative;
 
   display: flex;
   align-items: center;
   justify-content: center;
 
-  width: 36px;
-  height: 36px;
-  margin-left: 9px;
-  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  border: 2px solid var(--color-light-500);
+  border-radius: 2px;
 
-  &.disabled {
+  background-color: var(--color-dark-900);
+
+  transition: all 0.2s ease;
+
+  &::after {
+    content: '';
+
+    position: absolute;
+    z-index: -1;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+
+    background-color: transparent;
+
+    transition: background-color 0.2s ease;
+  }
+
+  &[data-state='checked'] {
+    border-color: var(--color-light-100);
+    background-color: var(--color-light-100);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--color-dark-500);
+
+    &::after {
+      background-color: var(--color-dark-500);
+      outline: 2px solid var(--color-light-100);
+      outline-offset: 2px;
+    }
+  }
+
+  &:hover:not(:disabled)::after {
+    background-color: var(--color-dark-300);
+  }
+
+  &:active:not(:disabled)::after {
+    background-color: var(--color-dark-100);
+  }
+
+  &:disabled {
     cursor: initial;
+
+    &:not([data-state='checked']) {
+      border: 2px solid var(--color-light-900);
+    }
+
+    &[data-state='checked'] {
+      border-color: var(--color-dark-100);
+      background-color: var(--color-dark-100);
+    }
   }
 }
 
@@ -96,58 +97,59 @@
   align-items: center;
   justify-content: center;
 
-  .recaptchaRoot[data-verified='true'] & svg path {
-    fill: #19983be6;
+  svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .root:disabled & svg path {
+    fill: var(--color-light-700);
   }
 }
 
-.loader {
-  position: relative;
+.recaptchaRoot {
+  width: 20px;
+  height: 20px;
+  border-color: var(--color-light-100) !important;
+  border-radius: 1px;
 
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
+  background-color: var(--color-light-100) !important;
 
-  animation: rotate 1s linear infinite;
-}
+  &::after {
+    display: none !important;
+  }
 
-.loader::before {
-  content: '';
+  &:hover,
+  &:focus,
+  &:active {
+    &::after {
+      display: none !important;
+      background-color: transparent !important;
+    }
+  }
 
-  position: absolute;
-  inset: 0;
+  &[data-verified='true'] {
+    border-color: transparent !important;
+    background-color: transparent !important;
 
-  box-sizing: border-box;
-  border: 5px solid var(--color-accent-500);
-  border-radius: 50%;
-
-  animation: prixclipfix 6s linear infinite;
-}
-
-@keyframes rotate {
-  100% {
-    transform: rotate(360deg);
+    .indicator {
+      svg path {
+        fill: #19983be6;
+      }
+    }
   }
 }
 
-@keyframes prixclipfix {
-  0% {
-    clip-path: polygon(50% 50%, 0 0, 0 0, 0 0, 0 0, 0 0);
+@keyframes fadein {
+  from {
+    opacity: 0;
   }
 
-  25% {
-    clip-path: polygon(50% 50%, 0 0, 100% 0, 100% 0, 100% 0, 100% 0);
+  to {
+    opacity: 1;
   }
+}
 
-  50% {
-    clip-path: polygon(50% 50%, 0 0, 100% 0, 100% 100%, 100% 100%, 100% 100%);
-  }
-
-  75% {
-    clip-path: polygon(50% 50%, 0 0, 100% 0, 100% 100%, 0 100%, 0 100%);
-  }
-
-  100% {
-    clip-path: polygon(50% 50%, 0 0, 100% 0, 100% 100%, 0 100%, 0 0);
-  }
+.verified {
+  animation: fadein 0.3s ease-in-out;
 }
