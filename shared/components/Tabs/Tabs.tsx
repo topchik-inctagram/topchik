@@ -2,8 +2,6 @@ import * as TabsPrimitive from '@radix-ui/react-tabs'
 import s from './Tabs.module.scss'
 import clsx from 'clsx'
 import { ComponentPropsWithRef } from 'react'
-import * as Label from '@radix-ui/react-label'
-import { Typography } from '../Typography'
 
 type TabsRootProps = {
   label?: string
@@ -24,13 +22,6 @@ export const TabsRoot = ({
 
   return (
     <TabsPrimitive.Root className={classNames.root} ref={ref} defaultValue={defaultValue} {...rest}>
-      {label && (
-        <Label.Root asChild className={classNames.label}>
-          <Typography as={'label'} variant={'regular_16'}>
-            {label}
-          </Typography>
-        </Label.Root>
-      )}
       {children}
     </TabsPrimitive.Root>
   )
@@ -42,7 +33,7 @@ type ListProps = TabsPrimitive.TabsListProps
 
 export const TabsList = ({ className, children, ...rest }: ListProps) => {
   const classNames = {
-    list: clsx(s.list),
+    list: clsx(s.list, className),
   }
 
   return (
@@ -62,10 +53,8 @@ export const TabsTrigger = ({ className, children, ref, value, ...rest }: TabsPr
   }
 
   return (
-    <TabsPrimitive.Trigger asChild value={value} className={classNames.trigger} {...rest}>
-      <Typography as={'button'} variant={'h3'}>
-        {children}
-      </Typography>
+    <TabsPrimitive.Trigger value={value} className={classNames.trigger} ref={ref} {...rest}>
+      {children}
     </TabsPrimitive.Trigger>
   )
 }
@@ -79,7 +68,7 @@ export const TabsContent = ({
   ...rest
 }: TabsPrimitive.TabsContentProps) => {
   const classNames = {
-    content: (s.content, className),
+    content: clsx(s.content, className),
   }
   return (
     <TabsPrimitive.Content className={classNames.content} value={value} {...rest}>
