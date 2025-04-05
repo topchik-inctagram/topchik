@@ -95,7 +95,6 @@ export {default as Paid} from './Paid';
 export {default as DoneAllOutline} from './DoneAllOutline';
 export {default as ArrowBackOutline} from './ArrowBackOutline'
 export {default as ArrowForwardOutline} from './ArrowForwardOutline'
-export {default as Checkmark} from './CheckMark'
 export {default as TimeManagement} from './TimeManagement'
 export {default as SignUpBro} from './SignUpBro'
-
+export {default as CheckmarkOutline} from './CheckmarkOutline'
