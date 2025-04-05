@@ -113,7 +113,7 @@ export const SignUp = ({ onSubmit }: Props) => {
         Don’t have an account?
       </Typography>
       <Button asChild fullWidth variant="miniOutlined">
-        <Link href="#">Sign Up</Link>
+        <Link href="#">Sign In</Link>
       </Button>
     </Card>
   )
