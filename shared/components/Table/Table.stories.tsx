@@ -78,7 +78,6 @@ export const TableAdmin: Story = {
               <Table.Cell>Ivan Yakymenko</Table.Cell>
               <Table.Cell>Ivan.sr.yakimenko</Table.Cell>
               <Table.Cell>12.12.2022</Table.Cell>
-              <Table.Cell>1</Table.Cell>
             </Table.Row>
           ))}
         </Table.Body>

@@ -1,57 +1,45 @@
 import { type ComponentPropsWithoutRef } from 'react'
-
 import clsx from 'clsx'
-
 import s from './Table.module.scss'
 
-/**
- *
- * @Root - начало и конец таблицы.
- * @Head - заголовок таблицы
- * @Body - тело таблицы
- * @Row - определяет строку таблицы "строка"
- * @HeaderCell - определяет заголовок столбца или строки таблицы "столбец для хедера, ячейка  для хедера"
- * @Cell - содержимое ячейки таблицы "столбец, ячейка"
- */
+const Root = ({ className, ...restProps }: ComponentPropsWithoutRef<'table'>) => (
+  <table className={clsx(s.root, className)} {...restProps} />
+)
 
-const Root = ({ className, ...restProps }: ComponentPropsWithoutRef<'table'>) => {
-  const classes = clsx(s.root, className)
+const Head = ({ className, ...restProps }: ComponentPropsWithoutRef<'thead'>) => (
+  <thead className={clsx(s.head, className)} {...restProps} />
+)
 
-  return <table className={classes} {...restProps} />
-}
-const Head = ({ className, ...restProps }: ComponentPropsWithoutRef<'thead'>) => {
-  const classes = clsx(s.head, className)
+const Body = ({ className, ...restProps }: ComponentPropsWithoutRef<'tbody'>) => (
+  <tbody className={clsx(s.body, className)} {...restProps} />
+)
 
-  return <thead className={classes} {...restProps} />
-}
-const Body = ({ className, ...restProps }: ComponentPropsWithoutRef<'tbody'>) => {
-  const classes = clsx(s.body, className)
+const Row = ({ className, ...restProps }: ComponentPropsWithoutRef<'tr'>) => (
+  <tr className={clsx(s.row, className)} {...restProps} />
+)
 
-  return <tbody className={classes} {...restProps} />
-}
-const Row = ({ className, ...restProps }: ComponentPropsWithoutRef<'tr'>) => {
-  const classes = clsx(s.row, className)
-
-  return <tr className={classes} {...restProps} />
-}
 const HeaderCell = ({
   className,
   isSorting = false,
   ...restProps
-}: ComponentPropsWithoutRef<'th'> & { isSorting?: boolean }) => {
-  const classes = clsx(s.headerCell, isSorting && s.headerCellSorting, className)
+}: ComponentPropsWithoutRef<'th'> & { isSorting?: boolean }) => (
+  <th className={clsx(s.headerCell, isSorting && s.headerCellSorting, className)} {...restProps} />
+)
 
-  return <th className={classes} {...restProps} />
+const Cell = ({ className, ...restProps }: ComponentPropsWithoutRef<'td'>) => (
+  <td className={clsx(s.cell, className)} {...restProps} />
+)
+
+const Empty = ({ className, ...restProps }: ComponentPropsWithoutRef<'span'>) => (
+  <span className={clsx(s.empty, className)} {...restProps} />
+)
+
+export const Table = {
+  Root,
+  Head,
+  Body,
+  Row,
+  HeaderCell,
+  Cell,
+  Empty,
 }
-const Cell = ({ className, ...restProps }: ComponentPropsWithoutRef<'td'>) => {
-  const classes = clsx(s.cell, className)
-
-  return <td className={classes} {...restProps} />
-}
-const Empty = ({ className, ...restProps }: ComponentPropsWithoutRef<'span'>) => {
-  const classes = clsx(s.empty, className)
-
-  return <span {...restProps} className={classes} />
-}
-
-export const Table = { Body, Cell, Empty, Head, HeaderCell, Root, Row }
