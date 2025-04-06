@@ -8,9 +8,25 @@ import {
 import { Mutex } from 'async-mutex'
 const mutex = new Mutex()
 
+type RefreshTokenResponse = {
+  accessToken: string
+  refreshToken: string
+}
+
 const baseQuery = fetchBaseQuery({
-  baseUrl: 'https://inctagram.work',
+  baseUrl: 'https://gateway.topchik.uk',
   credentials: 'include',
+
+  prepareHeaders: headers => {
+    //headers.set('API-KEY', import.meta.env.VITE_API_KEY)
+    if (typeof window !== 'undefined') {
+      const token = localStorage.getItem('AUTH_TOKEN')
+      if (token) {
+        headers.set('Authorization', `Bearer ${token}`)
+      }
+    }
+    return headers
+  },
 })
 
 export const baseQueryWithReauth: BaseQueryFn<
@@ -22,6 +38,13 @@ export const baseQueryWithReauth: BaseQueryFn<
 
   let result = await baseQuery(args, api, extraOptions)
 
+  if (
+    result.meta?.request.url === 'https://gateway.topchik.uk/api/v1/auth/login' &&
+    result.meta?.response?.status === 200
+  ) {
+    const data = result.data as RefreshTokenResponse
+    localStorage.setItem('AUTH_TOKEN', data.accessToken as string)
+  }
   if (result.error && result.error.status === 401) {
     if (!mutex.isLocked()) {
       const release = await mutex.acquire()
@@ -37,6 +60,10 @@ export const baseQueryWithReauth: BaseQueryFn<
 
       if (refreshResult.meta?.response?.status === 200) {
         // retry the initial query
+        const data = refreshResult.data as RefreshTokenResponse
+        if (typeof window !== 'undefined' && data.accessToken) {
+          localStorage.setItem('AUTH_TOKEN', data.accessToken)
+        }
         result = await baseQuery(args, api, extraOptions)
       } else {
         redirect('/sign-in')
