@@ -1,5 +1,20 @@
+.wrapper {
+  position: relative;
+  display: inline-block;
+
+  &Error {
+    margin: -10px;
+    padding: 10px;
+    border: 2px solid var(--color-danger-300);
+    border-radius: 4px;
+  }
+}
+
 .container {
+  position: relative;
+
   display: flex;
+  align-items: center;
   justify-content: space-between;
 
   width: 300px;
@@ -9,61 +24,83 @@
 
   background: var(--color-dark-500);
 
-  &Error {
-    border: 1px solid var(--color-danger-500);
-    border-radius: 4px;
-  }
+  transition: all 0.3s;
 }
 
 .errorContainer {
-  position: absolute;
-  width: 100%;
-  height: 24px;
+  &.errorInside {
+    position: absolute;
+    bottom: 4px;
+    left: 8px;
+  }
+
+  &.errorAbove {
+    position: absolute;
+    top: -10px;
+
+    width: 175px;
+    height: 25px;
+    padding-left: 8px;
+  }
 }
 
 .errorMessage {
-  position: absolute;
-  bottom: 4px;
-  left: 8px;
-
+  margin-top: 13px;
   font-size: 12px;
   line-height: 1;
-  color: #ff4d4f;
+  color: var(--color-danger-300)
+}
+
+.verifiedMessage {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+
+  display: flex;
+  align-items: center;
+
+  width: 175px;
+  height: 25px;
+  padding: 0 8px;
+  border-radius: 2px;
+
+  font-size: 12px;
+  color: var(--color-success-500);
+
+  background-color: rgb(0 200 0 / 10%);
 }
 
 .checkboxWrapper {
   position: relative;
-  width: 16px;
-  height: 16px;
+  z-index: 1;
+
+  display: flex;
+  gap: 8px;
+  align-items: center;
 }
 
-.loader {
-  display: inline-block;
-
-  width: 16px;
-  height: 16px;
-  border: 2px solid #d9d9d9;
-  border-top-color: #1890ff;
-  border-radius: 50%;
-
-  animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
+.loaderContainer {
+  display: flex;
+  gap: 8px;
+  align-items: center;
 }
 
 .label {
+  user-select: none;
   font-size: 14px;
-
-  &Disabled {
-    opacity: 0.5;
-  }
+  color: var(--color-light-100);
 }
 
 .icon {
   width: 44px;
   height: 55px;
+}
+
+.cornerLabel {
+  position: absolute;
+  right: 8px;
+  bottom: 4px;
+
+  font-size: 8px;
+  color: var(--color-danger-300)а
 }

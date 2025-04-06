@@ -1,10 +1,11 @@
 import clsx from 'clsx'
 import s from './Recaptcha.module.scss'
-import RecaptchIcon from '../../../public/icons/Recaptcha'
-import { Сheckbox } from '../Сheckbox/Сheckbox'
-import { CaptchaSpinner } from '../CaptchaSpinner'
+import { RecaptchaIcon } from '@/public'
+import { Сheckbox } from '@/shared/components'
+import { CaptchaSpinner } from '@/shared/components'
+import { Label } from '@/shared/components'
 
-type RecaptchaStatus = 'idle' | 'pending' | 'verified' | 'error'
+type RecaptchaStatus = 'idle' | 'pending' | 'verified' | 'error' | 'expired' | 'notVerified'
 
 type RecaptchaProps = {
   className?: string
@@ -23,48 +24,85 @@ export const Recaptcha = ({
 }: RecaptchaProps) => {
   const classNames = {
     wrapper: clsx(s.wrapper, {
-      [s.wrapperError]: isStatus === 'error',
+      [s.wrapperError]:
+        isStatus === 'error' || isStatus === 'verified' || isStatus === 'notVerified',
     }),
     container: clsx(s.container, className, {
       [s.verified]: isStatus === 'verified',
       [s.error]: isStatus === 'error',
+      [s.expired]: isStatus === 'expired',
+      [s.notVerified]: isStatus === 'notVerified',
       [s.pending]: isStatus === 'pending',
     }),
     checkbox: clsx(s.checkbox),
-    label: clsx(s.label, {
-      [s.labelDisabled]: isStatus === 'pending',
+    label: clsx(s.label),
+    errorContainer: clsx(s.errorContainer, {
+      [s.errorInside]: isStatus === 'verified',
+      [s.errorAbove]: isStatus === 'expired',
     }),
-    errorContainer: clsx(s.errorContainer),
     errorMessage: clsx(s.errorMessage),
+    cornerLabel: clsx(s.cornerLabel),
+    verifiedMessage: clsx(s.verifiedMessage),
   }
 
   const handleClick = () => {
-    if (isStatus === 'idle' && onVerify) {
+    if (
+      (isStatus === 'idle' ||
+        isStatus === 'error' ||
+        isStatus === 'expired' ||
+        isStatus === 'notVerified') &&
+      onVerify
+    ) {
       onVerify()
     }
   }
 
+  const getErrorMessage = () => {
+    switch (isStatus) {
+      case 'expired':
+        return 'Verification expired. Check the checkbox again.'
+      case 'notVerified':
+        return 'Please verify that you are not a robot'
+      case 'error':
+        return errorMessage
+      case 'verified':
+        return 'Verification successful'
+      default:
+        return ''
+    }
+  }
+
   return (
-    <>
-      {isStatus === 'error' && (
-        <div className={classNames.errorContainer}>
-          <div className={classNames.errorMessage}>{errorMessage}</div>
-        </div>
-      )}
+    <div className={classNames.wrapper}>
       <div className={classNames.container} onClick={handleClick}>
+        {isStatus === 'expired' && (
+          <div className={classNames.errorContainer}>
+            <div className={classNames.errorMessage}>{getErrorMessage()}</div>
+          </div>
+        )}
+
         <div className={s.checkboxWrapper}>
           {isStatus === 'pending' ? (
-            <CaptchaSpinner />
+            <div className={s.loaderContainer}>
+              <CaptchaSpinner />
+              <Label className={classNames.label}>I'm not a robot</Label>
+            </div>
           ) : (
-            <Сheckbox
-              cheked={isStatus === 'verified'}
-              className={classNames.checkbox}
-              label={'I’m not a robot'}
-            />
+            <>
+              <Сheckbox cheked={isStatus === 'verified'} className={classNames.checkbox} />
+              <Label className={classNames.label}>I'm not a robot</Label>
+            </>
           )}
         </div>
-        <RecaptchIcon className={s.icon} />
+
+        <RecaptchaIcon className={s.icon} />
       </div>
-    </>
+
+      {(isStatus === 'error' || isStatus === 'notVerified') && (
+        <div className={classNames.errorContainer}>
+          <div className={classNames.errorMessage}>{getErrorMessage()}</div>
+        </div>
+      )}
+    </div>
   )
 }

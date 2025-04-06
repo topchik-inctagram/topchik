@@ -10,16 +10,52 @@ const meta = {
 
 export default meta
 type Story = StoryObj<typeof meta>
-export const Uncontrolled: Story = {
-  args: {
-    label: 'Click here',
-  },
-}
 
 export const Controlled: Story = {
   render: args => {
-    const [checked, setChecked] = useState(false)
+    const [status, setStatus] = useState<
+      'idle' | 'pending' | 'verified' | 'error' | 'expired' | 'notVerified'
+    >('idle')
 
-    return <Recaptcha {...args} label={'Click here'} />
+    const handleVerify = () => {
+      setStatus('pending')
+      setTimeout(() => {
+        const random = Math.random()
+        if (random > 0.7) {
+          setStatus('verified')
+        } else if (random > 0.4) {
+          setStatus('error')
+        } else if (random > 0.2) {
+          setStatus('expired')
+        } else {
+          setStatus('notVerified')
+        }
+      }, 2000)
+    }
+
+    return (
+      <Recaptcha {...args} label={'I’m not a robot'} isStatus={status} onVerify={handleVerify} />
+    )
+  },
+}
+
+export const Pending: Story = {
+  args: {
+    label: 'I’m not a robot',
+    isStatus: 'pending',
+  },
+}
+
+export const Expired: Story = {
+  args: {
+    label: 'I’m not a robot',
+    isStatus: 'expired',
+  },
+}
+
+export const NotVerified: Story = {
+  args: {
+    label: 'I’m not a robot',
+    isStatus: 'notVerified',
   },
 }
