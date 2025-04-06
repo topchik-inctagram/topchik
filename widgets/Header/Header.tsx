@@ -1,32 +1,50 @@
-import React, { ReactNode } from 'react'
 import s from './Header.module.scss'
 import BellIcon from '@/public/icons/OutlineBell'
 import Link from 'next/link'
 import { Button, Typography } from '@/shared/components'
+import RussiaFlag from '@/public/icons/FlagRussia'
+import UnitedKingdomFlag from '@/public/icons/FlagUnitedKingdom'
+import { Select } from '@/shared/components/Select'
+
+type Language = 'EN' | 'RU'
 
 type Props = {
   isLoggedIn?: boolean
-  selectedLanguage?: string
-  onLanguageChange?: (lang: string) => void
+  selectedLanguage?: Language
+  onLanguageChange?: (lang: Language) => void
   notificationCount?: number
 }
 
 export const Header = ({
   isLoggedIn,
-  selectedLanguage = 'english',
+  selectedLanguage,
   onLanguageChange,
   notificationCount = 0,
 }: Props) => {
-  return (
-    <>
-      <header className={s.header}>
-        <Typography as="h1" className={s.brand} variant="large">
-          Inctagram
-        </Typography>
+  const languageOptions = [
+    { value: 'RU', label: 'Russian', icon: <RussiaFlag /> },
+    { value: 'EN', label: 'English', icon: <UnitedKingdomFlag /> },
+  ]
 
-        <div className={s.controls}>
-          {/* Icon */}
-          {isLoggedIn && (
+  const selectComponent = (
+    <Select
+      isLanguageSwitcher
+      options={languageOptions}
+      placeholder="Select language"
+      value={selectedLanguage}
+      onValueChange={(value: string) => onLanguageChange?.(value as Language)}
+    />
+  )
+
+  return (
+    <header className={s.header}>
+      <Typography as="h1" className={s.brand} variant="large">
+        Inctagram
+      </Typography>
+
+      <div className={s.controls}>
+        {isLoggedIn ? (
+          <div className={s.notifyLangGroup}>
             <div className={s.bellWrapper}>
               <BellIcon className={s.bellIcon} />
               {notificationCount > 0 && (
@@ -35,29 +53,22 @@ export const Header = ({
                 </span>
               )}
             </div>
-          )}
-
-          {/* Lang */}
-          <div className={s.languageSelector}>
-            <select value={selectedLanguage} onChange={e => onLanguageChange?.(e.target.value)}>
-              <option value="english">English</option>
-              <option value="russian">Russian</option>
-            </select>
+            {selectComponent}
           </div>
-
-          {/* Buttons */}
-          {!isLoggedIn && (
-            <>
+        ) : (
+          <div className={s.languageAndAuth}>
+            <div className={s.languageSelector}>{selectComponent}</div>
+            <div className={s.authButtons}>
               <Button asChild variant="miniOutlined">
-                <Link href={'#'}>Log in</Link>
+                <Link href="#">Log in</Link>
               </Button>
               <Button asChild>
-                <Link href={'#'}>Sign up</Link>
+                <Link href="#">Sign up</Link>
               </Button>
-            </>
-          )}
-        </div>
-      </header>
-    </>
+            </div>
+          </div>
+        )}
+      </div>
+    </header>
   )
 }
