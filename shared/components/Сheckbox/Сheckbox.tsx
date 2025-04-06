@@ -1,6 +1,6 @@
-import { type ComponentPropsWithRef, useId, useState, useEffect } from 'react'
+import { type ComponentPropsWithRef, useId, useState } from 'react'
 import * as CheckboxRadix from '@radix-ui/react-checkbox'
-import s from './Сheckbox.module.scss'
+import s from './Checkbox.module.scss'
 import { clsx } from 'clsx'
 import { CheckmarkOutline, CheckmarkRecaptcha } from '@/public'
 import { Label } from '@/shared/components'
@@ -25,13 +25,12 @@ export const Checkbox = ({
   const checkboxId = id ?? generatedId
   const [internalChecked, setInternalChecked] = useState(false)
   const [isVerified, setIsVerified] = useState(false)
-  const checked = isRecaptcha 
-    ? isVerified || internalChecked 
-    : externalChecked ?? internalChecked
+  const checked = isRecaptcha ? isVerified || internalChecked : (externalChecked ?? internalChecked)
 
   const handleCheckedChange = (newChecked: boolean) => {
-    if (disabled) return
-    
+    if (disabled) {
+      return
+    }
     if (isRecaptcha) {
       if (!isVerified) {
         setInternalChecked(newChecked)
@@ -61,25 +60,21 @@ export const Checkbox = ({
     <div className={classNames.container}>
       <CheckboxRadix.Root
         {...rest}
-        className={classNames.root}
         checked={checked}
-        disabled={disabled}
-        id={checkboxId}
+        className={classNames.root}
         data-recaptcha={isRecaptcha}
         data-verified={isVerified}
+        disabled={disabled}
+        id={checkboxId}
         onCheckedChange={handleCheckedChange}
       >
         <CheckboxRadix.Indicator className={classNames.indicator}>
-          {isRecaptcha ? (
-            <CheckmarkRecaptcha />
-          ) : (
-            <CheckmarkOutline />
-          )}
+          {isRecaptcha ? <CheckmarkRecaptcha /> : <CheckmarkOutline />}
         </CheckboxRadix.Indicator>
       </CheckboxRadix.Root>
-        <Label className={classNames.label} htmlFor={checkboxId}>
-          {label}
-        </Label>
+      <Label className={classNames.label} htmlFor={checkboxId}>
+        {label}
+      </Label>
     </div>
   )
 }

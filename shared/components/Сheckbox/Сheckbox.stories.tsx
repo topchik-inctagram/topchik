@@ -8,6 +8,8 @@ const meta = {
   title: 'Components/UI/Checkbox',
   args: {
     label: 'Check-box',
+    disabled: false,
+    checked: false,
   },
   argTypes: {
     disabled: {
@@ -26,6 +28,14 @@ const meta = {
       action: 'checked',
       description: 'Callback when checked state changes',
     },
+    isRecaptcha: {
+      control: 'boolean',
+      description: 'Enable reCAPTCHA functionality',
+    },
+    onRecaptchaComplete: {
+      action: 'recaptcha-complete',
+      description: 'Callback when reCAPTCHA is verified',
+    },
   },
 } satisfies Meta<typeof Checkbox>
 
@@ -38,18 +48,20 @@ export const Checked: Story = {
   },
 }
 
-export const RecaptchaExample: Story = {
-  render: () => {
-    const [checked, setChecked] = useState(false)
-    
-    return (
-      <Checkbox 
-        isRecaptcha 
-        checked={checked}
-        label={'Reacaptcha'} 
-        onCheckedChange={() => setChecked(!checked)}
-        onRecaptchaComplete={() => console.log('reCAPTCHA verified')}
-      />
-    )
-  },
+const RecaptchaCheckbox = () => {
+  const [checked, setChecked] = useState(false)
+
+  return (
+    <Checkbox
+      isRecaptcha
+      checked={checked}
+      label="reCAPTCHA"
+      onCheckedChange={() => setChecked(!checked)}
+      onRecaptchaComplete={() => console.log('reCAPTCHA verified')}
+    />
+  )
+}
+
+export const WithRecaptcha: Story = {
+  render: () => <RecaptchaCheckbox />,
 }
