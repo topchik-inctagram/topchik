@@ -1,11 +1,11 @@
-import { redirect } from 'next/navigation'
 import {
   type BaseQueryFn,
   type FetchArgs,
-  type FetchBaseQueryError,
   fetchBaseQuery,
+  type FetchBaseQueryError,
 } from '@reduxjs/toolkit/query/react'
 import { Mutex } from 'async-mutex'
+
 const mutex = new Mutex()
 
 type RefreshTokenResponse = {
@@ -52,7 +52,7 @@ export const baseQueryWithReauth: BaseQueryFn<
       const refreshResult = await baseQuery(
         {
           method: 'POST',
-          url: '/api/v1/auth/update-tokens',
+          url: '/api/v1/auth/refresh-token',
         },
         api,
         extraOptions
@@ -66,7 +66,14 @@ export const baseQueryWithReauth: BaseQueryFn<
         }
         result = await baseQuery(args, api, extraOptions)
       } else {
-        redirect('/sign-in')
+        if (typeof window !== 'undefined') {
+          localStorage.removeItem('AUTH_TOKEN')
+          const isSignInPage = window.location.pathname === '/sign-in'
+
+          if (!isSignInPage) {
+            window.location.href = '/sign-in'
+          }
+        }
       }
       release()
     } else {

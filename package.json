@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "next dev --turbopack",
+    "dev": "next dev --turbopack -p 5175",
     "build": "next build",
     "build:production": "pnpm build",
     "start": "next start",

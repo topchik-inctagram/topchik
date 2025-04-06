@@ -12,19 +12,11 @@ export const AuthService = baseApi.injectEndpoints({
           url: '/api/v1/auth/login',
         }),
       }),
-      logout: builder.mutation<void, void>({
-        invalidatesTags: [''],
-        query: () => ({
-          method: 'POST',
-          params: undefined,
-          url: 'v1/auth/logout',
-        }),
-      }),
-      me: builder.query<void, void>({
+      me: builder.query<any, void>({
         providesTags: [''],
         query: () => ({
           params: undefined,
-          url: 'v1/auth/me',
+          url: 'api/v1/auth/me',
         }),
       }),
       // recoverPassword: builder.mutation<void, void>({
@@ -94,4 +86,4 @@ export const AuthService = baseApi.injectEndpoints({
     }
   },
 })
-export const { useLoginMutation } = AuthService
+export const { useLoginMutation, useMeQuery } = AuthService
