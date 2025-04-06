@@ -1,4 +1,4 @@
-.wrapper {
+.container {
   display: flex;
   justify-content: space-between;
 
@@ -29,28 +29,6 @@
   font-size: 12px;
   line-height: 1;
   color: #ff4d4f;
-}
-
-.container {
-  cursor: pointer;
-
-  display: flex;
-  gap: 8px;
-  align-items: center;
-
-  padding: 8px;
-
-  &.verified {
-    .checkbox {
-      border-color: #52c41a;
-      background-color: #f6ffed;
-    }
-  }
-
-  &.pending {
-    cursor: wait;
-    opacity: 0.7;
-  }
 }
 
 .checkboxWrapper {

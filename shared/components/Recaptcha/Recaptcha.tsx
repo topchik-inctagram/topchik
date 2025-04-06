@@ -2,6 +2,7 @@ import clsx from 'clsx'
 import s from './Recaptcha.module.scss'
 import RecaptchIcon from '../../../public/icons/Recaptcha'
 import { Сheckbox } from '../Сheckbox/Сheckbox'
+import { CaptchaSpinner } from '../CaptchaSpinner'
 
 type RecaptchaStatus = 'idle' | 'pending' | 'verified' | 'error'
 
@@ -9,66 +10,61 @@ type RecaptchaProps = {
   className?: string
   id?: string
   label?: string
-  IsStatus?: RecaptchaStatus
+  isStatus?: RecaptchaStatus
   errorMessage?: string
   onVerify?: () => void
 }
 
 export const Recaptcha = ({
   className,
-  label = 'I’m not a robot',
-  IsStatus = 'idle',
+  isStatus = 'idle',
   errorMessage = 'Verification failed',
   onVerify,
 }: RecaptchaProps) => {
   const classNames = {
     wrapper: clsx(s.wrapper, {
-      [s.wrapperError]: IsStatus === 'error',
+      [s.wrapperError]: isStatus === 'error',
     }),
     container: clsx(s.container, className, {
-      [s.verified]: IsStatus === 'verified',
-      [s.error]: IsStatus === 'error',
-      [s.pending]: IsStatus === 'pending',
+      [s.verified]: isStatus === 'verified',
+      [s.error]: isStatus === 'error',
+      [s.pending]: isStatus === 'pending',
     }),
     checkbox: clsx(s.checkbox),
     label: clsx(s.label, {
-      [s.labelDisabled]: IsStatus === 'pending',
+      [s.labelDisabled]: isStatus === 'pending',
     }),
     errorContainer: clsx(s.errorContainer),
     errorMessage: clsx(s.errorMessage),
   }
 
   const handleClick = () => {
-    if (IsStatus === 'idle' && onVerify) {
+    if (isStatus === 'idle' && onVerify) {
       onVerify()
     }
   }
 
   return (
     <>
-      <div className={classNames.wrapper}>
-        <div className={classNames.container} onClick={handleClick}>
-          <div className={s.checkboxWrapper}>
-            {IsStatus === 'pending' ? (
-              <span className={s.loader}></span>
-            ) : (
-              <Сheckbox
-                cheked={IsStatus === 'verified'}
-                disabled={IsStatus === 'pending'}
-                className={s.checkbox}
-              />
-            )}
-          </div>
-
-          <span className={classNames.label}>{label}</span>
-          <RecaptchIcon className={s.icon} />
-        </div>
-      </div>
-      {IsStatus === 'error' && (
+      {isStatus === 'error' && (
         <div className={classNames.errorContainer}>
           <div className={classNames.errorMessage}>{errorMessage}</div>
         </div>
       )}
+      <div className={classNames.container} onClick={handleClick}>
+        <div className={s.checkboxWrapper}>
+          {isStatus === 'pending' ? (
+            <CaptchaSpinner />
+          ) : (
+            <Сheckbox
+              cheked={isStatus === 'verified'}
+              className={classNames.checkbox}
+              label={'I’m not a robot'}
+            />
+          )}
+        </div>
+        <RecaptchIcon className={s.icon} />
+      </div>
     </>
   )
 }
