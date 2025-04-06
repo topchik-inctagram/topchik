@@ -1,8 +1,8 @@
-import { Meta, StoryObj } from '@storybook/react'
+import { type Meta, type StoryObj } from '@storybook/react'
 import { useState } from 'react'
 import { Select } from './Select'
-import RU from '../../../public/icons/FlagRussia'
-import EN from '../../../public/icons/FlagUnitedKingdom'
+import RussiaFlag from '@/public/icons/FlagRussia'
+import UnitedKingdomFlag from '@/public/icons/FlagUnitedKingdom'
 
 const meta: Meta<typeof Select> = {
   component: Select,
@@ -19,71 +19,81 @@ export const Uncontrolled: Story = {
     disabled: false,
     label: 'Select-Box',
     value: '',
-    options: [
-      { value: 'apple', label: 'Apple' },
-      { value: 'orange', label: 'Orange' },
-      { value: 'banana', label: 'Banana' },
-      { value: 'grape', label: 'Grape' },
-    ],
   },
+  render: args => (
+    <Select {...args}>
+      <Select.Item value="apple">Apple</Select.Item>
+      <Select.Item value="orange">Orange</Select.Item>
+      <Select.Item value="banana">Banana</Select.Item>
+      <Select.Item value="grape">Grape</Select.Item>
+    </Select>
+  ),
 }
 
 export const Controlled: Story = {
   render: args => {
-    const [select, setSelect] = useState<string>('')
+    const ControlledSelect = () => {
+      const [select, setSelect] = useState<string>('')
 
-    return (
-      <Select
-        {...args}
-        label="Select-Box"
-        value={select}
-        onValueChange={setSelect}
-        options={[
-          { value: 'apple', label: 'Apple' },
-          { value: 'orange', label: 'Orange' },
-          { value: 'banana', label: 'Banana' },
-          { value: 'grape', label: 'Grape' },
-        ]}
-      />
-    )
+      return (
+        <Select {...args} value={select} onValueChange={setSelect}>
+          <Select.Item value="apple">Apple</Select.Item>
+          <Select.Item value="orange">Orange</Select.Item>
+          <Select.Item value="banana">Banana</Select.Item>
+          <Select.Item value="grape">Grape</Select.Item>
+        </Select>
+      )
+    }
+
+    return <ControlledSelect />
   },
 }
+
 export const PaginationVariant: Story = {
   args: {
     isPagination: true,
-    options: [
-      { value: '5', label: '5' },
-      { value: '10', label: '10' },
-      { value: '20', label: '20' },
-      { value: '30', label: '30' },
-      { value: '40', label: '40' },
-    ],
   },
   render: args => {
-    const [value, setValue] = useState(args.options[1].value)
-    return (
-      <div>
-        <Select {...args} value={value} onValueChange={setValue} />
-      </div>
-    )
+    const PaginationSelect = () => {
+      const [value, setValue] = useState('10')
+
+      return (
+        <Select {...args} value={value} onValueChange={setValue}>
+          <Select.Item value="5">5</Select.Item>
+          <Select.Item value="10">10</Select.Item>
+          <Select.Item value="20">20</Select.Item>
+          <Select.Item value="30">30</Select.Item>
+          <Select.Item value="40">40</Select.Item>
+        </Select>
+      )
+    }
+
+    return <PaginationSelect />
   },
 }
 
 export const LanguageSwitcher: Story = {
   render: () => {
-    const [language, setLanguage] = useState('RU')
-    const languages = [
-      { value: 'RU', label: 'Russian', icon: <RU /> },
-      { value: 'EN', label: 'English', icon: <EN /> },
-    ]
+    const LanguageSwitcherSelect = () => {
+      const [language, setLanguage] = useState('RU')
 
-    return (
-      <Select
-        options={languages}
-        value={language}
-        onValueChange={setLanguage}
-        placeholder="Select language"
-      />
-    )
+      return (
+        <Select
+          isLanguageSwitcher
+          placeholder="Select language"
+          value={language}
+          onValueChange={setLanguage}
+        >
+          <Select.Item value="RU">
+            <RussiaFlag /> Russian
+          </Select.Item>
+          <Select.Item value="EN">
+            <UnitedKingdomFlag /> English
+          </Select.Item>
+        </Select>
+      )
+    }
+
+    return <LanguageSwitcherSelect />
   },
 }
