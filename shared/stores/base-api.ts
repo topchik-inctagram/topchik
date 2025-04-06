@@ -3,7 +3,6 @@ import { baseQueryWithReauth } from '@/shared/stores'
 //todo why import from index.ts dont work by default
 export const baseApi = createApi({
   baseQuery: baseQueryWithReauth,
-  keepUnusedDataFor: 0,
   endpoints: () => ({}),
   reducerPath: 'baseApi',
   tagTypes: [''],

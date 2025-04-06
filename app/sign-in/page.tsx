@@ -26,7 +26,7 @@ const SignInPage = () => {
         />
       )}
       <SignIn
-        errorsFromApi={error?.data?.errorsMessages?.length && error?.data.errorsMessages[0]}
+        errorsFromApi={error?.data?.errorsMessages?.length && error?.data.errorsMessages}
         onSubmit={loginHandler}
       />
     </PageContainer>

@@ -1,6 +1,6 @@
-import type {Meta, StoryObj} from '@storybook/react'
-import {Button, Toast} from '@/shared/components'
-import {useRef, useState} from 'react';
+import type { Meta, StoryObj } from '@storybook/react'
+import { Button, Toast } from '@/shared/components'
+import { useRef, useState } from 'react'
 
 const meta = {
   title: 'Components/Toast',
@@ -11,48 +11,51 @@ const meta = {
 export default meta
 type Story = StoryObj<typeof Toast>
 
-
 export const ToastSuccessAlwaysOpen: Story = {
   args: {
     description: 'Your settings are saved',
     open: true,
-    variant: 'success'
-  }
+    variant: 'success',
+  },
 }
-
 
 export const ToastErrorAlwaysOpen: Story = {
   args: {
     description: 'Server is not available',
     open: true,
-    variant: 'error'
-  }
+    variant: 'error',
+  },
 }
 
 export const ToastSuccess: Story = {
   args: {
     description: 'Your settings are saved',
-    variant: 'success'
-  }
+    variant: 'success',
+  },
 }
 
 export const ToastError: Story = {
   args: {
     description: 'Server is not available',
-    variant: 'error'
-  }
+    variant: 'error',
+  },
+}
+
+export const ToastWithoutControl: Story = {
+  args: {
+    description: 'Server is not available',
+    variant: 'error',
+    defaultOpen: true,
+  },
 }
 
 export const ToastWithControl: Story = {
   render: () => {
-    const [open, setOpen] = useState(false);
+    const [open, setOpen] = useState(false)
 
     return (
       <>
-        <Button
-          onClick={() => setOpen(true)}>
-                    Open Toast
-        </Button>
+        <Button onClick={() => setOpen(true)}>Open Toast</Button>
         <Toast
           description="Your settings are saved"
           open={open}
@@ -60,24 +63,26 @@ export const ToastWithControl: Story = {
           onOpenChange={setOpen}
         />
       </>
-    );
-  },}
+    )
+  },
+}
 
 export const ToastCanReopen: Story = {
   render: () => {
-    const [open, setOpen] = useState(false);
-    const timerRef = useRef(0);
+    const [open, setOpen] = useState(false)
+    const timerRef = useRef(0)
     return (
       <>
         <Button
           onClick={() => {
-            setOpen(false);
-            window.clearTimeout(timerRef.current);
+            setOpen(false)
+            window.clearTimeout(timerRef.current)
             timerRef.current = window.setTimeout(() => {
-              setOpen(true);
-            }, 100);
-          }}>
-                    Open Toast
+              setOpen(true)
+            }, 100)
+          }}
+        >
+          Open Toast
         </Button>
         <Toast
           description="Your settings are saved"
@@ -86,5 +91,6 @@ export const ToastCanReopen: Story = {
           onOpenChange={setOpen}
         />
       </>
-    );
-  },}
+    )
+  },
+}

@@ -17,7 +17,7 @@ const schema = z.object({
 type FormTypes = z.infer<typeof schema>
 type Props = {
   onSubmit: (data: FormTypes) => void
-  errorsFromApi?: { field: keyof FormTypes; message: string }
+  errorsFromApi?: { field: keyof FormTypes; message: string }[]
 }
 
 export const SignIn = ({ onSubmit, errorsFromApi }: Props) => {
@@ -36,9 +36,9 @@ export const SignIn = ({ onSubmit, errorsFromApi }: Props) => {
   //todo add Devtool when it will be fixed by dev
 
   useEffect(() => {
-    if (errorsFromApi) {
-      setError(errorsFromApi.field, { message: errorsFromApi.message })
-    }
+    errorsFromApi?.forEach(error => {
+      setError(error.field, { message: error.message })
+    })
   }, [errorsFromApi])
 
   return (
