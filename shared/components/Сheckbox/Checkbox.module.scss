@@ -1,6 +1,6 @@
 .container {
   display: flex;
-  gap: 10px;
+  gap: 8px;
   align-items: center;
 }
 
@@ -98,8 +98,8 @@
   justify-content: center;
 
   svg {
-    width: 16px;
-    height: 16px;
+    width: 24px;
+    height: 18px;
   }
 
   .root:disabled & svg path {

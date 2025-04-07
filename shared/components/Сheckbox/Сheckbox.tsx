@@ -25,6 +25,8 @@ export const Checkbox = ({
   const checkboxId = id ?? generatedId
   const [internalChecked, setInternalChecked] = useState(false)
   const [isVerified, setIsVerified] = useState(false)
+
+  //переделать на Switch
   const checked = isRecaptcha ? isVerified || internalChecked : (externalChecked ?? internalChecked)
 
   const handleCheckedChange = (newChecked: boolean) => {
@@ -68,6 +70,8 @@ export const Checkbox = ({
         id={checkboxId}
         onCheckedChange={handleCheckedChange}
       >
+        {/* {checked === "indeterminate" && <DividerHorizontalIcon />}
+      {checked === true && <CheckIcon />}  */}
         <CheckboxRadix.Indicator className={classNames.indicator}>
           {isRecaptcha ? <CheckmarkRecaptcha /> : <CheckmarkOutline />}
         </CheckboxRadix.Indicator>
