@@ -6,13 +6,32 @@ import s from './SignUp.module.scss'
 import Link from 'next/link'
 import { Github, Google } from '@/public'
 
-const schema = z.object({
-  username: z.string(),
-  email: z.string().email('Enter your email'),
-  password: z.string().min(3),
-  confirmPassword: z.string().min(3),
-  termsAndPolicy: z.boolean(),
-})
+const usernameRegex = /^[0-9A-Za-z_-]+$/
+const passwordRegex = /^[0-9A-Za-z!"#$%&'()*+,\-./:;<=>?@[\\\]^_`{|}~]+$/
+
+const schema = z
+  .object({
+    username: z
+      .string()
+      .min(6, 'Minimum number of characters 6')
+      .max(30, 'Maximum number of characters 30')
+      .regex(usernameRegex, 'Only letters, numbers, underscores and dashes allowed'),
+    email: z.string().email('The email must match the format example@example.com'),
+    password: z
+      .string()
+      .min(6, 'Minimum number of characters 6')
+      .max(20, 'Maximum number of characters 20')
+      .regex(
+        passwordRegex,
+        'Password must contain 0-9, a-z, A-Z, ! " # $ % & \' ( ) * + , - . / : ; < = > ? @ [ \\ ] ^ _` { | } ~'
+      ),
+    confirmPassword: z.string(),
+    termsAndPolicy: z.boolean(),
+  })
+  .refine(val => val.password === val.confirmPassword, {
+    path: ['confirmPassword'],
+    message: 'Passwords must match',
+  })
 
 type FormTypes = z.infer<typeof schema>
 type Props = {
@@ -22,8 +41,9 @@ type Props = {
 export const SignUp = ({ onSubmit }: Props) => {
   const {
     control,
-    formState: { errors },
+    formState: { errors, isValid, isSubmitting },
     handleSubmit,
+    watch,
   } = useForm<FormTypes>({
     defaultValues: {
       username: '',
@@ -32,6 +52,7 @@ export const SignUp = ({ onSubmit }: Props) => {
       confirmPassword: '',
       termsAndPolicy: false,
     },
+    mode: 'onBlur',
     resolver: zodResolver(schema),
   })
   //todo add Devtool when it will be fixed by dev
@@ -93,11 +114,11 @@ export const SignUp = ({ onSubmit }: Props) => {
           label={
             <Typography className={s.termsAndService} variant="small">
               I agree to the{' '}
-              <Link className={s.termsAndServiceLink} href="#">
+              <Link className={s.termsAndServiceLink} href="/terms" target="blank">
                 Terms of Service
               </Link>{' '}
               and{' '}
-              <Link className={s.termsAndServiceLink} href="#">
+              <Link className={s.termsAndServiceLink} href="/policy" target="blank">
                 Privacy Policy
               </Link>
             </Typography>
@@ -105,7 +126,12 @@ export const SignUp = ({ onSubmit }: Props) => {
           name="termsAndPolicy"
         />
 
-        <Button fullWidth className={s.buttonSignUp} type="submit">
+        <Button
+          fullWidth
+          className={s.buttonSignUp}
+          type="submit"
+          disabled={!isValid || isSubmitting || !watch('termsAndPolicy')}
+        >
           Sign Up
         </Button>
       </form>
