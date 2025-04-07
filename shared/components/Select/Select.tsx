@@ -90,7 +90,7 @@ export const Select = (props: SelectProps) => {
         </SelectRadix.Trigger>
 
         <SelectRadix.Portal>
-          <SelectRadix.Content className={classNames.content} position="popper" sideOffset={5}>
+          <SelectRadix.Content className={classNames.content} position="popper" sideOffset={0}>
             <SelectRadix.Viewport className={classNames.viewport}>{children}</SelectRadix.Viewport>
           </SelectRadix.Content>
         </SelectRadix.Portal>

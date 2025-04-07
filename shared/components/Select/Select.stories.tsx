@@ -1,8 +1,8 @@
 import { type Meta, type StoryObj } from '@storybook/react'
 import { useState } from 'react'
-import { Select } from './Select'
-import RussiaFlag from '@/public/icons/FlagRussia'
-import UnitedKingdomFlag from '@/public/icons/FlagUnitedKingdom'
+import { Select } from '@/shared/components'
+import FlagRussia from '@/public/icons/FlagRussia'
+import FlagUnitedKingdom from '@/public/icons/FlagUnitedKingdom'
 
 const meta: Meta<typeof Select> = {
   component: Select,
@@ -21,7 +21,7 @@ export const Uncontrolled: Story = {
     value: '',
   },
   render: args => (
-    <Select {...args}>
+    <Select {...args} open>
       <Select.Item value="apple">Apple</Select.Item>
       <Select.Item value="orange">Orange</Select.Item>
       <Select.Item value="banana">Banana</Select.Item>
@@ -85,10 +85,10 @@ export const LanguageSwitcher: Story = {
           onValueChange={setLanguage}
         >
           <Select.Item value="RU">
-            <RussiaFlag /> Russian
+            <FlagRussia /> Russian
           </Select.Item>
           <Select.Item value="EN">
-            <UnitedKingdomFlag /> English
+            <FlagUnitedKingdom /> English
           </Select.Item>
         </Select>
       )
