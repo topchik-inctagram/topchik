@@ -2,13 +2,13 @@ import type { Meta, StoryObj } from '@storybook/react'
 import { TabsContent, TabsList, TabsRoot, TabsTrigger } from './Tabs'
 import { useState } from 'react'
 
-const meta: Meta<typeof TabsRoot> = {
+const meta = {
   title: 'Components/Tabs',
   tags: ['autodocs'],
   parameters: {
     backgrounds: { default: '#0d0d0d' },
   },
-}
+} satisfies Meta<typeof TabsRoot>
 
 export default meta
 
