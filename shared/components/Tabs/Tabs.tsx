@@ -1,36 +1,20 @@
 import * as TabsPrimitive from '@radix-ui/react-tabs'
 import s from './Tabs.module.scss'
 import clsx from 'clsx'
-import { ComponentPropsWithRef } from 'react'
-import * as Label from '@radix-ui/react-label'
-import { Typography } from '../Typography'
+import { type ComponentPropsWithRef } from 'react'
 
 type TabsRootProps = {
   label?: string
 } & ComponentPropsWithRef<typeof TabsPrimitive.Root>
 
-export const TabsRoot = ({
-  label,
-  className,
-  children,
-  ref,
-  defaultValue,
-  ...rest
-}: TabsRootProps) => {
+export const TabsRoot = ({ className, children, ...rest }: TabsRootProps) => {
   const classNames = {
     label: s.label,
     root: clsx(s.root, className),
   }
 
   return (
-    <TabsPrimitive.Root className={classNames.root} ref={ref} defaultValue={defaultValue} {...rest}>
-      {label && (
-        <Label.Root asChild className={classNames.label}>
-          <Typography as={'label'} variant={'regular_16'}>
-            {label}
-          </Typography>
-        </Label.Root>
-      )}
+    <TabsPrimitive.Root className={classNames.root} {...rest}>
       {children}
     </TabsPrimitive.Root>
   )
@@ -38,11 +22,11 @@ export const TabsRoot = ({
 
 TabsRoot.displayName = 'TabsRoot'
 
-type ListProps = TabsPrimitive.TabsListProps
+type ListProps = ComponentPropsWithRef<typeof TabsPrimitive.List>
 
 export const TabsList = ({ className, children, ...rest }: ListProps) => {
   const classNames = {
-    list: clsx(s.list),
+    list: clsx(s.list, className),
   }
 
   return (
@@ -56,33 +40,28 @@ TabsList.displayName = 'TabsList'
 
 type TabsProps = ComponentPropsWithRef<typeof TabsPrimitive.Trigger>
 
-export const TabsTrigger = ({ className, children, ref, value, ...rest }: TabsProps) => {
+export const TabsTrigger = ({ className, children, ...rest }: TabsProps) => {
   const classNames = {
     trigger: clsx(s.trigger, className),
   }
 
   return (
-    <TabsPrimitive.Trigger asChild value={value} className={classNames.trigger} {...rest}>
-      <Typography as={'button'} variant={'h3'}>
-        {children}
-      </Typography>
+    <TabsPrimitive.Trigger className={classNames.trigger} {...rest}>
+      {children}
     </TabsPrimitive.Trigger>
   )
 }
 
 TabsTrigger.displayName = 'TabsTrigger'
 
-export const TabsContent = ({
-  className,
-  children,
-  value,
-  ...rest
-}: TabsPrimitive.TabsContentProps) => {
+type TabsContentProps = ComponentPropsWithRef<typeof TabsPrimitive.Content>
+
+export const TabsContent = ({ className, children, ...rest }: TabsContentProps) => {
   const classNames = {
-    content: (s.content, className),
+    content: clsx(s.content, className),
   }
   return (
-    <TabsPrimitive.Content className={classNames.content} value={value} {...rest}>
+    <TabsPrimitive.Content className={classNames.content} {...rest}>
       {children}
     </TabsPrimitive.Content>
   )
