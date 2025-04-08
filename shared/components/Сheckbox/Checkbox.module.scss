@@ -1,9 +1,9 @@
 .container {
   display: flex;
-  gap: 8px;
+  gap: 11px;
   align-items: center;
 
-  &[data-recaptcha="true"] {
+  &[data-recaptcha='true'] {
     gap: 10px;
   }
 }
@@ -69,7 +69,6 @@
 
     &::after {
       background-color: var(--color-dark-500);
-      outline: 2px solid var(--color-light-500);
       outline-offset: 2px;
     }
   }
@@ -102,7 +101,7 @@
   justify-content: center;
 
   svg {
-    width: 24px;
+    width: 18px;
     height: 18px;
   }
 
@@ -116,6 +115,7 @@
   height: 20px;
   border-color: var(--color-light-100);
   border-radius: 1px;
+
   background-color: var(--color-light-100);
 
   &::after {
