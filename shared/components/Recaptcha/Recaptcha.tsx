@@ -4,6 +4,7 @@ import { RecaptchaIcon } from '@/public'
 import { Сheckbox } from '@/shared/components'
 import { CaptchaSpinner } from '@/shared/components'
 import { Label } from '@/shared/components'
+import Link from 'next/link'
 
 type RecaptchaStatus = 'idle' | 'pending' | 'verified' | 'error' | 'expired' | 'notVerified'
 
@@ -80,7 +81,6 @@ export const Recaptcha = ({
             <div className={classNames.errorMessage}>{getErrorMessage()}</div>
           </div>
         )}
-
         <div className={s.checkboxWrapper}>
           {isStatus === 'pending' ? (
             <div className={s.loaderContainer}>
@@ -94,8 +94,10 @@ export const Recaptcha = ({
             </>
           )}
         </div>
-
         <RecaptchaIcon className={s.icon} />
+        <Link href={'/'}>Privacy</Link>
+        <span>-</span>
+        <Link href={'/'}>Terms</Link>
       </div>
 
       {(isStatus === 'error' || isStatus === 'notVerified') && (
