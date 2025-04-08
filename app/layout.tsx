@@ -19,13 +19,13 @@ const metadata: Metadata = {
 
 export default function RootLayout({ children }: Readonly<{ children: ReactNode }>) {
   return (
-    <html lang="en">
-      <body>
-        <Provider store={store}>
+    <Provider store={store}>
+      <html lang="en">
+        <body>
           <Header />
           {children}
-        </Provider>
-      </body>
-    </html>
+        </body>
+      </html>
+    </Provider>
   )
 }

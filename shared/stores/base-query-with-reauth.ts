@@ -19,6 +19,8 @@ const baseQuery = fetchBaseQuery({
 
   prepareHeaders: headers => {
     //headers.set('API-KEY', import.meta.env.VITE_API_KEY)
+
+    //todo try to delete
     if (typeof window !== 'undefined') {
       const token = localStorage.getItem('AUTH_TOKEN')
       if (token) {
@@ -61,11 +63,12 @@ export const baseQueryWithReauth: BaseQueryFn<
       if (refreshResult.meta?.response?.status === 200) {
         // retry the initial query
         const data = refreshResult.data as RefreshTokenResponse
-        if (typeof window !== 'undefined' && data.accessToken) {
+        if (data.accessToken) {
           localStorage.setItem('AUTH_TOKEN', data.accessToken)
         }
         result = await baseQuery(args, api, extraOptions)
       } else {
+        //todo try to delete window
         if (typeof window !== 'undefined') {
           localStorage.removeItem('AUTH_TOKEN')
           const isSignInPage = window.location.pathname === '/sign-in'
