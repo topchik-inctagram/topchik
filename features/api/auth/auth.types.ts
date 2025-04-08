@@ -5,3 +5,10 @@ export type LoginArgs = {
 export type LoginResponse = {
   accessToken: string
 }
+
+export type RegistrationRequest = {
+  email: string
+  username: string
+  password: string
+  agreement: boolean
+}
