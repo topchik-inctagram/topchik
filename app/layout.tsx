@@ -8,6 +8,8 @@ import '@fontsource/inter/600.css'
 import '@fontsource/inter/700.css'
 import type { ReactNode } from 'react'
 import { Header } from '@/widgets'
+import { store } from '@/shared/stores'
+import { Provider } from 'react-redux'
 
 //todo fix metadata
 const metadata: Metadata = {
@@ -17,11 +19,13 @@ const metadata: Metadata = {
 
 export default function RootLayout({ children }: Readonly<{ children: ReactNode }>) {
   return (
-    <html lang="en">
-      <body>
-        <Header />
-        {children}
-      </body>
-    </html>
+    <Provider store={store}>
+      <html lang="en">
+        <body>
+          <Header />
+          {children}
+        </body>
+      </html>
+    </Provider>
   )
 }
