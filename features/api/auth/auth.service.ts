@@ -1,5 +1,5 @@
 import { baseApi } from '@/shared/stores'
-import type { LoginArgs, LoginResponse } from '@/features/api/auth'
+import type { LoginArgs, LoginResponse, RegistrationRequest } from '@/features/api/auth'
 
 export const AuthService = baseApi.injectEndpoints({
   endpoints: builder => {
@@ -27,7 +27,15 @@ export const AuthService = baseApi.injectEndpoints({
           url: 'v1/auth/refresh-token',
         }),
       }),
+      registrationUser: builder.mutation<void, RegistrationRequest>({
+        invalidatesTags: [''],
+        query: body => ({
+          body,
+          method: 'POST',
+          url: '/api/v1/auth/registration',
+        }),
+      }),
     }
   },
 })
-export const { useLoginMutation, useMeQuery } = AuthService
+export const { useLoginMutation, useMeQuery, useRegistrationUserMutation } = AuthService

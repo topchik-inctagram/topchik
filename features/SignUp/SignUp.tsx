@@ -25,8 +25,15 @@ const schema = z
         passwordRegex,
         'Password must contain 0-9, a-z, A-Z, ! " # $ % & \' ( ) * + , - . / : ; < = > ? @ [ \\ ] ^ _` { | } ~'
       ),
-    confirmPassword: z.string(),
-    termsAndPolicy: z.boolean(),
+    confirmPassword: z
+      .string()
+      .min(6, 'Minimum number of characters 6')
+      .max(20, 'Maximum number of characters 20')
+      .regex(
+        passwordRegex,
+        'Password must contain 0-9, a-z, A-Z, ! " # $ % & \' ( ) * + , - . / : ; < = > ? @ [ \\ ] ^ _` { | } ~'
+      ),
+    agreement: z.literal<boolean>(true),
   })
   .refine(val => val.password === val.confirmPassword, {
     path: ['confirmPassword'],
@@ -43,14 +50,13 @@ export const SignUp = ({ onSubmit }: Props) => {
     control,
     formState: { errors, isValid, isSubmitting },
     handleSubmit,
-    watch,
   } = useForm<FormTypes>({
     defaultValues: {
       username: '',
       email: '',
       password: '',
       confirmPassword: '',
-      termsAndPolicy: false,
+      agreement: false,
     },
     mode: 'onBlur',
     resolver: zodResolver(schema),
@@ -123,14 +129,14 @@ export const SignUp = ({ onSubmit }: Props) => {
               </Link>
             </Typography>
           }
-          name="termsAndPolicy"
+          name="agreement"
         />
 
         <Button
           fullWidth
           className={s.buttonSignUp}
           type="submit"
-          disabled={!isValid || isSubmitting || !watch('termsAndPolicy')}
+          disabled={!isValid || isSubmitting}
         >
           Sign Up
         </Button>
@@ -139,7 +145,7 @@ export const SignUp = ({ onSubmit }: Props) => {
         Don’t have an account?
       </Typography>
       <Button asChild fullWidth variant="miniOutlined">
-        <Link href="#">Sign In</Link>
+        <Link href="/sign-in">Sign In</Link>
       </Button>
     </Card>
   )
