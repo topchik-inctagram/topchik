@@ -7,7 +7,9 @@ import Link from 'next/link'
 import { Github, Google } from '@/public'
 
 const usernameRegex = /^[0-9A-Za-z_-]+$/
-const passwordRegex = /^[0-9A-Za-z!"#$%&'()*+,\-./:;<=>?@[\\\]^_`{|}~]+$/
+const passwordRegex = new RegExp(
+  '^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()_+\\-=\\[\\]{};\':"\\\\|,.<>\\/?~`]).+$'
+)
 
 const schema = z
   .object({
@@ -33,14 +35,20 @@ const schema = z
         passwordRegex,
         'Password must contain 0-9, a-z, A-Z, ! " # $ % & \' ( ) * + , - . / : ; < = > ? @ [ \\ ] ^ _` { | } ~'
       ),
-    agreement: z.literal<boolean>(true),
   })
-  .refine(val => val.password === val.confirmPassword, {
-    path: ['confirmPassword'],
+  .refine(({ password, confirmPassword }) => password === confirmPassword, {
     message: 'Passwords must match',
+    path: ['confirmPassword'],
   })
 
-type FormTypes = z.infer<typeof schema>
+const fullSchema = schema.and(
+  z.object({
+    agreement: z.literal<boolean>(true, {
+      errorMap: () => ({ message: 'You must accept the agreement' }),
+    }),
+  })
+)
+type FormTypes = z.infer<typeof fullSchema>
 type Props = {
   onSubmit: (data: FormTypes) => void
 }
@@ -49,6 +57,7 @@ export const SignUp = ({ onSubmit }: Props) => {
   const {
     control,
     formState: { errors, isValid, isSubmitting },
+    watch,
     handleSubmit,
   } = useForm<FormTypes>({
     defaultValues: {
@@ -59,7 +68,8 @@ export const SignUp = ({ onSubmit }: Props) => {
       agreement: false,
     },
     mode: 'onBlur',
-    resolver: zodResolver(schema),
+    resolver: zodResolver(fullSchema),
+    reValidateMode: 'onChange',
   })
   //todo add Devtool when it will be fixed by dev
   return (
@@ -114,7 +124,6 @@ export const SignUp = ({ onSubmit }: Props) => {
             type="password"
           />
         </div>
-
         <ControlledCheckbox
           control={control}
           label={
@@ -135,8 +144,8 @@ export const SignUp = ({ onSubmit }: Props) => {
         <Button
           fullWidth
           className={s.buttonSignUp}
+          disabled={(!watch('agreement') && !isValid) || isSubmitting}
           type="submit"
-          disabled={!isValid || isSubmitting}
         >
           Sign Up
         </Button>
