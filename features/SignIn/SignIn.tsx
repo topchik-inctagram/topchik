@@ -7,6 +7,7 @@ import s from './SignIn.module.scss'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
+import { useEffect } from 'react'
 
 const schema = z.object({
   email: z.string().email('Enter your email'),
@@ -16,13 +17,15 @@ const schema = z.object({
 type FormTypes = z.infer<typeof schema>
 type Props = {
   onSubmit: (data: FormTypes) => void
+  errorsFromApi?: { field: keyof FormTypes; message: string }[]
 }
 
-export const SignIn = ({ onSubmit }: Props) => {
+export const SignIn = ({ onSubmit, errorsFromApi }: Props) => {
   const {
     control,
     formState: { errors },
     handleSubmit,
+    setError,
   } = useForm<FormTypes>({
     defaultValues: {
       email: '',
@@ -31,6 +34,13 @@ export const SignIn = ({ onSubmit }: Props) => {
     resolver: zodResolver(schema),
   })
   //todo add Devtool when it will be fixed by dev
+
+  useEffect(() => {
+    errorsFromApi?.forEach(error => {
+      setError(error.field, { message: error.message })
+    })
+  }, [errorsFromApi])
+
   return (
     <Card className={s.cardContainer}>
       <Typography as="h2" className={s.title} variant="h1">

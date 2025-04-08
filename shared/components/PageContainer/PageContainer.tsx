@@ -1,5 +1,5 @@
 import clsx from 'clsx'
-import { ComponentPropsWithRef, CSSProperties, ElementType } from 'react'
+import { type ComponentPropsWithRef, type CSSProperties } from 'react'
 import s from './PageContainer.module.scss'
 
 type Props = ComponentPropsWithRef<'main'> & {
@@ -12,5 +12,5 @@ export const PageContainer = ({ className, mt = '24px', style, ref, ...rest }: P
   }
   const styles: CSSProperties = { marginTop: mt, ...style }
 
-  return <main className={classNames.page} ref={ref} style={styles} {...rest} />
+  return <main ref={ref} className={classNames.page} style={styles} {...rest} />
 }
