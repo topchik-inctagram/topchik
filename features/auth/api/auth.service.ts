@@ -1,5 +1,5 @@
 import { baseApi } from '@/shared/stores'
-import type { LoginArgs, LoginResponse, RegistrationRequest } from '@/features/api/auth'
+import type { LoginArgs, LoginResponse, RegistrationRequest } from '@/features/auth/api/index'
 
 export const AuthService = baseApi.injectEndpoints({
   endpoints: builder => {
@@ -16,15 +16,16 @@ export const AuthService = baseApi.injectEndpoints({
         providesTags: [''],
         query: () => ({
           params: undefined,
-          url: 'api/v1/auth/me',
+          url: '/api/v1/auth/me',
         }),
       }),
-      refreshToken: builder.mutation<void, void>({
+      //todo check this req
+      refreshToken: builder.mutation<any, any>({
         invalidatesTags: [''],
         query: () => ({
           method: 'POST',
           params: undefined,
-          url: 'v1/auth/refresh-token',
+          url: '/api/v1/auth/refresh-token',
         }),
       }),
       registrationUser: builder.mutation<void, RegistrationRequest>({
@@ -35,7 +36,15 @@ export const AuthService = baseApi.injectEndpoints({
           url: '/api/v1/auth/registration',
         }),
       }),
+      logout: builder.mutation<void, void>({
+        invalidatesTags: [''],
+        query: () => ({
+          params: undefined,
+          method: 'POST',
+          url: '/api/v1/auth/logout',
+        }),
+      }),
     }
   },
 })
-export const { useLoginMutation, useMeQuery, useRegistrationUserMutation } = AuthService
+export const { useLoginMutation, useLogoutMutation, useRegistrationUserMutation } = AuthService

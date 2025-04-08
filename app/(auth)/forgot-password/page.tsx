@@ -1,6 +1,6 @@
 'use client'
 
-import { ForgotPassword } from '@/features'
+import { ForgotPassword } from '../../../features/auth/forms/ForgotPassword'
 import { PageContainer } from '@/shared/components'
 
 const Page = () => {

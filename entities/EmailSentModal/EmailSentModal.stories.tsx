@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react'
-import { EmailSentModal } from '@/entities'
+import { EmailSentModal } from '@/entities/EmailSentModal'
 
 const meta = {
   component: EmailSentModal,

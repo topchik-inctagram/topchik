@@ -5,6 +5,8 @@ import {
   type FetchBaseQueryError,
 } from '@reduxjs/toolkit/query/react'
 import { Mutex } from 'async-mutex'
+import { BASE_URL, TOKEN } from '@/shared/constants'
+import { PublicPages } from '@/shared/enums'
 
 const mutex = new Mutex()
 
@@ -14,7 +16,7 @@ type RefreshTokenResponse = {
 }
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: 'https://gateway.topchik.uk',
+  baseUrl: BASE_URL,
   credentials: 'include',
 
   prepareHeaders: headers => {
@@ -22,7 +24,7 @@ const baseQuery = fetchBaseQuery({
 
     //todo try to delete
     if (typeof window !== 'undefined') {
-      const token = localStorage.getItem('AUTH_TOKEN')
+      const token = localStorage.getItem(TOKEN)
       if (token) {
         headers.set('Authorization', `Bearer ${token}`)
       }
@@ -41,11 +43,11 @@ export const baseQueryWithReauth: BaseQueryFn<
   let result = await baseQuery(args, api, extraOptions)
 
   if (
-    result.meta?.request.url === 'https://gateway.topchik.uk/api/v1/auth/login' &&
+    result.meta?.request.url === `${BASE_URL}/api/v1/auth/login` &&
     result.meta?.response?.status === 200
   ) {
     const data = result.data as RefreshTokenResponse
-    localStorage.setItem('AUTH_TOKEN', data.accessToken as string)
+    localStorage.setItem(TOKEN, data.accessToken as string)
   }
   if (result.error && result.error.status === 401) {
     if (!mutex.isLocked()) {
@@ -64,17 +66,17 @@ export const baseQueryWithReauth: BaseQueryFn<
         // retry the initial query
         const data = refreshResult.data as RefreshTokenResponse
         if (data.accessToken) {
-          localStorage.setItem('AUTH_TOKEN', data.accessToken)
+          localStorage.setItem(TOKEN, data.accessToken)
         }
         result = await baseQuery(args, api, extraOptions)
       } else {
         //todo try to delete window
         if (typeof window !== 'undefined') {
-          localStorage.removeItem('AUTH_TOKEN')
-          const isSignInPage = window.location.pathname === '/sign-in'
+          localStorage.removeItem(TOKEN)
+          const isSignInPage = window.location.pathname === PublicPages.signIn
 
           if (!isSignInPage) {
-            window.location.href = '/sign-in'
+            window.location.href = PublicPages.signIn
           }
         }
       }

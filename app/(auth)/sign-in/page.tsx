@@ -1,14 +1,23 @@
 'use client'
 
-import { SignIn } from '@/features'
+import { SignIn } from '../../../features/auth/forms/SignIn'
 import { PageContainer, Toast } from '@/shared/components'
-import { useLoginMutation } from '@/features/api/auth'
+import { useLoginMutation } from '../../../features/auth/api'
+import { useRouter } from 'next/navigation'
+import withAuth from '@/shared/HOC/withAuth'
+import { PrivatePages } from '@/shared/enums'
 
 const SignInPage = () => {
   const [login, { error, ...rest }] = useLoginMutation()
+  const router = useRouter()
 
-  const loginHandler = (data: any) => {
-    login(data)
+  const loginHandler = async (data: any) => {
+    try {
+      await login(data)
+      router.push(PrivatePages.profile)
+    } catch (e: any) {
+      console.log(e)
+    }
   }
 
   console.log(error, 'error ->>>')
@@ -33,4 +42,4 @@ const SignInPage = () => {
   )
 }
 
-export default SignInPage
+export default withAuth(SignInPage)

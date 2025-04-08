@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react'
-import { SignUp } from '@/features'
+import { SignUp } from '@/features/auth/forms/SignUp/index'
 
 const meta = {
   component: SignUp,
