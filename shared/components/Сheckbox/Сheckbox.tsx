@@ -2,7 +2,7 @@ import { type ComponentPropsWithRef, useId, useState } from 'react'
 import * as CheckboxRadix from '@radix-ui/react-checkbox'
 import s from './Checkbox.module.scss'
 import { clsx } from 'clsx'
-import { CheckmarkOutline, CheckmarkRecaptcha } from '@/public'
+import { CheckmarkOutline, CheckmarkRecaptcha, Vector } from '@/public'
 import { Label } from '@/shared/components'
 
 export type CheckboxProps = {
@@ -55,11 +55,7 @@ export const Checkbox = ({
   }
 
   const classNames = {
-    container: clsx(
-      s.container,
-      isRecaptcha && s.containerRecaptcha, 
-      className
-    ),
+    container: clsx(s.container, isRecaptcha && s.containerRecaptcha, className),
     root: clsx(
       s.root,
       disabled && s.disabled,
@@ -83,7 +79,7 @@ export const Checkbox = ({
         onCheckedChange={handleCheckedChange}
       >
         <CheckboxRadix.Indicator className={classNames.indicator}>
-          {isRecaptcha ? <CheckmarkRecaptcha /> : <CheckmarkOutline />}
+          {isRecaptcha ? <CheckmarkRecaptcha /> : <Vector />}
         </CheckboxRadix.Indicator>
       </CheckboxRadix.Root>
       <Label className={classNames.label} htmlFor={checkboxId}>
