@@ -14,7 +14,6 @@ export const Dropdown = ({
   align = 'end',
   children,
   className,
-  ref,
   ...rest
 }: DropdownProps) => {
   const classNames = {
@@ -27,7 +26,7 @@ export const Dropdown = ({
       <DropdownMenu.Trigger className={classNames.trigger}>{trigger}</DropdownMenu.Trigger>
 
       <DropdownMenu.Portal>
-        <DropdownMenu.Content ref={ref} align={align} className={classNames.content} {...rest}>
+        <DropdownMenu.Content align={align} className={classNames.content} {...rest}>
           {children}
         </DropdownMenu.Content>
       </DropdownMenu.Portal>
