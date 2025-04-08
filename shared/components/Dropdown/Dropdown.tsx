@@ -1,5 +1,5 @@
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu'
-import { ComponentPropsWithRef, ReactNode } from 'react'
+import { type ComponentPropsWithRef, type ReactNode } from 'react'
 import s from './Dropdown.module.scss'
 import clsx from 'clsx'
 
@@ -27,7 +27,7 @@ export const Dropdown = ({
       <DropdownMenu.Trigger className={classNames.trigger}>{trigger}</DropdownMenu.Trigger>
 
       <DropdownMenu.Portal>
-        <DropdownMenu.Content className={classNames.content} align={align} ref={ref} {...rest}>
+        <DropdownMenu.Content ref={ref} align={align} className={classNames.content} {...rest}>
           {children}
         </DropdownMenu.Content>
       </DropdownMenu.Portal>
@@ -38,13 +38,13 @@ Dropdown.displayName = 'Dropdown'
 
 type DropdownLabelProps = ComponentPropsWithRef<typeof DropdownMenu.Label>
 
-export const DropdownLabel = ({ children, className, ref, ...rest }: DropdownLabelProps) => {
+export const DropdownLabel = ({ children, className, ...rest }: DropdownLabelProps) => {
   const classNames = {
     label: clsx(s.label, className),
   }
 
   return (
-    <DropdownMenu.Label className={classNames.label} ref={ref} {...rest}>
+    <DropdownMenu.Label className={classNames.label} {...rest}>
       {children}
     </DropdownMenu.Label>
   )
@@ -54,25 +54,25 @@ DropdownLabel.displayName = 'DropdownLabel'
 
 type DropdownSeparatorProps = ComponentPropsWithRef<typeof DropdownMenu.Separator>
 
-export const DropdownSeparator = ({ className, ref, ...rest }: DropdownSeparatorProps) => {
+export const DropdownSeparator = ({ className, ...rest }: DropdownSeparatorProps) => {
   const classNames = {
     separator: clsx(s.separator, className),
   }
 
-  return <DropdownMenu.Separator ref={ref} className={classNames.separator} {...rest} />
+  return <DropdownMenu.Separator className={classNames.separator} {...rest} />
 }
 
 DropdownSeparator.displayName = 'DropdownSeparator'
 
 type DropdownArrowProps = Omit<ComponentPropsWithRef<'div'>, 'onChange'>
 
-export const DropdownArrow = ({ className, ref, ...rest }: DropdownArrowProps) => {
+export const DropdownArrow = ({ className, ...rest }: DropdownArrowProps) => {
   const classNames = {
     arrow: clsx(s.arrow, className),
   }
   return (
     <DropdownMenu.Arrow asChild>
-      <div ref={ref} className={classNames.arrow} {...rest} />
+      <div className={classNames.arrow} {...rest} />
     </DropdownMenu.Arrow>
   )
 }
@@ -81,12 +81,12 @@ DropdownArrow.displayName = 'DropdownArrow'
 
 type DropdownItemProps = ComponentPropsWithRef<typeof DropdownMenu.Item>
 
-export const DropdownItem = ({ children, className, ref, ...rest }: DropdownItemProps) => {
+export const DropdownItem = ({ children, className, ...rest }: DropdownItemProps) => {
   const classNames = {
     item: clsx(s.item, className),
   }
   return (
-    <DropdownMenu.Item ref={ref} className={classNames.item} {...rest}>
+    <DropdownMenu.Item className={classNames.item} {...rest}>
       {children}
     </DropdownMenu.Item>
   )

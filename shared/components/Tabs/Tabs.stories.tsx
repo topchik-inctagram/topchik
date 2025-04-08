@@ -16,30 +16,7 @@ type Story = StoryObj<typeof TabsRoot>
 
 export const DefaultVariant: Story = {
   render: () => {
-    const [tabValue, setTabValue] = useState('general')
-
-    return (
-      <TabsRoot defaultValue="general" value={tabValue} onValueChange={setTabValue}>
-        <TabsList>
-          <TabsTrigger value="general">General information</TabsTrigger>
-          <TabsTrigger value="devices">Devices</TabsTrigger>
-          <TabsTrigger value="account">Account Management</TabsTrigger>
-          <TabsTrigger value="payments">My payments</TabsTrigger>
-        </TabsList>
-        <TabsContent style={{ marginTop: '12px' }} value="general">
-          General content
-        </TabsContent>
-        <TabsContent style={{ marginTop: '12px' }} value="devices">
-          Devices content
-        </TabsContent>
-        <TabsContent style={{ marginTop: '12px' }} value="account">
-          Account
-        </TabsContent>
-        <TabsContent aria-disabled style={{ marginTop: '12px' }} value="payments">
-          Payment info goes here
-        </TabsContent>
-      </TabsRoot>
-    )
+    return <TabWrapper />
   },
 }
 
@@ -47,16 +24,16 @@ export const DisabledVariant: Story = {
   render: () => (
     <TabsRoot defaultValue="general">
       <TabsList>
-        <TabsTrigger value="general" disabled>
+        <TabsTrigger disabled value="general">
           General information
         </TabsTrigger>
-        <TabsTrigger value="devices" disabled>
+        <TabsTrigger disabled value="devices">
           Devices
         </TabsTrigger>
-        <TabsTrigger value="account" disabled>
+        <TabsTrigger disabled value="account">
           Account Management
         </TabsTrigger>
-        <TabsTrigger value="payments" disabled>
+        <TabsTrigger disabled value="payments">
           My payments
         </TabsTrigger>
       </TabsList>
@@ -74,4 +51,31 @@ export const DisabledVariant: Story = {
       </TabsContent>
     </TabsRoot>
   ),
+}
+
+const TabWrapper = () => {
+  const [tabValue, setTabValue] = useState('general')
+
+  return (
+    <TabsRoot defaultValue="general" value={tabValue} onValueChange={setTabValue}>
+      <TabsList>
+        <TabsTrigger value="general">General information</TabsTrigger>
+        <TabsTrigger value="devices">Devices</TabsTrigger>
+        <TabsTrigger value="account">Account Management</TabsTrigger>
+        <TabsTrigger value="payments">My payments</TabsTrigger>
+      </TabsList>
+      <TabsContent style={{ marginTop: '12px' }} value="general">
+        General content
+      </TabsContent>
+      <TabsContent style={{ marginTop: '12px' }} value="devices">
+        Devices content
+      </TabsContent>
+      <TabsContent style={{ marginTop: '12px' }} value="account">
+        Account
+      </TabsContent>
+      <TabsContent aria-disabled style={{ marginTop: '12px' }} value="payments">
+        Payment info goes here
+      </TabsContent>
+    </TabsRoot>
+  )
 }
