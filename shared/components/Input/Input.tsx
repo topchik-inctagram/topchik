@@ -92,7 +92,12 @@ export const Input = ({
       )}
       <div className={classNames.inputContainer}>
         {isSearchType && (
-          <button className={classNames.searchIcon} disabled={disabled} onClick={onKeyEnter}>
+          <button
+            type="button"
+            className={classNames.searchIcon}
+            disabled={disabled}
+            onClick={onKeyEnter}
+          >
             <Search />
           </button>
         )}
@@ -119,6 +124,7 @@ export const Input = ({
         )}
         {isPasswordType && (
           <button
+            type="button"
             className={classNames.showPassword}
             disabled={disabled}
             onClick={togglePasswordVisibility}
@@ -128,7 +134,7 @@ export const Input = ({
         )}
       </div>
       {error && (
-        <Typography as="span" className={classNames.errorText} variant="small">
+        <Typography className={classNames.errorText} variant="small">
           {error}
         </Typography>
       )}
