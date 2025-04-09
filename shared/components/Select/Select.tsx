@@ -8,6 +8,7 @@ import {
   isValidElement,
   Children,
   type ReactElement,
+  useId,
 } from 'react'
 import s from './Select.module.scss'
 import { Label, Typography } from '@/shared/components'
@@ -45,6 +46,8 @@ export const Select = (props: SelectProps) => {
     child => isValidElement<SelectProps>(child) && child.props.value === value
   ) as ReactElement<SelectItemProps>
 
+  const selectId = useId()
+
   const classNames = {
     wrapper: clsx(
       s.selectWrapper,
@@ -72,9 +75,11 @@ export const Select = (props: SelectProps) => {
 
   return (
     <div className={classNames.wrapper}>
-      <Label className={classNames.label}>{label}</Label>
+      <Label className={classNames.label} htmlFor={selectId}>
+        {label}
+      </Label>
       <SelectRadix.Root disabled={disabled} value={value} onValueChange={onValueChange} {...rest}>
-        <SelectRadix.Trigger ref={ref} className={classNames.trigger}>
+        <SelectRadix.Trigger ref={ref} className={classNames.trigger} id={selectId}>
           <div className={classNames.valueContainer}>
             <SelectRadix.Value asChild placeholder={placeholder}>
               <Typography as="span" variant={isPagination ? 'regular_14' : 'regular_16'}>
