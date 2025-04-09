@@ -10,7 +10,7 @@ import {
   type ReactElement,
 } from 'react'
 import s from './Select.module.scss'
-import { Label } from '@/shared/components'
+import { Label, Typography } from '@/shared/components'
 
 type SelectProps = {
   className?: string
@@ -64,7 +64,7 @@ export const Select = (props: SelectProps) => {
     arrowDown: clsx(s.arrowDown, disabled && s.disabledArrow),
     content: clsx(s.content, isPagination && s.paginationContent),
     viewport: s.viewport,
-    item: s.item,
+    item: clsx(s.item, isPagination && s.paginationItem),
     optionContent: s.optionContent,
     optionIcon: s.optionIcon,
     label: clsx(s.label, disabled && s.disabledLabel),
@@ -76,12 +76,14 @@ export const Select = (props: SelectProps) => {
       <SelectRadix.Root disabled={disabled} value={value} onValueChange={onValueChange} {...rest}>
         <SelectRadix.Trigger ref={ref} className={classNames.trigger}>
           <div className={classNames.valueContainer}>
-            <SelectRadix.Value placeholder={placeholder}>
-              {selectedChild && isValidElement(selectedChild) ? (
-                <div className={s.optionContent}>{selectedChild.props.children}</div>
-              ) : (
-                value || placeholder
-              )}
+            <SelectRadix.Value asChild placeholder={placeholder}>
+              <Typography as="span" variant={isPagination ? 'regular_14' : 'regular_16'}>
+                {selectedChild && isValidElement(selectedChild) ? (
+                  <div className={s.optionContent}>{selectedChild.props.children}</div>
+                ) : (
+                  value || placeholder
+                )}
+              </Typography>
             </SelectRadix.Value>
           </div>
           <SelectRadix.Icon className={classNames.icon}>
@@ -90,7 +92,7 @@ export const Select = (props: SelectProps) => {
         </SelectRadix.Trigger>
 
         <SelectRadix.Portal>
-          <SelectRadix.Content className={classNames.content} position="popper" sideOffset={0}>
+          <SelectRadix.Content className={classNames.content} position="popper" sideOffset={-1}>
             <SelectRadix.Viewport className={classNames.viewport}>{children}</SelectRadix.Viewport>
           </SelectRadix.Content>
         </SelectRadix.Portal>
@@ -103,13 +105,20 @@ type SelectItemProps = {
   children: ReactNode
   className?: string
   value: string
+  isPagination?: boolean
 } & ComponentPropsWithRef<typeof SelectRadix.Item>
 
-const SelectItem = ({ children, className, value, ...props }: SelectItemProps) => {
+const SelectItem = ({ children, isPagination, className, value, ...props }: SelectItemProps) => {
   return (
-    <SelectRadix.Item className={clsx(s.item, className)} value={value} {...props}>
-      <SelectRadix.ItemText>
-        <div className={s.optionContent}>{children}</div>
+    <SelectRadix.Item
+      className={clsx(s.item, isPagination && s.paginationItem, className)}
+      value={value}
+      {...props}
+    >
+      <SelectRadix.ItemText asChild>
+        <Typography variant={isPagination ? 'regular_14' : 'regular_16'}>
+          <div className={s.optionContent}>{children}</div>
+        </Typography>
       </SelectRadix.ItemText>
     </SelectRadix.Item>
   )

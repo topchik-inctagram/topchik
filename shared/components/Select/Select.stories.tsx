@@ -36,7 +36,7 @@ export const Controlled: Story = {
       const [select, setSelect] = useState<string>('')
 
       return (
-        <Select {...args} value={select} onValueChange={setSelect}>
+        <Select label="Check something" {...args} value={select} onValueChange={setSelect}>
           <Select.Item value="apple">Apple</Select.Item>
           <Select.Item value="orange">Orange</Select.Item>
           <Select.Item value="banana">Banana</Select.Item>
@@ -59,11 +59,21 @@ export const PaginationVariant: Story = {
 
       return (
         <Select {...args} value={value} onValueChange={setValue}>
-          <Select.Item value="5">5</Select.Item>
-          <Select.Item value="10">10</Select.Item>
-          <Select.Item value="20">20</Select.Item>
-          <Select.Item value="30">30</Select.Item>
-          <Select.Item value="40">40</Select.Item>
+          <Select.Item isPagination value="5">
+            5
+          </Select.Item>
+          <Select.Item isPagination value="10">
+            10
+          </Select.Item>
+          <Select.Item isPagination value="20">
+            20
+          </Select.Item>
+          <Select.Item isPagination value="30">
+            30
+          </Select.Item>
+          <Select.Item isPagination value="40">
+            40
+          </Select.Item>
         </Select>
       )
     }
