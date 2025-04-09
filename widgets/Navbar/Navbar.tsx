@@ -19,8 +19,9 @@ import {
   TrendUp,
   TrendUpOutline,
 } from '@/public'
-import { Typography } from '@/shared/components'
-import type { ComponentPropsWithRef } from 'react'
+import { Button, Typography } from '@/shared/components'
+import { type ComponentPropsWithRef, useState } from 'react'
+import { LogoutModal } from '@/entities/LogoutModal'
 
 type Props = {
   isMobile?: boolean
@@ -67,56 +68,60 @@ function DesktopNavbar({ className, ...rest }: ComponentPropsWithRef<'nav'>) {
     firstContainer: clsx(s.desktopContainer, s.desktopFirstContainer),
     secondContainer: clsx(s.desktopSecondContainer, s.desktopContainer),
   }
+  const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false)
   const active = true
   // if you want to disable link you need to add data-disabled='disabled' in link props
   return (
-    <nav className={classNames.nav} {...rest}>
-      <ul>
-        <div className={classNames.firstContainer}>
+    <>
+      <nav className={classNames.nav} {...rest}>
+        <ul>
+          <div className={classNames.firstContainer}>
+            <li>
+              <Typography as={Link} data-disabled="disabled" href="#" variant="medium_14">
+                {active ? <Home /> : <HomeOutline />} Feed
+              </Typography>
+            </li>
+            <li>
+              <Typography as={Link} href="#" variant="medium_14">
+                {active ? <PlusSquare /> : <PlusSquareOutline />} Create
+              </Typography>
+            </li>
+            <li>
+              <Typography as={Link} href="#" variant="medium_14">
+                {active ? <Person /> : <PersonOutline />} My Profile
+              </Typography>
+            </li>
+            <li>
+              <Typography as={Link} href="#" variant="medium_14">
+                {active ? <MessageCircle /> : <MessageCircleOutline />} Messenger
+              </Typography>
+            </li>
+            <li>
+              <Typography as={Link} href="#" variant="medium_14">
+                {active ? <Search /> : <SearchOutline />} Search
+              </Typography>
+            </li>
+          </div>
+          <div className={classNames.secondContainer}>
+            <li>
+              <Typography as={Link} href="#" variant="medium_14">
+                {active ? <TrendUp /> : <TrendUpOutline />} Statistics
+              </Typography>
+            </li>
+            <li>
+              <Typography as={Link} href="#" variant="medium_14">
+                {active ? <Bookmark /> : <BookmarkOutline />} Favorites
+              </Typography>
+            </li>
+          </div>
           <li>
-            <Typography as={Link} data-disabled="disabled" href="#" variant="medium_14">
-              {active ? <Home /> : <HomeOutline />} Feed
+            <Typography as={Button} variant="medium_14" onClick={() => setIsLogoutModalOpen(true)}>
+              {active ? <LogOut /> : <LogOutOutline />} Log Out
             </Typography>
           </li>
-          <li>
-            <Typography as={Link} href="#" variant="medium_14">
-              {active ? <PlusSquare /> : <PlusSquareOutline />} Create
-            </Typography>
-          </li>
-          <li>
-            <Typography as={Link} href="#" variant="medium_14">
-              {active ? <Person /> : <PersonOutline />} My Profile
-            </Typography>
-          </li>
-          <li>
-            <Typography as={Link} href="#" variant="medium_14">
-              {active ? <MessageCircle /> : <MessageCircleOutline />} Messenger
-            </Typography>
-          </li>
-          <li>
-            <Typography as={Link} href="#" variant="medium_14">
-              {active ? <Search /> : <SearchOutline />} Search
-            </Typography>
-          </li>
-        </div>
-        <div className={classNames.secondContainer}>
-          <li>
-            <Typography as={Link} href="#" variant="medium_14">
-              {active ? <TrendUp /> : <TrendUpOutline />} Statistics
-            </Typography>
-          </li>
-          <li>
-            <Typography as={Link} href="#" variant="medium_14">
-              {active ? <Bookmark /> : <BookmarkOutline />} Favorites
-            </Typography>
-          </li>
-        </div>
-        <li>
-          <Typography as={Link} href="#" variant="medium_14">
-            {active ? <LogOut /> : <LogOutOutline />} Log Out
-          </Typography>
-        </li>
-      </ul>
-    </nav>
+        </ul>
+      </nav>
+      <LogoutModal open={isLogoutModalOpen} onClose={() => setIsLogoutModalOpen(false)} />
+    </>
   )
 }
