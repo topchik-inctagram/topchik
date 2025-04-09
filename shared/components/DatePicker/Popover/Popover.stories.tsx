@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react'
 
-import { CalendarOutline } from '@/public'
+import { CalendarOutline } from '@/public/icons'
 import { Label, Popover, PopoverContent, PopoverTrigger, Typography } from '@/shared/components'
 
 const meta: Meta<typeof Popover> = {

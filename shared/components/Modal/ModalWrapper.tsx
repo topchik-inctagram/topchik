@@ -1,8 +1,8 @@
 import * as Dialog from '@radix-ui/react-dialog'
 import s from './ModalWrapper.module.scss'
-import { ComponentPropsWithRef } from 'react'
+import { type ComponentPropsWithRef, type ReactNode } from 'react'
 import clsx from 'clsx'
-import { CloseOutline } from '@/public'
+import { CloseOutline } from '@/public/icons'
 
 type ModalSize = 'lg' | 'md' | 'sm'
 
@@ -11,7 +11,7 @@ type Props = {
   onClose: () => void
   title: string
   size?: ModalSize
-  children?: React.ReactNode
+  children?: ReactNode
 } & ComponentPropsWithRef<'div'>
 
 export const ModalWrapper = ({
@@ -39,7 +39,7 @@ export const ModalWrapper = ({
           <div className={classNames.header}>
             <Dialog.Title className={classNames.title}>{title}</Dialog.Title>
             <Dialog.Close asChild>
-              <CloseOutline className={classNames.closeButton} aria-label="Close" />
+              <CloseOutline aria-label="Close" className={classNames.closeButton} />
             </Dialog.Close>
           </div>
           <hr />

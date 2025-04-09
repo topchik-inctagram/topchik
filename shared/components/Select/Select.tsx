@@ -1,6 +1,6 @@
 import * as SelectRadix from '@radix-ui/react-select'
 import { clsx } from 'clsx'
-import { ArrowIosDownOutline } from '@/public'
+import { ArrowIosDownOutline } from '@/public/icons'
 import {
   type ComponentPropsWithRef,
   type ReactNode,

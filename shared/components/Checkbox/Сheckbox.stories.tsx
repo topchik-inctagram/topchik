@@ -6,6 +6,11 @@ const meta = {
   component: Checkbox,
   tags: ['autodocs'],
   title: 'Components/UI/Checkbox',
+  args: {
+    label: 'Check-box',
+    disabled: false,
+    checked: false,
+  },
   argTypes: {
     disabled: {
       control: 'boolean',
@@ -23,39 +28,40 @@ const meta = {
       action: 'checked',
       description: 'Callback when checked state changes',
     },
+    isRecaptcha: {
+      control: 'boolean',
+      description: 'Enable reCAPTCHA functionality',
+    },
+    onRecaptchaComplete: {
+      action: 'recaptcha-complete',
+      description: 'Callback when reCAPTCHA is verified',
+    },
   },
 } satisfies Meta<typeof Checkbox>
 
 export default meta
 type Story = StoryObj<typeof meta>
 
-export const Default: Story = {
+export const Checked: Story = {
   args: {
-    label: 'Check-Box',
     checked: true,
   },
 }
 
-export const RecaptchaMode: Story = {
-  args: {
-    label: 'I’m not a robot',
-    checked: false,
-    recaptchaMode: true,
-  },
-  render: args => {
-    const [loading, setLoading] = useState(false)
-    const [verified, setVerified] = useState(false)
+const RecaptchaCheckbox = () => {
+  const [checked, setChecked] = useState(false)
 
-    const handleChange = async (checked: boolean) => {
-      setLoading(true)
-      await new Promise(resolve => setTimeout(resolve, 2000))
-      setLoading(false)
-      setVerified(true)
-      return true
-    }
+  return (
+    <Checkbox
+      isRecaptcha
+      checked={checked}
+      label="reCAPTCHA"
+      onCheckedChange={() => setChecked(!checked)}
+      onRecaptchaComplete={() => console.log('reCAPTCHA verified')}
+    />
+  )
+}
 
-    return (
-      <Checkbox {...args} checked={verified} disabled={loading} onCheckedChange={handleChange} />
-    )
-  },
+export const WithRecaptcha: Story = {
+  render: () => <RecaptchaCheckbox />,
 }

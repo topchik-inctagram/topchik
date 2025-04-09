@@ -10,7 +10,7 @@ import {
 
 import clsx from 'clsx'
 import s from './Input.module.scss'
-import { Close, EyeOffOutline, EyeOutline, Search } from '@/public'
+import { Close, EyeOffOutline, EyeOutline, Search } from '@/public/icons'
 import { Label, Typography } from '@/shared/components'
 
 export type InputProps = {
@@ -93,9 +93,9 @@ export const Input = ({
       <div className={classNames.inputContainer}>
         {isSearchType && (
           <button
-            type="button"
             className={classNames.searchIcon}
             disabled={disabled}
+            type="button"
             onClick={onKeyEnter}
           >
             <Search />
@@ -124,9 +124,9 @@ export const Input = ({
         )}
         {isPasswordType && (
           <button
-            type="button"
             className={classNames.showPassword}
             disabled={disabled}
+            type="button"
             onClick={togglePasswordVisibility}
           >
             {showPassword ? <EyeOutline /> : <EyeOffOutline />}

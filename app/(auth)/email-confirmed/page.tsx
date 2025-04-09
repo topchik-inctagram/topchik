@@ -1,6 +1,6 @@
 import { Button, PageContainer, Typography } from '@/shared/components'
 import Link from 'next/link'
-import { SignUpBro } from '@/public'
+import { SignUpBro } from '@/public/icons'
 import s from './page.module.scss'
 
 const Page = () => {

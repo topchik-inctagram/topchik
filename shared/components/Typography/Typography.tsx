@@ -41,26 +41,26 @@ export const Typography = <T extends ElementType = 'p'>(props: TypographyProps<T
 
   function typographyVar(as: ElementType = 'p', variant: Props<T>['variant'] = 'regular_16') {
     switch (variant) {
-    case 'regular_16':
-    case 'bold_16':
-    case 'regular_14':
-    case 'medium_14':
-    case 'large':
-    case 'small':
-    case 'semi_bold_small':
-    case 'bold_14':
-      return as
-    case 'h1':
-      return 'h1'
-    case 'h2':
-      return 'h2'
-    case 'h3':
-      return 'h3'
-    case 'regular_link':
-    case 'small_link':
-      return Link
-    default:
-      return exhaustiveCheck(variant)
+      case 'regular_16':
+      case 'bold_16':
+      case 'regular_14':
+      case 'medium_14':
+      case 'large':
+      case 'small':
+      case 'semi_bold_small':
+      case 'bold_14':
+        return as
+      case 'h1':
+        return 'h1'
+      case 'h2':
+        return 'h2'
+      case 'h3':
+        return 'h3'
+      case 'regular_link':
+      case 'small_link':
+        return Link
+      default:
+        return exhaustiveCheck(variant)
     }
   }
 
