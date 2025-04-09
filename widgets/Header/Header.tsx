@@ -20,7 +20,15 @@ export const Header = ({
   notificationCount = 0,
 }: Props) => {
   const pathname = usePathname()
-  const [isLogged, setIsLogged] = useState(localStorage.getItem(TOKEN))
+
+  const getToken = () => {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem(TOKEN)
+    }
+    return null
+  }
+
+  const [isLogged, setIsLogged] = useState<string | null>(getToken)
 
   useEffect(() => {
     const checkAuth = () => {
@@ -43,7 +51,6 @@ export const Header = ({
       </Typography>
 
       <div className={s.controls}>
-        {/* Icon */}
         {!!isLogged && (
           <div className={s.bellWrapper}>
             <BellIcon className={s.bellIcon} />
@@ -53,7 +60,6 @@ export const Header = ({
           </div>
         )}
 
-        {/* Lang */}
         <div className={s.languageSelector}>
           <select value={selectedLanguage} onChange={e => onLanguageChange?.(e.target.value)}>
             <option value="english">English</option>
@@ -61,7 +67,6 @@ export const Header = ({
           </select>
         </div>
 
-        {/* Buttons */}
         {!isLogged && (
           <>
             <Button asChild variant="miniOutlined">

@@ -9,7 +9,6 @@ import s from './LogoutModal.module.scss'
 type Props = {
   open: boolean
   onClose?: () => void
-  testing?: string
 }
 
 export function LogoutModal({ open, onClose }: Props) {
