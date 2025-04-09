@@ -8,7 +8,7 @@ import {
   PopoverTrigger,
   Typography,
 } from '@/shared/components'
-import { CalendarOutline } from '@/public'
+import { CalendarOutline } from '@/public/icons'
 import { type ComponentPropsWithoutRef, useEffect, useId, useState } from 'react'
 import { type DateRange, type DayPicker } from 'react-day-picker'
 import { format, parse } from 'date-fns'

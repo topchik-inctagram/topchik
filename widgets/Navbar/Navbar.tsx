@@ -18,7 +18,7 @@ import {
   SearchOutline,
   TrendUp,
   TrendUpOutline,
-} from '@/public'
+} from '@/public/icons'
 import { Typography } from '@/shared/components'
 import { type ComponentPropsWithRef, useState } from 'react'
 import { LogoutModal } from '@/entities/LogoutModal'

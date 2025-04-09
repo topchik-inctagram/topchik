@@ -2,7 +2,7 @@
 
 import { type ComponentPropsWithoutRef, useMemo } from 'react'
 
-import { ArrowIosBackOutline, ArrowIosForwardOutline } from '@/public'
+import { ArrowIosBackOutline, ArrowIosForwardOutline } from '@/public/icons'
 import { DayPicker } from 'react-day-picker'
 import s from './Calendar.module.scss'
 

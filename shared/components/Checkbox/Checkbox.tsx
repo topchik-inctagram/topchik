@@ -1,12 +1,12 @@
-import { type ComponentPropsWithRef, useId, useState } from 'react'
+import { type ComponentPropsWithRef, type ReactNode, useId, useState } from 'react'
 import * as CheckboxRadix from '@radix-ui/react-checkbox'
 import s from './Checkbox.module.scss'
 import { clsx } from 'clsx'
-import { CheckmarkRecaptcha, Vector } from '@/public'
+import { CheckmarkRecaptcha, Vector } from '@/public/icons'
 import { Label } from '@/shared/components'
 
 export type CheckboxProps = {
-  label?: string
+  label?: string | ReactNode
   isRecaptcha?: boolean
   onRecaptchaComplete?: () => void
 } & ComponentPropsWithRef<typeof CheckboxRadix.Root>

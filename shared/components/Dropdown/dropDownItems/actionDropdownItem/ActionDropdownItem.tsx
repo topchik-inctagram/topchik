@@ -2,7 +2,7 @@ import { type ComponentPropsWithRef, type ReactNode } from 'react'
 import { Typography } from '@/shared/components'
 import s from './ActionDropdownItem.module.scss'
 import clsx from 'clsx'
-import { MoreHorizontalOutline } from '@/public'
+import { MoreHorizontalOutline } from '@/public/icons'
 
 type Props = {
   icon: ReactNode

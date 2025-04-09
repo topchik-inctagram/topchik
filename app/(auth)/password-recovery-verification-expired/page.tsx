@@ -1,6 +1,7 @@
 import { Button, PageContainer, Typography } from '@/shared/components'
-import { TimeManagement } from '@/public'
+
 import s from './page.module.scss'
+import { TimeManagement } from '@/public/icons'
 
 const Page = () => {
   return (
