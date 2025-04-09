@@ -36,6 +36,7 @@ export const AuthService = baseApi.injectEndpoints({
           url: '/api/v1/auth/registration',
         }),
       }),
+      //todo check this req
       logout: builder.mutation<void, void>({
         invalidatesTags: [''],
         query: () => ({
