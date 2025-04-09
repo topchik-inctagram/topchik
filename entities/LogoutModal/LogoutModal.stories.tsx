@@ -13,7 +13,6 @@ type Story = StoryObj<typeof LogoutModal>
 
 export const LogoutModalStory: Story = {
   args: {
-    emailForTest: 'test@test.com',
     open: true,
   },
 }

@@ -9,7 +9,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 12px 24px;
+  padding: 12px 24px 11px;
 }
 
 .modalBody {
@@ -60,10 +60,6 @@
 
 .title {
   margin: 0;
-
-  font-family: var(--font-family-primary);
-  font-size: var(--font-size-xl);
-  font-weight: var(--font-weight-bold);
   color: var(--color-light-100);
 }
 

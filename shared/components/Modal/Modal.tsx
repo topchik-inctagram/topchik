@@ -3,6 +3,7 @@ import s from './Modal.module.scss'
 import { type ComponentPropsWithRef } from 'react'
 import clsx from 'clsx'
 import { CloseOutline } from '@/public'
+import { Typography } from '@/shared/components'
 
 type ModalSize = 'lg' | 'md' | 'sm'
 
@@ -35,7 +36,9 @@ export const Modal = ({
         <Dialog.Overlay className={classNames.overlay} />
         <Dialog.Content className={classNames.content}>
           <div className={classNames.header}>
-            <Dialog.Title className={classNames.title}>{title}</Dialog.Title>
+            <Dialog.Title asChild className={classNames.title}>
+              <Typography variant="h1">{title}</Typography>
+            </Dialog.Title>
             <Dialog.Close asChild>
               <CloseOutline aria-label="Close" className={classNames.closeButton} />
             </Dialog.Close>
