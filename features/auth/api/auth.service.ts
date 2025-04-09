@@ -1,5 +1,5 @@
 import { baseApi } from '@/shared/stores'
-import type { LoginArgs, LoginResponse, RegistrationRequest } from '@/features/auth/api/index'
+import type { LoginArgs, LoginResponse, RegistrationRequest } from '@/features/auth/api'
 
 export const AuthService = baseApi.injectEndpoints({
   endpoints: builder => {
@@ -47,4 +47,5 @@ export const AuthService = baseApi.injectEndpoints({
     }
   },
 })
-export const { useLoginMutation, useLogoutMutation, useRegistrationUserMutation } = AuthService
+export const { useLoginMutation, useLogoutMutation, useMeQuery, useRegistrationUserMutation } =
+  AuthService
