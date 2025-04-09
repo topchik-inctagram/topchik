@@ -19,4 +19,9 @@
   --font-weight-medium: 500;
   --font-weight-semibold: 600;
   --font-weight-bold: 700;
+
+  // toast radix
+  --viewport-padding: 25px;
+  --slide-in-start: calc(-100% - var(--viewport-padding));
+  --swipe-out-start: calc(-100% - var(--viewport-padding));
 }
