@@ -74,3 +74,10 @@ input[type='search'] {
     appearance: none;
   }
 }
+
+input[type='password'] {
+  &::-ms-reveal,
+  &::-ms-clear {
+    display: none;
+  }
+}
