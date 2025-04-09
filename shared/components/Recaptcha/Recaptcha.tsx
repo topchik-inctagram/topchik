@@ -1,9 +1,9 @@
 import clsx from 'clsx'
 import s from './Recaptcha.module.scss'
 import { RecaptchaIcon } from '@/public'
-import { Сheckbox } from '@/shared/components'
-import { CaptchaSpinner } from '@/shared/components'
-import { Label } from '@/shared/components'
+import { Checkbox } from '../Checkbox/Checkbox'
+import { CaptchaSpinner } from '../CaptchaSpinner/CaptchaSpinner'
+import { Label } from '../Label/Label'
 import Link from 'next/link'
 
 type RecaptchaStatus = 'idle' | 'pending' | 'verified' | 'error' | 'expired' | 'notVerified'
@@ -89,19 +89,22 @@ export const Recaptcha = ({
             </div>
           ) : (
             <>
-              <Сheckbox
+              <Checkbox
+                label={`I'm not a robot`}
                 recaptchaMode={true}
-                cheked={isStatus === 'verified'}
                 className={classNames.checkbox}
               />
-              <Label className={classNames.label}>I'm not a robot</Label>
             </>
           )}
         </div>
-        <RecaptchaIcon className={s.icon} />
-        <Link href={'/'}>Privacy</Link>
-        <span>-</span>
-        <Link href={'/'}>Terms</Link>
+        <div className={s.privacy}>
+          <RecaptchaIcon className={s.icon} />
+          <div className={s.link}>
+            <Link href={'/'}>Privacy</Link>
+            <span>-</span>
+            <Link href={'/'}>Terms</Link>
+          </div>
+        </div>
       </div>
 
       {(isStatus === 'error' || isStatus === 'notVerified') && (
