@@ -50,7 +50,7 @@ const fullSchema = schema.and(
 )
 type FormTypes = z.infer<typeof fullSchema>
 type Props = {
-  onSubmit: (data: FormTypes) => void
+  onSubmit: (data: FormTypes, reset: () => void) => Promise<void>
 }
 
 export const SignUp = ({ onSubmit }: Props) => {
@@ -59,6 +59,7 @@ export const SignUp = ({ onSubmit }: Props) => {
     formState: { errors, isValid, isSubmitting },
     watch,
     handleSubmit,
+    reset,
   } = useForm<FormTypes>({
     defaultValues: {
       username: '',
@@ -72,6 +73,7 @@ export const SignUp = ({ onSubmit }: Props) => {
     reValidateMode: 'onChange',
   })
   //todo add Devtool when it will be fixed by dev
+
   return (
     <Card className={s.cardContainer}>
       <Typography as="h2" className={s.title} variant="h1">
@@ -85,7 +87,7 @@ export const SignUp = ({ onSubmit }: Props) => {
           <Github />
         </Link>
       </div>
-      <form className={s.formContainer} onSubmit={handleSubmit(onSubmit)}>
+      <form className={s.formContainer} onSubmit={handleSubmit(data => onSubmit(data, reset))}>
         <div className={s.inputsContainer}>
           <ControlledInput
             autoComplete="username"
