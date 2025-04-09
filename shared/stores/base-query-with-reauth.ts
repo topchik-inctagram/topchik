@@ -22,7 +22,7 @@ const baseQuery = fetchBaseQuery({
   prepareHeaders: headers => {
     //headers.set('API-KEY', import.meta.env.VITE_API_KEY)
 
-    //todo try to delete
+    //todo try to delete maybe
     if (typeof window !== 'undefined') {
       const token = localStorage.getItem(TOKEN)
       if (token) {
