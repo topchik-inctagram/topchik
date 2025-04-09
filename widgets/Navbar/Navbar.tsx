@@ -19,9 +19,11 @@ import {
   TrendUp,
   TrendUpOutline,
 } from '@/public'
-import { Button, Typography } from '@/shared/components'
+import { Typography } from '@/shared/components'
 import { type ComponentPropsWithRef, useState } from 'react'
 import { LogoutModal } from '@/entities/LogoutModal'
+import { usePathname } from 'next/navigation'
+import { PrivatePages } from '@/shared/enums'
 
 type Props = {
   isMobile?: boolean
@@ -67,17 +69,25 @@ function DesktopNavbar({ className, ...rest }: ComponentPropsWithRef<'nav'>) {
     nav: clsx(s.desktopNav, className),
     firstContainer: clsx(s.desktopContainer, s.desktopFirstContainer),
     secondContainer: clsx(s.desktopSecondContainer, s.desktopContainer),
+    activeLink: s.activeLink,
   }
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false)
-  const active = true
+  const pathname = usePathname()
+
+  const actualLink = (actualPath: string) => ({
+    active: pathname === actualPath,
+    className: pathname === actualPath ? classNames.activeLink : '',
+  })
+  const active = false
   // if you want to disable link you need to add data-disabled='disabled' in link props
+  // data-disabled="disabled"
   return (
     <>
       <nav className={classNames.nav} {...rest}>
         <ul>
           <div className={classNames.firstContainer}>
             <li>
-              <Typography as={Link} data-disabled="disabled" href="#" variant="medium_14">
+              <Typography as={Link} href="#" variant="medium_14">
                 {active ? <Home /> : <HomeOutline />} Feed
               </Typography>
             </li>
@@ -87,8 +97,14 @@ function DesktopNavbar({ className, ...rest }: ComponentPropsWithRef<'nav'>) {
               </Typography>
             </li>
             <li>
-              <Typography as={Link} href="#" variant="medium_14">
-                {active ? <Person /> : <PersonOutline />} My Profile
+              <Typography
+                as={Link}
+                className={actualLink(PrivatePages.profile).className}
+                href={PrivatePages.profile}
+                variant="medium_14"
+              >
+                {actualLink(PrivatePages.profile).active ? <Person /> : <PersonOutline />} My
+                Profile
               </Typography>
             </li>
             <li>
@@ -115,7 +131,7 @@ function DesktopNavbar({ className, ...rest }: ComponentPropsWithRef<'nav'>) {
             </li>
           </div>
           <li>
-            <Typography as={Button} variant="medium_14" onClick={() => setIsLogoutModalOpen(true)}>
+            <Typography as="button" variant="medium_14" onClick={() => setIsLogoutModalOpen(true)}>
               {active ? <LogOut /> : <LogOutOutline />} Log Out
             </Typography>
           </li>
