@@ -12,18 +12,16 @@ const Page = () => {
 
   const registrationHandler = async (data: RegistrationRequest, resetForm: () => void) => {
     try {
-      await registration(data)
-      if (!error) {
-        setEmailForModal(data.email)
-        resetForm()
-      }
+      await registration(data).unwrap()
+      setEmailForModal(data.email)
+      resetForm()
     } catch (error: any) {
       console.log(error)
     }
   }
   return (
     <PageContainer>
-      {error?.data?.errorsMessages?.[0]?.message && (
+      {error && error?.data?.errorsMessages?.[0]?.message && (
         <Toast description={error.data.errorsMessages[0].message} variant="error" />
       )}
       <SignUp onSubmit={registrationHandler} />
