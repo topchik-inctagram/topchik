@@ -2,11 +2,11 @@
 
 import {
   type ChangeEvent,
-  type KeyboardEvent,
   type ComponentPropsWithRef,
+  type KeyboardEvent,
+  useEffect,
   useId,
   useState,
-  useEffect,
 } from 'react'
 
 import clsx from 'clsx'
@@ -20,7 +20,6 @@ export type InputProps = {
   onChangeValue?: (value: string) => void
   onKeyEnter?: () => void
   onClear?: () => void
-  onResetShowPassword?: () => void
 } & ComponentPropsWithRef<'input'>
 
 export const Input = ({
@@ -37,7 +36,6 @@ export const Input = ({
   onKeyDown,
   value,
   ref,
-  onResetShowPassword,
   ...rest
 }: InputProps) => {
   const [showPassword, setShowPassword] = useState<boolean>(false)
@@ -64,20 +62,15 @@ export const Input = ({
     clearIcon: s.clearIcon,
     errorText: s.errorText,
   }
-
+  const inputEl = document.getElementById(finalId)
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword)
-
-    setTimeout(() => {
-      const inputElement = document.getElementById(finalId)
-      inputElement?.focus()
-    }, 0)
+    inputEl?.focus()
   }
 
   useEffect(() => {
     if (type === 'password' && value === '') {
       setShowPassword(false)
-      onResetShowPassword?.()
     }
   }, [value])
 
