@@ -1,7 +1,7 @@
 'use client'
 import { PageContainer, Toast } from '@/shared/components'
 import { SignUp } from '../../../features/auth/forms/SignUp'
-import { RegistrationRequest, useRegistrationUserMutation } from '../../../features/auth/api'
+import { type RegistrationRequest, useRegistrationUserMutation } from '../../../features/auth/api'
 import { useState } from 'react'
 import { EmailSentModal } from '@/entities/EmailSentModal'
 

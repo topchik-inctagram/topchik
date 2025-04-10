@@ -6,7 +6,7 @@ import '@fontsource/inter/500.css'
 import '@fontsource/inter/600.css'
 import '@fontsource/inter/700.css'
 import styles from './page.module.css'
-import { store } from '@/shared/stores'
+import { store } from '@/shared/store'
 import { Provider } from 'react-redux'
 
 export default function Home() {

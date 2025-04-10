@@ -1,4 +1,4 @@
-import { baseApi } from '@/shared/stores'
+import { baseApi } from '@/shared/store'
 import type { LoginArgs, LoginResponse, RegistrationRequest } from '@/features/auth/api'
 
 export const AuthService = baseApi.injectEndpoints({

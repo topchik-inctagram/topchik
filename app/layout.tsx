@@ -8,7 +8,7 @@ import '@fontsource/inter/600.css'
 import '@fontsource/inter/700.css'
 import type { ReactNode } from 'react'
 
-import { store } from '@/shared/stores'
+import { store } from '@/shared/store'
 import { Provider } from 'react-redux'
 import { Header } from '@/widgets/Header'
 
