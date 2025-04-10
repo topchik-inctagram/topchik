@@ -1,3 +1,4 @@
+'use client'
 import { type ComponentPropsWithRef, type ReactNode, useId, useState } from 'react'
 import * as CheckboxRadix from '@radix-ui/react-checkbox'
 import s from './Checkbox.module.scss'
