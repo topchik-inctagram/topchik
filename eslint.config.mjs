@@ -1,30 +1,115 @@
-import { FlatCompat } from '@eslint/eslintrc';
-import { dirname } from 'path';
-import { fileURLToPath } from 'url';
+import js from '@eslint/js'
+import tsParser from '@typescript-eslint/parser'
+import tsPlugin from '@typescript-eslint/eslint-plugin'
+import reactPlugin from 'eslint-plugin-react'
+import reactHooksPlugin from 'eslint-plugin-react-hooks'
+import nextPlugin from '@next/eslint-plugin-next'
+import { FlatCompat } from '@eslint/eslintrc'
+import path from 'path'
+import { fileURLToPath } from 'url'
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
 
 const compat = new FlatCompat({
   baseDirectory: __dirname,
-});
+})
 
-const eslintConfig = [
-  ...compat.extends('next/core-web-vitals', 'next/typescript', '@it-incubator/eslint-config'),
+const config = [
+  js.configs.recommended,
+  ...compat.config({
+    ignorePatterns: ['.next/**', 'node_modules/**', 'public/**', 'build/**', 'dist/**'],
+  }),
   {
-    files: ['**/*.test.{js,ts,jsx,tsx}', '**/__tests__/**/*.{js,ts,jsx,tsx}'],
-    extends: ['plugin:vitest/recommended'], // Подключаем только Vitest
-    env: {
-      'vitest-globals/env': true, // Поддержка глобальных переменных Vitest
+    files: ['**/*.{js,jsx,ts,tsx}'],
+    plugins: {
+      '@typescript-eslint': tsPlugin,
+      react: reactPlugin,
+      'react-hooks': reactHooksPlugin,
+      '@next/next': nextPlugin,
+    },
+    languageOptions: {
+      parser: tsParser,
+      parserOptions: {
+        ecmaVersion: 'latest',
+        sourceType: 'module',
+        ecmaFeatures: {
+          jsx: true,
+        },
+      },
     },
     rules: {
-      'vitest/no-disabled-tests': 'warn', // Предупреждать о test.skip
-      'vitest/no-focused-tests': 'error', // Запрещать test.only
-      'vitest/no-identical-title': 'error', // Не допускать одинаковые названия тестов
-      'vitest/prefer-to-be': 'warn', // Предупреждать о использовании `expect(x).toBe(true)`
+      ...tsPlugin.configs.recommended.rules,
+      ...reactPlugin.configs.recommended.rules,
+      ...reactHooksPlugin.configs.recommended.rules,
+      ...nextPlugin.configs.recommended.rules,
+      // React rules
+      'react/react-in-jsx-scope': 'off',
+      'react/prop-types': 'off',
+      'react/jsx-boolean-value': ['error', 'never'],
+      'react/jsx-curly-brace-presence': ['error', 'never'],
+      'react/jsx-no-useless-fragment': 'warn',
+      'react/jsx-pascal-case': 'error',
+      'react/jsx-sort-props': [
+        'warn',
+        {
+          callbacksLast: true,
+          shorthandFirst: true,
+          reservedFirst: true,
+        },
+      ],
+
+      // TypeScript rules
+      '@typescript-eslint/no-unused-vars': [
+        'warn',
+        {
+          argsIgnorePattern: '^_',
+          varsIgnorePattern: '^_',
+          caughtErrorsIgnorePattern: '^_',
+        },
+      ],
+      '@typescript-eslint/no-explicit-any': 'warn',
+      '@typescript-eslint/no-non-null-assertion': 'warn',
+      '@typescript-eslint/consistent-type-imports': [
+        'error',
+        {
+          prefer: 'type-imports',
+          fixStyle: 'inline-type-imports',
+        },
+      ],
+
+      // General rules
+      'no-console': ['warn', { allow: ['warn', 'error'] }],
+      'no-undef': 'off',
+      'no-duplicate-imports': 'error',
+      'no-unused-vars': 'off', // TypeScript handles this
+      'prefer-const': 'error',
+      'no-var': 'error',
+      eqeqeq: ['error', 'always'],
+      curly: ['error', 'all'],
+      'brace-style': ['error', '1tbs'],
+      quotes: ['error', 'single', { avoidEscape: true }],
+      indent: ['error', 2],
+      'max-len': [
+        'error',
+        {
+          code: 100,
+          ignoreStrings: true,
+          ignoreTemplateLiterals: true,
+          ignoreComments: true,
+        },
+      ],
+    },
+    settings: {
+      react: {
+        version: 'detect',
+      },
+      'import/resolver': {
+        typescript: {},
+      },
     },
   },
-];
+  ...compat.extends('next/core-web-vitals'),
+]
 
-export default eslintConfig;
-module.exports = eslintConfig;
+export default config

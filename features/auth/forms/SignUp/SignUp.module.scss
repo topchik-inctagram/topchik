@@ -1,0 +1,72 @@
+.cardContainer {
+  width: 378px;
+  min-height: 648px;
+  padding: 24px;
+}
+
+.googleGithubLinks {
+  height: 36px;
+}
+
+.title {
+  text-align: center;
+}
+
+.formContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  width: 100%;
+}
+
+.inputsContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+
+  width: 100%;
+  margin-bottom: 12px;
+}
+
+.svgContainer {
+  display: flex;
+  gap: 60px;
+  margin: 13px 99px 24px;
+
+  svg {
+    width: 36px;
+    height: 36px;
+    color: var(--color-light-100);
+  }
+}
+
+.forgotPasswordLink {
+  color: var(--color-light-900);
+  text-decoration: none;
+
+  &:visited {
+    color: var(--color-light-900);
+  }
+}
+
+.buttonSignUp {
+  margin-top: 12px;
+  margin-bottom: 18px;
+}
+
+.noAccountP {
+  margin-bottom: 6px;
+  text-align: center;
+}
+
+.termsAndService {
+  white-space: nowrap;
+}
+
+.termsAndServiceLink {
+  color: var(--color-accent-300);
+
+  &:visited {
+    color: var(--color-accent-300);
+  }
+}
