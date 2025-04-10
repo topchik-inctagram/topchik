@@ -5,11 +5,7 @@ import { Button, Card, ControlledCheckbox, ControlledInput, Typography } from '@
 import s from './SignUp.module.scss'
 import Link from 'next/link'
 import { Github, Google } from '@/public'
-
-const usernameRegex = /^[0-9A-Za-z_-]+$/
-const passwordRegex = new RegExp(
-  '^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()_+\\-=\\[\\]{};\':"\\\\|,.<>\\/?~`]).+$'
-)
+import { passwordRegex, usernameRegex } from '@/shared/schema'
 
 const schema = z
   .object({
@@ -50,7 +46,7 @@ const fullSchema = schema.and(
 )
 type FormTypes = z.infer<typeof fullSchema>
 type Props = {
-  onSubmit: (data: FormTypes, reset: () => void) => Promise<void>
+  onSubmit: (data: FormTypes) => void
 }
 
 export const SignUp = ({ onSubmit }: Props) => {
@@ -74,6 +70,11 @@ export const SignUp = ({ onSubmit }: Props) => {
   })
   //todo add Devtool when it will be fixed by dev
 
+  const submitHandler = (data: FormTypes) => {
+    onSubmit(data)
+    reset()
+  }
+
   return (
     <Card className={s.cardContainer}>
       <Typography as="h2" className={s.title} variant="h1">
@@ -87,7 +88,7 @@ export const SignUp = ({ onSubmit }: Props) => {
           <Github />
         </Link>
       </div>
-      <form className={s.formContainer} onSubmit={handleSubmit(data => onSubmit(data, reset))}>
+      <form className={s.formContainer} onSubmit={handleSubmit(submitHandler)}>
         <div className={s.inputsContainer}>
           <ControlledInput
             autoComplete="username"
@@ -146,7 +147,7 @@ export const SignUp = ({ onSubmit }: Props) => {
         <Button
           fullWidth
           className={s.buttonSignUp}
-          disabled={(!watch('agreement') && !isValid) || isSubmitting}
+          disabled={!watch('agreement') || !isValid || isSubmitting}
           type="submit"
         >
           Sign Up
