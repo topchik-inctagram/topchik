@@ -4,12 +4,8 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { Button, Card, ControlledCheckbox, ControlledInput, Typography } from '@/shared/components'
 import s from './SignUp.module.scss'
 import Link from 'next/link'
+import { passwordRegex, usernameRegex } from '@/shared/schema'
 import { Github, Google } from '@/public/icons'
-
-const usernameRegex = /^[0-9A-Za-z_-]+$/
-const passwordRegex = new RegExp(
-  '^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()_+\\-=\\[\\]{};\':"\\\\|,.<>\\/?~`]).+$'
-)
 
 const schema = z
   .object({
@@ -59,6 +55,7 @@ export const SignUp = ({ onSubmit }: Props) => {
     formState: { errors, isValid, isSubmitting },
     watch,
     handleSubmit,
+    reset,
   } = useForm<FormTypes>({
     defaultValues: {
       username: '',
@@ -72,6 +69,12 @@ export const SignUp = ({ onSubmit }: Props) => {
     reValidateMode: 'onChange',
   })
   //todo add Devtool when it will be fixed by dev
+
+  const submitHandler = (data: FormTypes) => {
+    onSubmit(data)
+    reset()
+  }
+
   return (
     <Card className={s.cardContainer}>
       <Typography as="h2" className={s.title} variant="h1">
@@ -85,7 +88,7 @@ export const SignUp = ({ onSubmit }: Props) => {
           <Github />
         </Link>
       </div>
-      <form className={s.formContainer} onSubmit={handleSubmit(onSubmit)}>
+      <form className={s.formContainer} onSubmit={handleSubmit(submitHandler)}>
         <div className={s.inputsContainer}>
           <ControlledInput
             autoComplete="username"
@@ -144,7 +147,7 @@ export const SignUp = ({ onSubmit }: Props) => {
         <Button
           fullWidth
           className={s.buttonSignUp}
-          disabled={(!watch('agreement') && !isValid) || isSubmitting}
+          disabled={!watch('agreement') || !isValid || isSubmitting}
           type="submit"
         >
           Sign Up
