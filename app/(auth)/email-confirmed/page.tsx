@@ -1,3 +1,4 @@
+'use client'
 import { Button, PageContainer, Typography } from '@/shared/components'
 import Link from 'next/link'
 import { SignUpBro } from '@/public/icons'

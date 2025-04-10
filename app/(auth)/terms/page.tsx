@@ -1,3 +1,4 @@
+'use client'
 import { PageContainer, Typography } from '@/shared/components'
 import Link from 'next/link'
 import { ArrowBackOutline } from '@/public/icons'

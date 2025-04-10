@@ -1,3 +1,4 @@
+'use client'
 import s from './Navbar.module.scss'
 import Link from 'next/link'
 import { clsx } from 'clsx'

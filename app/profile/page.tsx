@@ -1,6 +1,7 @@
 'use client'
-import withAuth from '@/shared/HOC/withAuth'
+
 import { Navbar } from '@/widgets/Navbar'
+import { withAuth } from '@/shared/HOC'
 
 function ProfilePage() {
   return (
@@ -12,5 +13,4 @@ function ProfilePage() {
     </>
   )
 }
-
 export default withAuth(ProfilePage)

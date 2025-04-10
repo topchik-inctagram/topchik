@@ -1,3 +1,4 @@
+'use client'
 import { Button, PageContainer, Typography } from '@/shared/components'
 
 import s from './page.module.scss'

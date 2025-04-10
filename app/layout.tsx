@@ -7,9 +7,10 @@ import '@fontsource/inter/500.css'
 import '@fontsource/inter/600.css'
 import '@fontsource/inter/700.css'
 import type { ReactNode } from 'react'
-import { Header } from '@/widgets/Header'
+
 import { store } from '@/shared/stores'
 import { Provider } from 'react-redux'
+import { Header } from '@/widgets/Header'
 
 //todo fix metadata
 const metadata: Metadata = {
