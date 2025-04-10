@@ -1,6 +1,7 @@
+'use client'
 import { PageContainer, Typography } from '@/shared/components'
 import Link from 'next/link'
-import { ArrowBackOutline } from '@/public'
+import { ArrowBackOutline } from '@/public/icons'
 import s from './page.module.scss'
 
 const Page = () => {

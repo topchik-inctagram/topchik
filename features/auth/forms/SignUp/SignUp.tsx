@@ -4,8 +4,8 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { Button, Card, ControlledCheckbox, ControlledInput, Typography } from '@/shared/components'
 import s from './SignUp.module.scss'
 import Link from 'next/link'
-import { Github, Google } from '@/public'
 import { passwordRegex, usernameRegex } from '@/shared/schema'
+import { Github, Google } from '@/public/icons'
 
 const schema = z
   .object({

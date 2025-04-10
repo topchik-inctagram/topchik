@@ -1,17 +1,15 @@
 'use client'
-
-import { type ComponentPropsWithRef, useState, useId, type Ref, type ReactNode } from 'react'
+import { type ComponentPropsWithRef, type ReactNode, useId, useState } from 'react'
 import * as CheckboxRadix from '@radix-ui/react-checkbox'
-import s from './Сheckbox.module.scss'
+import s from './Checkbox.module.scss'
 import { clsx } from 'clsx'
-import { Label } from '../Label/Label'
-import { CheckmarkOutline } from '@/public/icons'
+import { CheckmarkRecaptcha, Vector } from '@/public/icons'
+import { Label } from '@/shared/components'
 
 export type CheckboxProps = {
   label?: string | ReactNode
-  onCheckedChange?: (checked: boolean) => Promise<boolean> | void
-  ref?: Ref<HTMLButtonElement>
-  recaptchaMode?: boolean
+  isRecaptcha?: boolean
+  onRecaptchaComplete?: () => void
 } & ComponentPropsWithRef<typeof CheckboxRadix.Root>
 
 export const Checkbox = ({
@@ -20,72 +18,74 @@ export const Checkbox = ({
   label,
   className,
   checked: externalChecked,
-  onCheckedChange,
-  ref,
-  recaptchaMode = false,
+  isRecaptcha = false,
+  onRecaptchaComplete,
   ...rest
 }: CheckboxProps) => {
-  const [isLoading, setIsLoading] = useState(false)
-  const [isVerified, setIsVerified] = useState(false)
+  const generatedId = useId()
+  const checkboxId = id ?? generatedId
   const [internalChecked, setInternalChecked] = useState(false)
-  const useID = useId()
-  const checkBoxID = id ?? useID
+  const [isVerified, setIsVerified] = useState(false)
 
-  const checked = recaptchaMode ? internalChecked : externalChecked
-
-  const handleCheckedChange = async (newChecked: boolean) => {
-    if (recaptchaMode) {
-      setInternalChecked(true)
+  const getCheckedState = () => {
+    switch (true) {
+      case isRecaptcha:
+        return isVerified || internalChecked
+      default:
+        return externalChecked ?? internalChecked
     }
+  }
 
-    if (onCheckedChange) {
-      setIsLoading(true)
-      try {
-        const success = await onCheckedChange(newChecked)
-        setIsVerified(!!success)
-        if (recaptchaMode) {
-          setInternalChecked(!!success)
+  const checked = getCheckedState()
+
+  const handleCheckedChange = (newChecked: boolean) => {
+    if (disabled) {
+      return
+    }
+    if (isRecaptcha) {
+      if (!isVerified) {
+        setInternalChecked(newChecked)
+        setIsVerified(newChecked)
+        if (newChecked) {
+          onRecaptchaComplete?.()
         }
-      } finally {
-        setIsLoading(false)
       }
+    } else {
+      setInternalChecked(newChecked)
     }
   }
 
   const classNames = {
-    label: clsx(s.label, disabled && s.disabled),
-    container: clsx(s.container, className),
-    root: clsx(s.root, recaptchaMode && s.recaptchaRoot, isLoading && s.hidden),
+    container: clsx(s.container, isRecaptcha && s.containerRecaptcha, className),
+    root: clsx(
+      s.root,
+      disabled && s.disabled,
+      isRecaptcha && s.recaptchaRoot,
+      isVerified && s.verified
+    ),
     indicator: s.indicator,
-    buttonWrapper: clsx(s.buttonWrapper, disabled && s.disabled),
-    loader: s.loader,
+    label: clsx(s.label, disabled && s.disabled),
   }
 
   return (
-    <div className={classNames.container}>
-      <div className={classNames.buttonWrapper}>
-        {isLoading && recaptchaMode && <span className={classNames.loader}></span>}
-
-        <CheckboxRadix.Root
-          ref={ref}
-          checked={isVerified || checked}
-          className={classNames.root}
-          data-verified={isVerified}
-          disabled={disabled || isLoading}
-          id={checkBoxID}
-          onCheckedChange={handleCheckedChange}
-          {...rest}
-        >
-          <CheckboxRadix.Indicator className={classNames.indicator}>
-            {(isVerified || checked) && <CheckmarkOutline />}
-          </CheckboxRadix.Indicator>
-        </CheckboxRadix.Root>
-      </div>
-      {label && (
-        <Label className={classNames.label} htmlFor={checkBoxID}>
-          {label}
-        </Label>
-      )}
+    <div className={classNames.container} data-recaptcha={isRecaptcha}>
+      <CheckboxRadix.Root
+        {...rest}
+        checked={checked}
+        className={classNames.root}
+        data-recaptcha={isRecaptcha}
+        data-verified={isVerified}
+        disabled={disabled}
+        id={checkboxId}
+        onCheckedChange={handleCheckedChange}
+      >
+        <CheckboxRadix.Indicator className={classNames.indicator}>
+          {isRecaptcha ? <CheckmarkRecaptcha /> : <Vector />}
+        </CheckboxRadix.Indicator>
+      </CheckboxRadix.Root>
+      <Label className={classNames.label} htmlFor={checkboxId}>
+        {label}
+      </Label>
     </div>
   )
 }

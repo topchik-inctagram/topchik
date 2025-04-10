@@ -2,7 +2,7 @@
 
 import { Button, Card, ControlledInput, Typography } from '@/shared/components'
 import Link from 'next/link'
-import { Github, Google } from '@/public'
+import { Github, Google } from '@/public/icons'
 import s from './SignIn.module.scss'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'

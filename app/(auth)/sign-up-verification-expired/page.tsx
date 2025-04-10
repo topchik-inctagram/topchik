@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { Button, Input, PageContainer, Typography } from '@/shared/components'
-import { TimeManagement } from '@/public'
+import { TimeManagement } from '@/public/icons'
 import s from './page.module.scss'
 
 const Page = () => {

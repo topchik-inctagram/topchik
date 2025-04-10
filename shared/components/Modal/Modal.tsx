@@ -2,7 +2,7 @@ import * as Dialog from '@radix-ui/react-dialog'
 import s from './Modal.module.scss'
 import { type ComponentPropsWithRef } from 'react'
 import clsx from 'clsx'
-import { CloseOutline } from '@/public'
+import { CloseOutline } from '@/public/icons'
 import { Typography } from '@/shared/components'
 
 type ModalSize = 'lg' | 'md' | 'sm'

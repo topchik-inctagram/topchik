@@ -6,7 +6,7 @@ import {
   ActionDropdownDots,
   ActionDropdownItem,
 } from './dropDownItems/actionDropdownItem/ActionDropdownItem'
-import { Edit2Outline, TrashOutline } from '@/public'
+import { Edit2Outline, TrashOutline } from '@/public/icons'
 import { ScrollArea } from '@/shared/components'
 
 const meta = {
