@@ -44,7 +44,7 @@ type Story = StoryObj<typeof meta>
 
 export const Checked: Story = {
   args: {
-    checked: true,
+    checked: false,
   },
 }
 
