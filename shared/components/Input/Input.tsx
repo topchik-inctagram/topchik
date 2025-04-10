@@ -6,6 +6,7 @@ import {
   type ComponentPropsWithRef,
   useId,
   useState,
+  useEffect,
 } from 'react'
 
 import clsx from 'clsx'
@@ -19,6 +20,7 @@ export type InputProps = {
   onChangeValue?: (value: string) => void
   onKeyEnter?: () => void
   onClear?: () => void
+  onResetShowPassword?: () => void
 } & ComponentPropsWithRef<'input'>
 
 export const Input = ({
@@ -35,6 +37,7 @@ export const Input = ({
   onKeyDown,
   value,
   ref,
+  onResetShowPassword,
   ...rest
 }: InputProps) => {
   const [showPassword, setShowPassword] = useState<boolean>(false)
@@ -70,6 +73,13 @@ export const Input = ({
       inputElement?.focus()
     }, 0)
   }
+
+  useEffect(() => {
+    if (type === 'password' && value === '') {
+      setShowPassword(false)
+      onResetShowPassword?.()
+    }
+  }, [value])
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     onChange?.(e)
