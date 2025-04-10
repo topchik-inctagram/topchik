@@ -22,7 +22,6 @@ export function LogoutModal({ open, onClose }: Props) {
       localStorage.removeItem(TOKEN)
       baseApi.util?.resetApiState()
       router.push(PublicPages.signIn)
-      onClose?.()
     } catch (e: any) {
       console.log(e)
     }
