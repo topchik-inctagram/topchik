@@ -1,90 +1,53 @@
-import { type ComponentPropsWithRef, useId, useState } from 'react'
-import * as CheckboxRadix from '@radix-ui/react-checkbox'
-import s from './Checkbox.module.scss'
-import { clsx } from 'clsx'
-import { CheckmarkOutline, CheckmarkRecaptcha, Vector } from '@/public'
-import { Label } from '@/shared/components'
+import { type ComponentPropsWithRef, useId, useState } from 'react';
+import * as CheckboxRadix from '@radix-ui/react-checkbox';
+import s from './Checkbox.module.scss';
+import { clsx } from 'clsx';
+import { Vector } from '@/public';
+import { Label } from '@/shared/components';
 
 export type CheckboxProps = {
-  label?: string
-  isRecaptcha?: boolean
-  onRecaptchaComplete?: () => void
-} & ComponentPropsWithRef<typeof CheckboxRadix.Root>
+  label?: string;
+} & ComponentPropsWithRef<typeof CheckboxRadix.Root>;
 
 export const Checkbox = ({
   disabled,
   id,
   label,
   className,
-  checked: externalChecked,
-  isRecaptcha = false,
-  onRecaptchaComplete,
+  checked,
+  onCheckedChange,
   ...rest
 }: CheckboxProps) => {
-  const generatedId = useId()
-  const checkboxId = id ?? generatedId
-  const [internalChecked, setInternalChecked] = useState(false)
-  const [isVerified, setIsVerified] = useState(false)
-
-  const getCheckedState = () => {
-    switch (true) {
-      case isRecaptcha:
-        return isVerified || internalChecked
-      default:
-        return externalChecked ?? internalChecked
-    }
-  }
-
-  const checked = getCheckedState()
-
-  const handleCheckedChange = (newChecked: boolean) => {
-    if (disabled) {
-      return
-    }
-    if (isRecaptcha) {
-      if (!isVerified) {
-        setInternalChecked(newChecked)
-        setIsVerified(newChecked)
-        if (newChecked) {
-          onRecaptchaComplete?.()
-        }
-      }
-    } else {
-      setInternalChecked(newChecked)
-    }
-  }
+  const generatedId = useId();
+  const checkboxId = id ?? generatedId;
 
   const classNames = {
-    container: clsx(s.container, isRecaptcha && s.containerRecaptcha, className),
-    root: clsx(
-      s.root,
-      disabled && s.disabled,
-      isRecaptcha && s.recaptchaRoot,
-      isVerified && s.verified
-    ),
+    container: clsx(s.container, className),
+    root: clsx(s.root, disabled && s.disabled),
     indicator: s.indicator,
     label: clsx(s.label, disabled && s.disabled),
-  }
+  };
 
   return (
-    <div className={classNames.container} data-recaptcha={isRecaptcha}>
+    <div className={classNames.container}>
       <CheckboxRadix.Root
         {...rest}
-        checked={checked}
-        className={classNames.root}
-        data-recaptcha={isRecaptcha}
-        data-verified={isVerified}
-        disabled={disabled}
         id={checkboxId}
-        onCheckedChange={handleCheckedChange}
+        className={classNames.root}
+        disabled={disabled}
+        checked={checked}
+        onCheckedChange={onCheckedChange}
       >
         <CheckboxRadix.Indicator className={classNames.indicator}>
-          {isRecaptcha ? <CheckmarkRecaptcha /> : <Vector />}
+        <Vector />
         </CheckboxRadix.Indicator>
       </CheckboxRadix.Root>
-      <Label className={classNames.label} htmlFor={checkboxId}>
-        {label}
-      </Label>
+
+      {label && (
+        <Label className={classNames.label} htmlFor={checkboxId}>
+          {label}
+        </Label>
+      )}
     </div>
-  )
-}
+  );
+};
