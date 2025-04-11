@@ -18,7 +18,7 @@ const Page = () => {
     const confirm = async () => {
       try {
         if (code) {
-          await confirmEmail({ code })
+          await confirmEmail({ code }).unwrap()
           setIsChecking(false)
         }
       } catch {
