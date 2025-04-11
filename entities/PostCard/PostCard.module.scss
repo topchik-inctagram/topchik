@@ -1,0 +1,57 @@
+.container {
+  position: relative;
+  overflow: visible;
+  width: 234px;
+  height: 391px;
+}
+
+.postPhoto {
+  width: 234px;
+  height: 240px;
+  object-fit: cover;
+}
+
+.authorPhoto {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.imageContainer {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin: 12px 0;
+}
+
+.createdDate {
+  color: var(--color-light-900);
+}
+
+.showMoreButton {
+  cursor: pointer;
+
+  border: none;
+
+  color: var(--color-accent-500);
+  text-decoration: underline;
+
+  background-color: transparent;
+}
+
+.postText {
+  overflow-wrap: break-word;
+}
+
+.postContainer {
+  position: absolute;
+  z-index: 2;
+  right: 0;
+  bottom: 0;
+  left: 0;
+
+  width: 100%;
+
+  background-color: var(--color-dark-900);
+}

@@ -9,7 +9,7 @@ const meta = {
 } satisfies Meta<typeof Label>
 
 export default meta
-type Story = StoryObj<typeof meta>
+type Story = StoryObj<typeof Label>
 export const LabelStory: Story = {}
 
 export const DisabledLabelStory: Story = {
