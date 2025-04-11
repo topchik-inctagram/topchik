@@ -48,30 +48,31 @@ export const PostCard = ({ postText, postCreated, postImage, postTitle, authorIm
       ) : (
         <Image alt="post image" className={s.postPhoto} src={postImage} />
       )}
-
-      <div className={s.embla__controls}>
-        <div className={s.embla__buttons}>
-          <button
-            className={clsx(s.embla__buttons, s.embla__button)}
-            disabled={prevBtnDisabled}
-            type="button"
-            onClick={onPrevButtonClick}
-          >
-            <ArrowIosBackOutline />
-          </button>
-          <button
-            className={clsx(s.embla__buttons, s.embla__button)}
-            disabled={nextBtnDisabled}
-            type="button"
-            onClick={onNextButtonClick}
-          >
-            <ArrowIosForwardOutline />
-          </button>
+      {Array.isArray(postImage) && (
+        <div className={s.embla__controls}>
+          <div className={s.embla__buttons}>
+            <button
+              className={clsx(s.embla__buttons, s.embla__button)}
+              disabled={prevBtnDisabled}
+              type="button"
+              onClick={onPrevButtonClick}
+            >
+              <ArrowIosBackOutline />
+            </button>
+            <button
+              className={clsx(s.embla__buttons, s.embla__button)}
+              disabled={nextBtnDisabled}
+              type="button"
+              onClick={onNextButtonClick}
+            >
+              <ArrowIosForwardOutline />
+            </button>
+          </div>
         </div>
-      </div>
-      <div className={s.embla__dots}>
-        {Array.isArray(postImage) &&
-          scrollSnaps.map((_, index) => (
+      )}
+      {Array.isArray(postImage) && (
+        <div className={s.embla__dots}>
+          {scrollSnaps.map((_, index) => (
             <button
               key={index}
               className={clsx(s.embla__dot, index === selectedIndex && s.embla__dot__selected)}
@@ -79,7 +80,8 @@ export const PostCard = ({ postText, postCreated, postImage, postTitle, authorIm
               onClick={() => onDotButtonClick(index)}
             />
           ))}
-      </div>
+        </div>
+      )}
 
       <div className={s.postContainer}>
         <div className={s.imageContainer}>
