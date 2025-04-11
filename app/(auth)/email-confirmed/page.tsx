@@ -8,23 +8,25 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
 const Page = () => {
-  const [confirmEmail, { ...rest }] = useConfirmEmailMutation()
+  const [confirmEmail] = useConfirmEmailMutation()
   const searchParams = useSearchParams()
   const code = searchParams.get('code')
   const router = useRouter()
   const [isChecking, setIsChecking] = useState(true)
 
   useEffect(() => {
-    if (code) {
-      confirmEmail({ code })
-        .unwrap()
-        .then(() => {
+    const confirm = async () => {
+      if (code) {
+        try {
+          await confirmEmail({ code })
           setIsChecking(false)
-        })
-        .catch(() => {
+        } catch {
           router.replace('/sign-up-verification-expired')
-        })
+        }
+      }
     }
+
+    confirm()
   }, [code])
 
   if (isChecking) {

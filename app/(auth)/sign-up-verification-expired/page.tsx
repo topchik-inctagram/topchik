@@ -11,7 +11,7 @@ import { SignUpVerificationExpired } from '@/features/auth/forms/SignUpVerificat
 const Page = () => {
   const [userEmail, setUserEmail] = useState<string | null>(null)
 
-  const [emailResending, { error, isLoading, ...rest }] = useEmailResendingMutation()
+  const [emailResending] = useEmailResendingMutation()
 
   const emailResendingHandler = async (data: { email: string }) => {
     try {
