@@ -39,7 +39,7 @@ export const Checkbox = ({
         onCheckedChange={onCheckedChange}
       >
         <CheckboxRadix.Indicator className={classNames.indicator}>
-        <Vector />
+        {checked && <Vector />}
         </CheckboxRadix.Indicator>
       </CheckboxRadix.Root>
 
