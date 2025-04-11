@@ -37,6 +37,7 @@ export const Controlled: Story = {
   render: (args, { updateArgs }) => (
     <Checkbox
       {...args}
+      label={'Check-box'}
       onCheckedChange={(value) => updateArgs({ checked: value })} 
     />
   ),
