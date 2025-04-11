@@ -18,5 +18,6 @@ export const PostCardStory: Story = {
     postTitle: 'HOW TO START',
     postImage: foto,
     authorImage: foto,
+    postCreated: '22 min ago',
   },
 }
