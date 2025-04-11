@@ -16,16 +16,15 @@ const Page = () => {
 
   useEffect(() => {
     const confirm = async () => {
-      if (code) {
-        try {
+      try {
+        if (code) {
           await confirmEmail({ code })
           setIsChecking(false)
-        } catch {
-          router.replace('/sign-up-verification-expired')
         }
+      } catch {
+        router.replace('/sign-up-verification-expired')
       }
     }
-
     confirm()
   }, [code])
 
