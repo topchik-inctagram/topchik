@@ -89,7 +89,8 @@ export const Recaptcha = ({
             </div>
           ) : (
             <>
-              <Checkbox isRecaptcha label={`I'm not a robot`} className={classNames.checkbox} />
+              <Checkbox className={classNames.checkbox} />
+              <Label className={classNames.label}>I'm not a robot</Label>
             </>
           )}
         </div>

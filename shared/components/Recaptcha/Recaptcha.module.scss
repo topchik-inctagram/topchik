@@ -9,6 +9,7 @@
   }
 }
 
+
 .container {
   position: relative;
 
@@ -121,4 +122,8 @@
   font-weight: 500;
   line-height: 100%;
   color: var(--color-light-100);
+
+  .chekcbox {
+    background: red;
+  }
 }
