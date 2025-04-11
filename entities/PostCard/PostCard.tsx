@@ -2,9 +2,11 @@ import Image, { type StaticImageData } from 'next/image'
 import s from './PostCard.module.scss'
 import { Typography } from '@/shared/components'
 import { useState } from 'react'
+import { Swiper, SwiperSlide } from 'swiper/react'
+import { Navigation } from 'swiper/modules'
 
 type Props = {
-  postImage: StaticImageData
+  postImage: StaticImageData | StaticImageData[]
   authorImage: StaticImageData
   postTitle: string
   postCreated: string
@@ -28,7 +30,18 @@ export const PostCard = ({ postText, postCreated, postImage, postTitle, authorIm
 
   return (
     <section className={s.container}>
-      <Image alt="post image" className={s.postPhoto} src={postImage} />
+      {Array.isArray(postImage) ? (
+        <Swiper navigation modules={[Navigation]}>
+          {postImage.map((t, i) => (
+            <SwiperSlide key={i}>
+              <Image alt="post image" className={s.postPhoto} src={t} />
+            </SwiperSlide>
+          ))}
+        </Swiper>
+      ) : (
+        <Image alt="post image" className={s.postPhoto} src={postImage} />
+      )}
+
       <div className={s.postContainer}>
         <div className={s.imageContainer}>
           <Image alt="author photo" className={s.authorPhoto} src={authorImage} />

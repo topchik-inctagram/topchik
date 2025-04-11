@@ -21,3 +21,14 @@ export const PostCardStory: Story = {
     postCreated: '22 min ago',
   },
 }
+
+export const PostCardWithSliderStory: Story = {
+  args: {
+    postText:
+      'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid amet blanditiis dolore earum, error facilis impeditinventore ipsamagni natusnesciunt nobisomnis praesentiumsapiente sequitotam undeverovoluptates.Accusantium,ad corporisdolores doloribuseaque inventorelibero nostrumporro. A,animi culpacum cumque,dolordolore eaqueeius eumharum laborumlaudantium molestiasnam nonperferendis placeatquidem voluptate!Aut beataeconsequuntur dictadignissimos error,expedita fugafugiat idillo ipsammagnam namnecessitatibus nisinon nullanumquam optioquam quasiquia quibusdamquidem quossed suntullam velit.',
+    postTitle: 'HOW TO START',
+    postImage: [foto, foto, foto, foto],
+    authorImage: foto,
+    postCreated: '22 min ago',
+  },
+}
