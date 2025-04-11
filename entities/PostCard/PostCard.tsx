@@ -5,7 +5,7 @@ import { useState } from 'react'
 import { ArrowIosBackOutline, ArrowIosForwardOutline } from '@/public/icons'
 import useEmblaCarousel from 'embla-carousel-react'
 import { usePrevNextButtons } from '@/entities/PostCard/usePrevNextButton'
-import { DotButton, useDotButton } from '@/entities/PostCard/useDotButton'
+import { useDotButton } from '@/entities/PostCard/useDotButton'
 import { clsx } from 'clsx'
 type Props = {
   postImage: StaticImageData | StaticImageData[]
@@ -72,9 +72,10 @@ export const PostCard = ({ postText, postCreated, postImage, postTitle, authorIm
       <div className={s.embla__dots}>
         {Array.isArray(postImage) &&
           scrollSnaps.map((_, index) => (
-            <DotButton
+            <button
               key={index}
               className={clsx(s.embla__dot, index === selectedIndex && s.embla__dot__selected)}
+              type="button"
               onClick={() => onDotButtonClick(index)}
             />
           ))}

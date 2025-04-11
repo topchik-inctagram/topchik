@@ -1,5 +1,5 @@
 import type { EmblaCarouselType } from 'embla-carousel'
-import { type ComponentPropsWithRef, useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
 type UseDotButtonType = {
   selectedIndex: number
@@ -44,16 +44,4 @@ export const useDotButton = (emblaApi: EmblaCarouselType | undefined): UseDotBut
     scrollSnaps,
     onDotButtonClick,
   }
-}
-
-type PropType = ComponentPropsWithRef<'button'>
-
-export const DotButton: React.FC<PropType> = props => {
-  const { children, ...restProps } = props
-
-  return (
-    <button type="button" {...restProps}>
-      {children}
-    </button>
-  )
 }
