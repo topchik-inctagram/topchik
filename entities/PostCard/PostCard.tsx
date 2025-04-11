@@ -7,6 +7,7 @@ import useEmblaCarousel from 'embla-carousel-react'
 import { usePrevNextButtons } from '@/entities/PostCard/usePrevNextButton'
 import { useDotButton } from '@/entities/PostCard/useDotButton'
 import { clsx } from 'clsx'
+import { UserPhoto } from '@/entities/UserPhoto'
 type Props = {
   postImage: StaticImageData | StaticImageData[]
   authorImage: StaticImageData
@@ -85,7 +86,7 @@ export const PostCard = ({ postText, postCreated, postImage, postTitle, authorIm
 
       <div className={s.postContainer}>
         <div className={s.imageContainer}>
-          <Image alt="author photo" className={s.authorPhoto} src={authorImage} />
+          <UserPhoto alt="author photo" src={authorImage} />
           <Typography variant="h3">{postTitle}</Typography>
         </div>
         <Typography className={s.createdDate} variant="small">
