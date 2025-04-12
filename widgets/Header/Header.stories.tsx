@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
 import { Header } from '@/widgets/Header'
 
@@ -10,23 +11,41 @@ const meta: Meta<typeof Header> = {
 export default meta
 type Story = StoryObj<typeof Header>
 
+const LoggedInTemplate = () => {
+  const [language, setLanguage] = useState<'EN' | 'RU'>('EN')
+
+  return (
+    <Header
+      isLoggedIn
+      notificationCount={3}
+      selectedLanguage={language}
+      onLanguageChange={lang => {
+        console.log(`Lang changed to: ${lang}`)
+        setLanguage(lang as 'EN' | 'RU')
+      }}
+    />
+  )
+}
+
+const LoggedOutTemplate = () => {
+  const [language, setLanguage] = useState<'EN' | 'RU'>('RU')
+
+  return (
+    <Header
+      isLoggedIn={false}
+      selectedLanguage={language}
+      onLanguageChange={lang => {
+        console.log(`Lang changed to: ${lang}`)
+        setLanguage(lang as 'EN' | 'RU')
+      }}
+    />
+  )
+}
+
 export const LoggedIn: Story = {
-  args: {
-    isLoggedIn: true,
-    selectedLanguage: 'english',
-    notificationCount: 3,
-    onLanguageChange: (lang: string) => {
-      console.log(`Lang: ${lang}`)
-    },
-  },
+  render: () => <LoggedInTemplate />,
 }
 
 export const LoggedOut: Story = {
-  args: {
-    isLoggedIn: false,
-    selectedLanguage: 'russian',
-    onLanguageChange: (lang: string) => {
-      console.log(`Lang: ${lang}`)
-    },
-  },
+  render: () => <LoggedOutTemplate />,
 }
