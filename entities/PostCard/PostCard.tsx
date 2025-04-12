@@ -8,15 +8,16 @@ import { usePrevNextButtons } from '@/entities/PostCard/usePrevNextButton'
 import { useDotButton } from '@/entities/PostCard/useDotButton'
 import { clsx } from 'clsx'
 import { UserPhoto } from '@/entities/UserPhoto'
+import { UserProfileLink } from '@/entities/UserProfileLink'
 type Props = {
   postImage: StaticImageData | StaticImageData[]
   authorImage: StaticImageData
-  postTitle: string
+  postAuthor: string
   postCreated: string
   postText: string
 }
 
-export const PostCard = ({ postText, postCreated, postImage, postTitle, authorImage }: Props) => {
+export const PostCard = ({ postText, postCreated, postImage, postAuthor, authorImage }: Props) => {
   const [emblaRef, emblaApi] = useEmblaCarousel()
   const { prevBtnDisabled, nextBtnDisabled, onPrevButtonClick, onNextButtonClick } =
     usePrevNextButtons(emblaApi)
@@ -87,7 +88,7 @@ export const PostCard = ({ postText, postCreated, postImage, postTitle, authorIm
       <div className={s.postContainer}>
         <div className={s.imageContainer}>
           <UserPhoto alt="author photo" src={authorImage} />
-          <Typography variant="h3">{postTitle}</Typography>
+          <UserProfileLink href="#" userName={postAuthor} />
         </div>
         <Typography className={s.createdDate} variant="small">
           {postCreated}
