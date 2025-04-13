@@ -1,4 +1,4 @@
-import { Close } from '@/public'
+import { Close } from '@/public/icons'
 import { Typography } from '@/shared/components'
 import s from './Toast.module.scss'
 import clsx from 'clsx'

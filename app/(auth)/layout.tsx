@@ -1,6 +1,7 @@
 'use client'
-import withAuth from '@/shared/HOC/withAuth'
+
 import { type ReactNode } from 'react'
+import { withAuth } from '@/shared/HOC'
 
 function AuthLayout({ children }: { children: ReactNode }) {
   return <>{children}</>

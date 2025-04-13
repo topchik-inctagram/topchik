@@ -2,15 +2,16 @@
 
 import {
   type ChangeEvent,
-  type KeyboardEvent,
   type ComponentPropsWithRef,
+  type KeyboardEvent,
+  useEffect,
   useId,
   useState,
 } from 'react'
 
 import clsx from 'clsx'
 import s from './Input.module.scss'
-import { Close, EyeOffOutline, EyeOutline, Search } from '@/public'
+import { Close, EyeOffOutline, EyeOutline, Search } from '@/public/icons'
 import { Label, Typography } from '@/shared/components'
 
 export type InputProps = {
@@ -61,15 +62,17 @@ export const Input = ({
     clearIcon: s.clearIcon,
     errorText: s.errorText,
   }
-
+  const inputEl = document.getElementById(finalId)
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword)
-
-    setTimeout(() => {
-      const inputElement = document.getElementById(finalId)
-      inputElement?.focus()
-    }, 0)
+    inputEl?.focus()
   }
+
+  useEffect(() => {
+    if (type === 'password' && value === '') {
+      setShowPassword(false)
+    }
+  }, [value])
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     onChange?.(e)
@@ -93,9 +96,9 @@ export const Input = ({
       <div className={classNames.inputContainer}>
         {isSearchType && (
           <button
-            type="button"
             className={classNames.searchIcon}
             disabled={disabled}
+            type="button"
             onClick={onKeyEnter}
           >
             <Search />
@@ -124,9 +127,9 @@ export const Input = ({
         )}
         {isPasswordType && (
           <button
-            type="button"
             className={classNames.showPassword}
             disabled={disabled}
+            type="button"
             onClick={togglePasswordVisibility}
           >
             {showPassword ? <EyeOutline /> : <EyeOffOutline />}

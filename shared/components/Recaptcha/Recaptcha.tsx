@@ -3,7 +3,7 @@ import s from './Recaptcha.module.scss'
 import { CheckmarkRecaptcha, RecaptchaIcon } from '@/public'
 import { Checkbox } from '@/shared/components'
 import { CaptchaSpinner } from '../CaptchaSpinner/CaptchaSpinner'
-import { Label } from '../Label/Label'
+import { Label } from '../Label/Label' 
 import Link from 'next/link'
 
 type RecaptchaStatus = 'idle' | 'pending' | 'verified' | 'error' | 'expired' | 'notVerified'

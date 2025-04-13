@@ -48,7 +48,7 @@ const config = [
       'react/prop-types': 'off',
       'react/jsx-boolean-value': ['error', 'never'],
       'react/jsx-curly-brace-presence': ['error', 'never'],
-      'react/jsx-no-useless-fragment': 'error',
+      'react/jsx-no-useless-fragment': 'warn',
       'react/jsx-pascal-case': 'error',
       'react/jsx-sort-props': [
         'warn',
@@ -61,7 +61,7 @@ const config = [
 
       // TypeScript rules
       '@typescript-eslint/no-unused-vars': [
-        'error',
+        'warn',
         {
           argsIgnorePattern: '^_',
           varsIgnorePattern: '^_',

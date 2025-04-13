@@ -9,6 +9,10 @@
   }
 }
 
+.checkbox {
+  padding: 0;
+  background: var(--color-light-100);
+}
 
 .container {
   position: relative;
@@ -91,7 +95,7 @@
   bottom: 4px;
 
   font-size: 8px;
-  color: var(--color-danger-300)а
+  color: var(--color-danger-300)
 }
 
 .privacy {

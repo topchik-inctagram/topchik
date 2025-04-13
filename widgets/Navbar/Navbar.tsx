@@ -1,3 +1,4 @@
+'use client'
 import s from './Navbar.module.scss'
 import Link from 'next/link'
 import { clsx } from 'clsx'
@@ -18,7 +19,7 @@ import {
   SearchOutline,
   TrendUp,
   TrendUpOutline,
-} from '@/public'
+} from '@/public/icons'
 import { Typography } from '@/shared/components'
 import { type ComponentPropsWithRef, useState } from 'react'
 import { LogoutModal } from '@/entities/LogoutModal'

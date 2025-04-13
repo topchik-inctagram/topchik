@@ -18,7 +18,7 @@ const PUBLIC_PATHS = [
 
 const PROTECTED_PATHS = [PrivatePages.profile].map(String)
 
-const withAuth = <P extends object>(WrappedComponent: ComponentType<P>) => {
+export const withAuth = <P extends object>(WrappedComponent: ComponentType<P>) => {
   const AuthComponent = (props: P) => {
     const router = useRouter()
     const pathname = usePathname()
@@ -69,5 +69,3 @@ const withAuth = <P extends object>(WrappedComponent: ComponentType<P>) => {
 
   return AuthComponent
 }
-
-export default withAuth

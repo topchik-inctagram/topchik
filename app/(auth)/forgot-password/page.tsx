@@ -1,12 +1,15 @@
 'use client'
 
-import { ForgotPassword } from '../../../features/auth/forms/ForgotPassword'
 import { PageContainer } from '@/shared/components'
+import { ForgotPassword } from '@/features/auth/forms/ForgotPassword'
 
 const Page = () => {
+  const handleSubmit = (data: unknown) => {
+    console.log('Form submitted:', data)
+  }
   return (
     <PageContainer mt="36px">
-      <ForgotPassword isVerified={false} onSubmit={() => {}} />
+      <ForgotPassword isVerified={false} onSubmit={handleSubmit} />
     </PageContainer>
   )
 }
