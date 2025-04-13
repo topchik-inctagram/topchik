@@ -36,6 +36,22 @@ export const AuthService = baseApi.injectEndpoints({
           url: '/api/v1/auth/registration',
         }),
       }),
+      confirmEmail: builder.mutation<void, { code: string }>({
+        invalidatesTags: [''],
+        query: body => ({
+          body,
+          method: 'POST',
+          url: '/api/v1/auth/registration-confirmation',
+        }),
+      }),
+      emailResending: builder.mutation<void, { email: string }>({
+        invalidatesTags: [''],
+        query: body => ({
+          body,
+          method: 'POST',
+          url: '/api/v1/auth/registration-email-resending',
+        }),
+      }),
       //todo check this req
       logout: builder.mutation<void, void>({
         invalidatesTags: [''],
@@ -48,5 +64,11 @@ export const AuthService = baseApi.injectEndpoints({
     }
   },
 })
-export const { useLoginMutation, useLogoutMutation, useMeQuery, useRegistrationUserMutation } =
-  AuthService
+export const {
+  useLoginMutation,
+  useLogoutMutation,
+  useMeQuery,
+  useRegistrationUserMutation,
+  useConfirmEmailMutation,
+  useEmailResendingMutation,
+} = AuthService
