@@ -6,7 +6,7 @@ import { Vector } from '@/public'
 import { Label } from '@/shared/components'
 
 export type CheckboxProps = {
-  label?: ReactNode,
+  label?: ReactNode
   rootClassName?: string
   indicatorClassName?: string
   labelClassName?: string
@@ -30,7 +30,7 @@ export const Checkbox = ({
   const classNames = {
     container: clsx(s.container, className),
     root: clsx(s.root, disabled && s.disabled, rootClassName),
-    indicator: s.indicator, indicatorClassName,
+    indicator: clsx(s.indicator, indicatorClassName),
     label: clsx(s.label, disabled && s.disabled, labelClassName),
   }
 
