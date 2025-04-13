@@ -1,40 +1,39 @@
 import { type Meta, type StoryObj } from '@storybook/react'
 import { Checkbox } from '@/shared/components'
+import { useState } from 'react'
 
 const meta = {
   component: Checkbox,
   tags: ['autodocs'],
   title: 'Components/UI/Checkbox',
-  args: {
-    label: 'Check-box',
-    disabled: false,
-    checked: false,
-  },
-  argTypes: {
-    disabled: {
-      control: 'boolean',
-      description: 'Disable checkbox interaction',
-    },
-    label: {
-      control: 'text',
-      description: 'Label text for the checkbox',
-    },
-    checked: {
-      control: 'boolean',
-      description: 'Controlled checked state',
-    },
-    onCheckedChange: {
-      action: 'checked',
-      description: 'Callback when checked state changes',
-    },
-  },
 } satisfies Meta<typeof Checkbox>
 
 export default meta
 type Story = StoryObj<typeof meta>
 
-export const Checked: Story = {
+export const Uncontrolled: Story = {
   args: {
-    checked: false,
+    disabled: false,
+    label: 'Check-box',
+  },
+}
+
+export const Controlled: Story = {
+  args: {
+    disabled: false,
+  },
+  render: args => {
+    const [checked, setChecked] = useState<boolean | 'indeterminate'>(false)
+
+    return (
+      <Checkbox
+        {...args}
+        checked={checked}
+        onCheckedChange={checked => {
+          setChecked(checked)
+        }}
+        label={'Click here'}
+      />
+    )
   },
 }
