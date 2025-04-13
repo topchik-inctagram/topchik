@@ -11,8 +11,33 @@
 
 .checkbox {
   padding: 0;
-  background: var(--color-light-100);
 }
+
+.rootChekbox {
+  border: 1px solid rgb(183 183 183 / 100%);
+  border-radius: 1px;
+  background: var(--color-light-100);
+
+  &::after {
+    width: 0;
+  }
+
+  &:hover {
+    border-radius: 0;
+    background-color: var(--color-light-100) !important;
+  }
+}
+
+.labelchekbox {
+  font-family: Roboto, sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 100%;
+  color: var(--color-light-100);
+  letter-spacing: 0%;
+}
+
+
 
 .container {
   position: relative;
@@ -41,10 +66,8 @@
   &.errorAbove {
     position: absolute;
     top: -10px;
-
     width: 175px;
     height: 25px;
-    padding-left: 8px;
   }
 }
 

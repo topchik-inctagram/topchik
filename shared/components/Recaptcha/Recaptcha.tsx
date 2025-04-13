@@ -2,21 +2,31 @@ import clsx from 'clsx'
 import s from './Recaptcha.module.scss'
 import { CheckmarkRecaptcha, RecaptchaIcon } from '@/public/icons'
 import { Checkbox } from '@/shared/components'
-import { CaptchaSpinner } from '../CaptchaSpinner/CaptchaSpinner'
-import { Label } from '../Label/Label' 
+import { CaptchaSpinner } from '@/shared/components'
+import { Label } from '../Label/Label'
 import Link from 'next/link'
+import { useEffect, useState } from 'react'
 
 type RecaptchaStatus = 'idle' | 'pending' | 'verified' | 'error' | 'expired' | 'notVerified'
 
 type RecaptchaProps = {
+  label?: string
   className?: string
   id?: string
-  label?: string
   isStatus?: RecaptchaStatus
   onVerify?: () => void
 }
 
 export const Recaptcha = ({ className, isStatus = 'idle', onVerify }: RecaptchaProps) => {
+  const [checked, setChecked] = useState<boolean | 'indeterminate'>(false)
+
+  const handleCheckboxChange = (checked: boolean) => {
+    setChecked(checked === true)
+    if (checked === true && onVerify) {
+      onVerify()
+    }
+  }
+
   const classNames = {
     wrapper: clsx(s.wrapper, {
       [s.wrapperError]: isStatus === 'expired' || isStatus === 'notVerified',
@@ -57,10 +67,9 @@ export const Recaptcha = ({ className, isStatus = 'idle', onVerify }: RecaptchaP
       case 'notVerified':
         return 'Please verify that you are not a robot'
       default:
-        return 'errorMessage'
+        return null
     }
   }
-
   const renderCheckboxContent = () => {
     switch (isStatus) {
       case 'pending':
@@ -79,13 +88,23 @@ export const Recaptcha = ({ className, isStatus = 'idle', onVerify }: RecaptchaP
         )
       default:
         return (
-          <>
-            <Checkbox className={classNames.checkbox} />
-            <Label className={classNames.label}>I'm not a robot</Label>
-          </>
+          <Checkbox
+            checked={checked}
+            onCheckedChange={handleCheckboxChange}
+            rootClassName={s.rootChekbox}
+            labelClassName={s.labelchekbox}
+            className={s.checkbox}
+            label={`I'm not a robot`}
+          />
         )
     }
   }
+
+  useEffect(() => {
+    if (isStatus === 'error' || isStatus === 'expired' || isStatus === 'notVerified') {
+      setChecked(false)
+    }
+  }, [isStatus])
 
   return (
     <div className={classNames.wrapper}>
