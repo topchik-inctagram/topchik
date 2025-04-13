@@ -1,38 +1,63 @@
-import { type ComponentPropsWithoutRef } from 'react'
+import { type ComponentPropsWithRef } from 'react'
 import clsx from 'clsx'
 import s from './Table.module.scss'
 
-const Root = ({ className, ...restProps }: ComponentPropsWithoutRef<'table'>) => (
-  <table className={clsx(s.root, className)} {...restProps} />
-)
+/* ========== PROP TYPES ========== */
 
-const Head = ({ className, ...restProps }: ComponentPropsWithoutRef<'thead'>) => (
-  <thead className={clsx(s.head, className)} {...restProps} />
-)
+type TableRootProps = ComponentPropsWithRef<'table'>
+type TableHeadProps = ComponentPropsWithRef<'thead'>
+type TableBodyProps = ComponentPropsWithRef<'tbody'>
+type TableRowProps = ComponentPropsWithRef<'tr'>
+type TableCellProps = ComponentPropsWithRef<'td'>
+type TableEmptyProps = ComponentPropsWithRef<'span'>
+type TableHeaderCellProps = {
+  isSorting?: boolean
+} & ComponentPropsWithRef<'th'>
 
-const Body = ({ className, ...restProps }: ComponentPropsWithoutRef<'tbody'>) => (
-  <tbody className={clsx(s.body, className)} {...restProps} />
-)
+/* ========== CLASSNAMES OBJECT ========== */
 
-const Row = ({ className, ...restProps }: ComponentPropsWithoutRef<'tr'>) => (
-  <tr className={clsx(s.row, className)} {...restProps} />
-)
+const classNames = {
+  root: (className?: string) => clsx(s.root, className),
+  head: (className?: string) => clsx(s.head, className),
+  body: (className?: string) => clsx(s.body, className),
+  row: (className?: string) => clsx(s.row, className),
+  headerCell: (isSorting?: boolean, className?: string) =>
+    clsx(s.headerCell, isSorting && s.headerCellSorting, className),
+  cell: (className?: string) => clsx(s.cell, className),
+  empty: (className?: string) => clsx(s.empty, className),
+}
 
-const HeaderCell = ({
-  className,
-  isSorting = false,
-  ...restProps
-}: ComponentPropsWithoutRef<'th'> & { isSorting?: boolean }) => (
-  <th className={clsx(s.headerCell, isSorting && s.headerCellSorting, className)} {...restProps} />
-)
+/* ========== COMPONENTS ========== */
 
-const Cell = ({ className, ...restProps }: ComponentPropsWithoutRef<'td'>) => (
-  <td className={clsx(s.cell, className)} {...restProps} />
-)
+const Root = ({ className, ...rest }: TableRootProps) => {
+  return <table className={classNames.root(className)} {...rest} />
+}
 
-const Empty = ({ className, ...restProps }: ComponentPropsWithoutRef<'span'>) => (
-  <span className={clsx(s.empty, className)} {...restProps} />
-)
+const Head = ({ className, ...rest }: TableHeadProps) => {
+  return <thead className={classNames.head(className)} {...rest} />
+}
+
+const Body = ({ className, ...rest }: TableBodyProps) => {
+  return <tbody className={classNames.body(className)} {...rest} />
+}
+
+const Row = ({ className, ...rest }: TableRowProps) => {
+  return <tr className={classNames.row(className)} {...rest} />
+}
+
+const HeaderCell = ({ className, isSorting = false, ...rest }: TableHeaderCellProps) => {
+  return <th className={classNames.headerCell(isSorting, className)} {...rest} />
+}
+
+const Cell = ({ className, ...rest }: TableCellProps) => {
+  return <td className={classNames.cell(className)} {...rest} />
+}
+
+const Empty = ({ className, ...rest }: TableEmptyProps) => {
+  return <span className={classNames.empty(className)} {...rest} />
+}
+
+/* ========== EXPORT ========== */
 
 export const Table = {
   Root,
