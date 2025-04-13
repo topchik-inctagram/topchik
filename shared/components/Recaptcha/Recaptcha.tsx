@@ -1,6 +1,6 @@
 import clsx from 'clsx'
 import s from './Recaptcha.module.scss'
-import { CheckmarkRecaptcha, RecaptchaIcon } from '@/public'
+import { CheckmarkRecaptcha, RecaptchaIcon } from '@/public/icons'
 import { Checkbox } from '@/shared/components'
 import { CaptchaSpinner } from '../CaptchaSpinner/CaptchaSpinner'
 import { Label } from '../Label/Label' 
