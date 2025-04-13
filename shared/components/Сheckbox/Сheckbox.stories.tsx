@@ -1,44 +1,39 @@
-import { type Meta, type StoryObj } from '@storybook/react';
-import { Checkbox } from '@/shared/components';
+import { type Meta, type StoryObj } from '@storybook/react'
+import { Checkbox } from '@/shared/components'
+import { useState } from 'react'
+import { CheckedState } from '@radix-ui/react-checkbox'
 
 const meta = {
   component: Checkbox,
   tags: ['autodocs'],
   title: 'Components/UI/Checkbox',
+} satisfies Meta<typeof Checkbox>
+
+export default meta
+type Story = StoryObj<typeof meta>
+
+export const Uncontrolled: Story = {
   args: {
-    label: 'Checkbox',
     disabled: false,
-    checked: false,
-  },
-  argTypes: {
-    disabled: {
-      control: 'boolean',
-      description: 'Disable checkbox',
-    },
-    checked: {
-      control: 'boolean',
-      description: 'Checked state',
-    },
-    label: {
-      control: 'text',
-      description: 'Checkbox label',
-    },
-  },
-} satisfies Meta<typeof Checkbox>;
-
-export default meta;
-type Story = StoryObj<typeof meta>;
-
-export const Controlled: Story = {
-  args: {
-    checked: false,
     label: 'Check-box',
   },
-  render: (args, { updateArgs }) => (
-    <Checkbox
-      {...args}
-      label={'Check-box'}
-      onCheckedChange={(value) => updateArgs({ checked: value })} 
-    />
-  ),
 }
+
+
+export const Controlled: Story = {
+  args:{
+    disabled:false
+  },
+  render: (args) => {
+    const [checked, setChecked] = useState<CheckedState>(false);
+
+    return (
+      <Checkbox
+        {...args}
+        checked={checked}
+        onCheckedChange={(checked)=>{console.log(checked);setChecked(checked)}}
+        label={'Click here'}
+      />
+    );
+  },
+};

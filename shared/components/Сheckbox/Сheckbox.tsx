@@ -1,4 +1,4 @@
-import { type ComponentPropsWithRef, useId } from 'react'
+import { type ComponentPropsWithRef, ReactNode, useId } from 'react'
 import * as CheckboxRadix from '@radix-ui/react-checkbox'
 import s from './Checkbox.module.scss'
 import { clsx } from 'clsx'
@@ -6,7 +6,10 @@ import { Vector } from '@/public'
 import { Label } from '@/shared/components'
 
 export type CheckboxProps = {
-  label?: string
+  label?: ReactNode,
+  rootClassName?: string
+  indicatorClassName?: string
+  labelClassName?: string
 } & ComponentPropsWithRef<typeof CheckboxRadix.Root>
 
 export const Checkbox = ({
@@ -16,6 +19,9 @@ export const Checkbox = ({
   className,
   checked,
   onCheckedChange,
+  indicatorClassName,
+  rootClassName,
+  labelClassName,
   ...rest
 }: CheckboxProps) => {
   const generatedId = useId()
@@ -23,9 +29,9 @@ export const Checkbox = ({
 
   const classNames = {
     container: clsx(s.container, className),
-    root: clsx(s.root, disabled && s.disabled),
-    indicator: s.indicator,
-    label: clsx(s.label, disabled && s.disabled),
+    root: clsx(s.root, disabled && s.disabled, rootClassName),
+    indicator: s.indicator, indicatorClassName,
+    label: clsx(s.label, disabled && s.disabled, labelClassName),
   }
 
   return (
@@ -39,7 +45,7 @@ export const Checkbox = ({
         onCheckedChange={onCheckedChange}
       >
         <CheckboxRadix.Indicator className={classNames.indicator}>
-        {checked && <Vector />}
+          <Vector />
         </CheckboxRadix.Indicator>
       </CheckboxRadix.Root>
 

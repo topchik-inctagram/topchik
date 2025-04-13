@@ -2,6 +2,9 @@
   display: flex;
   gap: 8px;
   align-items: center;
+
+  width: fit-content;
+  padding: 6px 2px 6px 6px;
 }
 
 .label {
@@ -30,6 +33,7 @@
 
   width: 18px;
   height: 18px;
+  margin: 3px;
   border: 2px solid var(--color-light-100);
   border-radius: 2px;
 
@@ -55,28 +59,49 @@
     transition: background-color 0.2s ease;
   }
 
-  &[data-state='checked'] {
-    border-color: var(--color-light-100);
-    background-color: var(--color-dark-900);
-  }
-
   &:focus-visible {
     outline: 2px solid var(--color-dark-500);
 
     &::after {
       background-color: var(--color-dark-500);
-      outline: 2px solid var(--color-light-500);
       outline-offset: 2px;
     }
   }
 
+  &[data-state='checked'] {
+    border-color: var(--color-light-100);
+    background-color: var(--color-light-100);
+  }
+
   &:disabled {
     cursor: initial;
-    color: var(--color-dark-100);
+
+    &:not([data-state='checked']) {
+      border: 2px solid var(--color-light-900);
+    }
 
     &[data-state='checked'] {
-      background-color: var(--color-light-700);
+      border-color: var(--color-dark-100);
+      background-color: var(--color-dark-100);
     }
+  }
+
+
+  &:hover:not(:disabled) {
+    background-color: var(--color-dark-100);
+
+    &::after {
+      background-color: var(--color-dark-300);
+    }
+  }
+
+  span {
+    width: 18px;
+    height: 18px;
+  }
+
+  &:active:not(:disabled)::after {
+    background-color: var(--color-dark-100);
   }
 }
 
@@ -88,5 +113,7 @@
   svg {
     width: 18px;
     height: 18px;
+    border-radius: 2px;
+    background-color: var(--color-dark-900);
   }
 }
