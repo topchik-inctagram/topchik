@@ -24,11 +24,9 @@ export const Controlled: Story = {
         if (random > 0.7) {
           setStatus('verified')
         } else if (random > 0.4) {
-          setStatus('error')
+          setStatus('notVerified')
         } else if (random > 0.2) {
           setStatus('expired')
-        } else {
-          setStatus('notVerified')
         }
       }, 2000)
     }
