@@ -11,4 +11,5 @@ export type RegistrationRequest = {
   username: string
   password: string
   agreement: boolean
+  recaptchaToken: string
 }

@@ -61,6 +61,13 @@ export const AuthService = baseApi.injectEndpoints({
           url: '/api/v1/auth/logout',
         }),
       }),
+      verifyRecaptcha: builder.mutation<{ success: boolean }, { token: string }>({
+        query: body => ({
+          url: '/api/verify-recaptcha',
+          method: 'POST',
+          body,
+        }),
+      }),
     }
   },
 })
@@ -71,4 +78,5 @@ export const {
   useRegistrationUserMutation,
   useConfirmEmailMutation,
   useEmailResendingMutation,
+  useVerifyRecaptchaMutation,
 } = AuthService
