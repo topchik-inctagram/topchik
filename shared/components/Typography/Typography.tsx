@@ -1,9 +1,8 @@
-import { type ComponentPropsWithoutRef, type ElementType, type RefObject } from 'react'
+import { type ComponentPropsWithRef, type ElementType } from 'react'
 
 import s from './Typography.module.scss'
-import Link from 'next/link'
+import Link, { type LinkProps } from 'next/link'
 import clsx from 'clsx'
-import { Slot } from '@radix-ui/react-slot'
 
 export type TypographyVariant =
   | 'large'
@@ -20,28 +19,13 @@ export type TypographyVariant =
   | 'regular_link'
   | 'small_link'
 
-type Props<T extends ElementType = 'p'> = {
+type Props<T extends ElementType | typeof Link> = {
   as?: T
-  text?: string
-  ref?: RefObject<T>
-  asChild?: boolean
   variant?: TypographyVariant
-}
+} & (T extends typeof Link ? LinkProps : ComponentPropsWithRef<T>)
 
-export type TypographyProps<T extends ElementType> = Props<T> &
-  Omit<ComponentPropsWithoutRef<T>, keyof Props<T>>
-
-export const Typography = <T extends ElementType = 'p'>(props: TypographyProps<T>) => {
-  const {
-    as,
-    children,
-    className,
-    text = '',
-    asChild,
-    variant = 'regular_16',
-    ref,
-    ...rest
-  } = props
+export const Typography = <T extends ElementType | typeof Link = 'p'>(props: Props<T>) => {
+  const { as, className, variant = 'regular_16', ...rest } = props
 
   const classNames = {
     typography: clsx(s.typography, s[variant], className),
@@ -52,7 +36,7 @@ export const Typography = <T extends ElementType = 'p'>(props: TypographyProps<T
     return value
   }
 
-  function typographyVar(as: ElementType = 'p', variant: Props<T>['variant'] = 'regular_16') {
+  function typographyVar(as: ElementType = 'p', variant: TypographyVariant = 'regular_16') {
     switch (variant) {
       case 'regular_16':
       case 'bold_16':
@@ -77,11 +61,7 @@ export const Typography = <T extends ElementType = 'p'>(props: TypographyProps<T
     }
   }
 
-  const Component = asChild ? Slot : typographyVar(as, variant)
+  const Component = typographyVar(as, variant)
 
-  return (
-    <Component ref={ref} className={classNames.typography} {...rest}>
-      {children ?? text}
-    </Component>
-  )
+  return <Component className={classNames.typography} {...rest} />
 }

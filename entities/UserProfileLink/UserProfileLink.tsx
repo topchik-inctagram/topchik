@@ -15,10 +15,8 @@ export const UserProfileLink = ({ className, userName, variant = 'h3', href, ...
     link: clsx(s.userProfileLink, className),
   }
   return (
-    <Typography asChild variant={variant}>
-      <Link href={href} {...rest} className={classNames.link}>
-        {userName}
-      </Link>
+    <Typography as={Link} className={classNames.link} href={href} variant={variant} {...rest}>
+      {userName}
     </Typography>
   )
 }
