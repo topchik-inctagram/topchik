@@ -1,4 +1,4 @@
-import { type ComponentPropsWithRef, type ElementType, type ReactNode } from 'react'
+import { type ComponentPropsWithRef, type ElementType } from 'react'
 
 import s from './Typography.module.scss'
 import Link, { type LinkProps } from 'next/link'
