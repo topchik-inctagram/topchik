@@ -5,11 +5,24 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Button, Card, ControlledInput, Typography } from '@/shared/components'
 import s from './CreateNewPassword.module.scss'
+import { passwordRegex } from '@/shared/schema/validationRegex'
 
-const schema = z.object({
-  password: z.string().min(3),
-  confirmPassword: z.string().min(3),
-})
+const schema = z
+  .object({
+    password: z
+      .string()
+      .min(6, 'Password must be at least 6 characters')
+      .max(20, 'Password must be no more than 20 characters')
+      .regex(
+        passwordRegex,
+        'Password must contain uppercase, lowercase, digit, and special character'
+      ),
+    confirmPassword: z.string(),
+  })
+  .refine(data => data.password === data.confirmPassword, {
+    message: 'The passwords must match',
+    path: ['confirmPassword'],
+  })
 
 type FormTypes = z.infer<typeof schema>
 type Props = {

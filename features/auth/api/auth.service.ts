@@ -59,11 +59,17 @@ export const AuthService = baseApi.injectEndpoints({
           body,
         }),
       }),
-      newPassword: builder.mutation<void, { password: string; recoveryCode: string }>({
+      newPassword: builder.mutation<void, { newPassword: string; recoveryCode: string }>({
         query: body => ({
           url: '/api/v1/auth/new-password',
           method: 'POST',
           body,
+        }),
+      }),
+      deleteAllDevices: builder.mutation<void, void>({
+        query: () => ({
+          url: '/api/v1/security/devices',
+          method: 'DELETE',
         }),
       }),
     }
@@ -77,4 +83,5 @@ export const {
   useForgotPasswordMutation,
   useCheckRecoveryCodeMutation,
   useNewPasswordMutation,
+  useDeleteAllDevicesMutation,
 } = AuthService

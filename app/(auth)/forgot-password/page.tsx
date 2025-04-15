@@ -33,19 +33,21 @@ const Page = () => {
       email: '',
     },
     resolver: zodResolver(schema),
-    mode: 'onBlur',
+    mode: 'onChange',
+    reValidateMode: 'onChange',
   })
 
   const handleSubmitForm = async (data: FormTypes) => {
     try {
       await forgotPassword(data).unwrap()
       setEmail(data.email)
+      localStorage.setItem('recovery-email', data.email)
       setShowModal(true)
     } catch (error: any) {
-      if (error?.status === 400) {
+      if (error) {
         setError('email', {
           type: 'manual',
-          message: 'User with this email doesn’t exist',
+          message: error.data.errorsMessages[0].message,
         })
       }
     }
