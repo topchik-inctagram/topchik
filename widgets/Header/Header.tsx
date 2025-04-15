@@ -33,7 +33,7 @@ export const Header = ({
     return null
   }
 
-  const [isLogged, setIsLogged] = useState<string | null>(getToken)
+  const [isLogged, setIsLogged] = useState<string | null>(null)
 
   useEffect(() => {
     const checkAuth = () => {
@@ -43,7 +43,7 @@ export const Header = ({
 
     window.addEventListener('storage', checkAuth)
     return () => window.removeEventListener('storage', checkAuth)
-  }, [])
+  }, [pathname])
 
   useEffect(() => {
     setIsLogged(localStorage.getItem(TOKEN))
@@ -71,7 +71,7 @@ export const Header = ({
       </Typography>
 
       <div className={s.controls}>
-        {!!isLogged ? (
+        {isLogged ? (
           <div className={s.notifyLangGroup}>
             <div className={s.bellWrapper}>
               <BellIcon className={s.bellIcon} />
