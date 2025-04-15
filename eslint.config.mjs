@@ -89,7 +89,7 @@ const config = [
       curly: ['error', 'all'],
       'brace-style': ['error', '1tbs'],
       quotes: ['error', 'single', { avoidEscape: true }],
-      indent: ['error', 2],
+      // indent: ['error', 4],
       'max-len': [
         'error',
         {
