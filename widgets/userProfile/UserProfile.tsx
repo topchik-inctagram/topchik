@@ -31,7 +31,7 @@ export const UserProfile = ({avatarUrl, userName}: Props) => {
           </div>
         </dl>
         <Typography as="p" className={s.name} variant="regular_16">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco <Typography as="a">laboris nisi ut aliquip ex ea commodo consequat.</Typography>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim quis nostrud exercitation ullamco <Typography as="a">laboris nisi ut aliquip ex ea commodo consequat.</Typography>
         </Typography>
       </div>
     </section>
