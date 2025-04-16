@@ -11,16 +11,16 @@ import RussiaFlag from '@/public/icons/FlagRussia'
 import UnitedKingdomFlag from '@/public/icons/FlagUnitedKingdom'
 import { Select } from '@/shared/components/Select'
 
-type Language = 'EN' | 'RU'
+export type Language = 'EN' | 'RU'
 
 type Props = {
   selectedLanguage?: string
-  onLanguageChange?: (lang: string) => void
+  onLanguageChange?: (lang: Language) => void
   notificationCount?: number
 }
 
 export const Header = ({
-  selectedLanguage ='english',
+  selectedLanguage ='EN',
   onLanguageChange,
   notificationCount = 0,
 }: Props) => {
@@ -45,9 +45,6 @@ export const Header = ({
     return () => window.removeEventListener('storage', checkAuth)
   }, [pathname])
 
-  useEffect(() => {
-    setIsLogged(localStorage.getItem(TOKEN))
-  }, [pathname])
 
   const languageOptions = [
     { value: 'RU', label: 'Russian', icon: <RussiaFlag /> },
@@ -57,11 +54,17 @@ export const Header = ({
   const selectComponent = (
     <Select
       isLanguageSwitcher
-      options={languageOptions}
       placeholder="Select language"
       value={selectedLanguage}
       onValueChange={(value: string) => onLanguageChange?.(value as Language)}
-    />
+    >
+      {languageOptions.map(opt => (
+        <Select.Item key={opt.value} value={opt.value}>
+          {opt.icon}
+          {opt.label}
+        </Select.Item>
+      ))}
+    </Select>
   )
 
   return (
