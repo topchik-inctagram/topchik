@@ -28,22 +28,6 @@ export const agreementSchema = z.literal<boolean>(true, {
   errorMap: () => ({ message: 'You must accept the agreement' }),
 })
 
-export const signUpSchema = z
-  .object({
-    username: usernameSchema,
-    email: emailSchema,
-    password: passwordSchema,
-    confirmPassword: confirmPasswordSchema,
-    agreement: agreementSchema,
-  })
-  .refine(({ password, confirmPassword }) => password === confirmPassword, {
-    message: 'Passwords must match',
-    path: ['confirmPassword'],
-  })
 
-export const emailOnlySchema = z.object({
-  email: emailSchema,
-})
 
-export type SignUpFormData = z.infer<typeof signUpSchema>
-export type EmailFormData = z.infer<typeof emailOnlySchema>
+
