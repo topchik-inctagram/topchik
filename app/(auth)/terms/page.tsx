@@ -6,7 +6,7 @@ import s from './page.module.scss'
 
 const Page = () => {
   return (
-    <PageContainer>
+    <PageContainer direction="column">
       <Link className={s.link} href="/sign-up">
         <ArrowBackOutline /> Back to Sign Up
       </Link>

@@ -24,7 +24,7 @@ const Page = () => {
   }
 
   return (
-    <PageContainer>
+    <PageContainer direction="column">
       {isError && error?.data?.errorsMessages?.[0]?.message && (
         <Toast description={error.data.errorsMessages[0].message} variant="error" />
       )}
