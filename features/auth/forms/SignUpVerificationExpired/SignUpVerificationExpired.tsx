@@ -3,7 +3,11 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import s from './SignUpVerificationExpired.module.scss'
 import { z } from 'zod'
-import { emailOnlySchema } from '@/shared/schema'
+import { emailSchema} from '@/shared/schema'
+
+const emailOnlySchema = z.object({
+  email: emailSchema,
+})
 
 type FormTypes = z.infer<typeof emailOnlySchema>
 type Props = {
@@ -34,13 +38,13 @@ export const SignUpVerificationExpired = ({ onSubmit }: Props) => {
     <form action="" className={s.formContainer} onSubmit={handleSubmit(submitHandler)}>
       <ControlledInput
         autoComplete="email"
+        className={s.userEmailInput}
         control={control}
         error={errors.email?.message}
         label="Email"
         name="email"
         placeholder="example@yourmail.com"
         type="email"
-        className={s.userEmailInput}
       />
       <Button className={s.button} disabled={!isValid || isSubmitting} type="submit">
         Resend verification link
