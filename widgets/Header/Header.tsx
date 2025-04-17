@@ -33,7 +33,7 @@ export const Header = ({
     return null
   }
 
-  const [isLogged, setIsLogged] = useState<string | null>(null)
+  const [isLogged, setIsLogged] = useState<string | null>(getToken)
 
   useEffect(() => {
     const checkAuth = () => {
@@ -43,6 +43,10 @@ export const Header = ({
 
     window.addEventListener('storage', checkAuth)
     return () => window.removeEventListener('storage', checkAuth)
+  }, [])
+
+  useEffect(() => {
+    setIsLogged(localStorage.getItem(TOKEN))
   }, [pathname])
 
 
