@@ -1,13 +1,13 @@
 import {type ReactNode} from 'react';
 import {Navbar} from '@/widgets/Navbar';
-import {ProfileLayoutWrapper} from '@/shared/layouts';
+import {PageContainer} from '@/shared/components';
 
 
 export default function ProfileLayout({ children }: { children: ReactNode }) {
   return (
-    <ProfileLayoutWrapper>
+    <PageContainer direction='row' mt='0'>
       <Navbar />
       <main>{children}</main>
-    </ProfileLayoutWrapper>
+    </PageContainer>
   )
 }
