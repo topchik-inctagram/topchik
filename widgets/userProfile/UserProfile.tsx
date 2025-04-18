@@ -45,17 +45,17 @@ export const UserProfile = ({
           )}
         </div>
         <dl className={s.details}>
-          <div className={s.detail}>
-            <dd className={s.countsOfDetail}><Typography as="p" variant="bold_14">{followingCount}</Typography></dd>
-            <dt><Typography as="p" variant="regular_14">Following</Typography></dt>
+          <div className={s.detail} role="group">
+            <dt><Typography as="p" variant="bold_14">{followingCount}</Typography></dt>
+            <dd className={s.countsOfDetail}><Typography as="p" variant="regular_14">Following</Typography></dd>
           </div>
-          <div className={s.detail}>
-            <dd className={s.countsOfDetail}><Typography as="p" variant="bold_14">{followersCount}</Typography></dd>
-            <dt><Typography as="p" variant="regular_14">Followers</Typography></dt>
+          <div className={s.detail} role="group">
+            <dt><Typography as="p" variant="bold_14">{followersCount}</Typography></dt>
+            <dd className={s.countsOfDetail}><Typography as="p" variant="regular_14">Followers</Typography></dd>
           </div>
-          <div className={s.detail}>
-            <dd className={s.countsOfDetail}><Typography as="p" variant="bold_14">{publicationsCount}</Typography></dd>
-            <dt><Typography as="p" variant="regular_14">Publications</Typography></dt>
+          <div className={s.detail} role="group">
+            <dt><Typography as="p" variant="bold_14">{publicationsCount}</Typography></dt>
+            <dd className={s.countsOfDetail}><Typography as="p" variant="regular_14">Publications</Typography></dd>
           </div>
         </dl>
         <Typography as="p" className={s.name} variant="regular_16">
