@@ -2,8 +2,6 @@ import { type ComponentPropsWithRef } from 'react'
 import clsx from 'clsx'
 import s from './Table.module.scss'
 
-/* ========== PROP TYPES ========== */
-
 type TableRootProps = ComponentPropsWithRef<'table'>
 type TableHeadProps = ComponentPropsWithRef<'thead'>
 type TableBodyProps = ComponentPropsWithRef<'tbody'>
@@ -13,8 +11,6 @@ type TableEmptyProps = ComponentPropsWithRef<'span'>
 type TableHeaderCellProps = {
   isSorting?: boolean
 } & ComponentPropsWithRef<'th'>
-
-/* ========== CLASSNAMES OBJECT ========== */
 
 const classNames = {
   root: (className?: string) => clsx(s.root, className),
@@ -26,8 +22,6 @@ const classNames = {
   cell: (className?: string) => clsx(s.cell, className),
   empty: (className?: string) => clsx(s.empty, className),
 }
-
-/* ========== COMPONENTS ========== */
 
 const Root = ({ className, ...rest }: TableRootProps) => {
   return <table className={classNames.root(className)} {...rest} />
@@ -56,8 +50,6 @@ const Cell = ({ className, ...rest }: TableCellProps) => {
 const Empty = ({ className, ...rest }: TableEmptyProps) => {
   return <span className={classNames.empty(className)} {...rest} />
 }
-
-/* ========== EXPORT ========== */
 
 export const Table = {
   Root,
