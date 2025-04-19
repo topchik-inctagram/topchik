@@ -26,7 +26,7 @@ const SignInPage = () => {
   // fix later with types
   // no types for error @ts-ignore
   return (
-    <PageContainer mt="36px">
+    <PageContainer direction="column" mt="36px">
       {error && 'data' in error && (error.data as any)?.errorsMessage && (
         <Toast
           defaultOpen={!!(error.data as any)?.errorsMessage}

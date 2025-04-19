@@ -1,0 +1,42 @@
+.profile {
+  display: flex;
+  gap: 38px;
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: flex-start;
+  gap: 20px;
+  margin-bottom: 53px;
+  width: 100%;
+}
+
+.actions {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.followAndMessageButtonGroup {
+  display: flex;
+  gap: 12px;
+}
+
+.details {
+  display: flex;
+  gap: 100px;
+  margin: 0;
+}
+
+.detail {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  align-content: start;
+}
+
+.countsOfDetail{
+  margin: 0;
+}

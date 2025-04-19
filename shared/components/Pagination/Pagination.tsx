@@ -1,8 +1,8 @@
-import { ComponentPropsWithRef, FC } from 'react'
+import { type ComponentPropsWithRef, type FC } from 'react'
 import { clsx } from 'clsx'
 import s from './Pagination.module.scss'
 import { usePagination } from './usePagination'
-import { ArrowIosBack, ArrowIosForward } from '@/public'
+import { ArrowIosBack, ArrowIosForward } from '@/public/icons'
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
 
@@ -78,8 +78,8 @@ export const Pagination: FC<PaginationProps> = ({
 
         <MainPaginationButtons
           currentPage={page}
-          onClick={handleMainPageClicked}
           paginationRange={paginationRange}
+          onClick={handleMainPageClicked}
         />
 
         <NextButton disabled={isLastPage} onClick={handleNextPageClicked} />
@@ -127,10 +127,10 @@ const PrevButton: FC<NavigationButtonProps> = ({ disabled, onClick }) => {
 
   return (
     <Link
-      href={`?${newSearchParams.toString()}`}
-      onClick={onClick}
       aria-disabled={disabled}
       className={disabled ? classNames.item : undefined}
+      href={`?${newSearchParams.toString()}`}
+      onClick={onClick}
     >
       <button className={classNames.item} disabled={disabled}>
         <ArrowIosBack className={classNames.icon} />
@@ -149,10 +149,10 @@ const NextButton: FC<NavigationButtonProps> = ({ disabled, onClick }) => {
 
   return (
     <Link
-      href={`?${newSearchParams.toString()}`}
-      onClick={onClick}
       aria-disabled={disabled}
       className={disabled ? classNames.item : undefined}
+      href={`?${newSearchParams.toString()}`}
+      onClick={onClick}
     >
       <button className={classNames.item} disabled={disabled}>
         <ArrowIosForward className={classNames.icon} />
@@ -193,7 +193,14 @@ const MainPaginationButtons: FC<MainPaginationButtonsProps> = ({
         return (
           <Link
             key={index}
+            aria-disabled={isSelected}
+            className={clsx(classNames.item, {
+              [classNames.pageButton(true)]: isSelected,
+              disabled: isSelected,
+            })}
             href={isSelected ? '#' : `?${newSearchParams.toString()}`}
+            scroll={false}
+            tabIndex={0}
             onClick={(e: React.MouseEvent) => {
               if (isSelected) {
                 e.preventDefault()
@@ -201,13 +208,6 @@ const MainPaginationButtons: FC<MainPaginationButtonsProps> = ({
               }
               onClick(page)()
             }}
-            scroll={false}
-            className={clsx(classNames.item, {
-              [classNames.pageButton(true)]: isSelected,
-              disabled: isSelected,
-            })}
-            aria-disabled={isSelected}
-            tabIndex={0}
           >
             {page}
           </Link>

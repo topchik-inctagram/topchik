@@ -4,8 +4,21 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { Button, Card, ControlledCheckbox, ControlledInput, Typography } from '@/shared/components'
 import s from './SignUp.module.scss'
 import Link from 'next/link'
-import { signUpSchema } from '@/shared/schema'
 import { Github, Google } from '@/public/icons'
+import {agreementSchema, confirmPasswordSchema, emailSchema, passwordSchema, usernameSchema} from '@/shared/schema';
+
+const signUpSchema = z
+  .object({
+    username: usernameSchema,
+    email: emailSchema,
+    password: passwordSchema,
+    confirmPassword: confirmPasswordSchema,
+    agreement: agreementSchema,
+  })
+  .refine(({ password, confirmPassword }) => password === confirmPassword, {
+    message: 'Passwords must match',
+    path: ['confirmPassword'],
+  })
 
 type FormTypes = z.infer<typeof signUpSchema>
 type Props = {
