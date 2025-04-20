@@ -5,19 +5,12 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Button, Card, ControlledInput, Typography } from '@/shared/components'
 import s from './CreateNewPassword.module.scss'
-import { passwordRegex } from '@/shared/schema/validationRegex'
+import { confirmPasswordSchema, passwordSchema } from '@/shared/schema/validationRegex'
 
 const schema = z
   .object({
-    password: z
-      .string()
-      .min(6, 'Password must be at least 6 characters')
-      .max(20, 'Password must be no more than 20 characters')
-      .regex(
-        passwordRegex,
-        'Password must contain uppercase, lowercase, digit, and special character'
-      ),
-    confirmPassword: z.string(),
+    password: passwordSchema,
+    confirmPassword: confirmPasswordSchema,
   })
   .refine(data => data.password === data.confirmPassword, {
     message: 'The passwords must match',
@@ -27,9 +20,10 @@ const schema = z
 type FormTypes = z.infer<typeof schema>
 type Props = {
   onSubmit: (data: FormTypes) => void
+  isLoading: boolean
 }
 
-export const CreateNewPassword = ({ onSubmit }: Props) => {
+export const CreateNewPassword = ({ onSubmit, isLoading }: Props) => {
   const {
     control,
     formState: { errors },
@@ -71,8 +65,8 @@ export const CreateNewPassword = ({ onSubmit }: Props) => {
         <Typography className={s.newPassWarning} variant="regular_14">
           Your password must be between 6 and 20 characters
         </Typography>
-        <Button fullWidth type="submit">
-          Create new password
+        <Button fullWidth disabled={isLoading} type="submit">
+          {isLoading ? 'Sending...' : 'Create new password'}
         </Button>
       </form>
     </Card>

@@ -6,6 +6,7 @@ import { type Control, type FieldErrors } from 'react-hook-form'
 import s from './ForgotPassword.module.scss'
 import clsx from 'clsx'
 import { PublicPages } from '@/shared/enums'
+import { Recaptcha, type RecaptchaStatus } from '@/shared/components/Recaptcha'
 
 type FormTypes = {
   email: string
@@ -17,9 +18,21 @@ type Props = {
   control: Control<FormTypes>
   errors: FieldErrors<FormTypes>
   isValid: boolean
+  isLoading: boolean
+  recaptchaStatus: RecaptchaStatus
+  onVerifyRecaptcha: () => void
 }
 
-export const ForgotPassword = ({ onSubmit, isVerified, control, errors, isValid }: Props) => {
+export const ForgotPassword = ({
+  onSubmit,
+  isVerified,
+  control,
+  errors,
+  isLoading,
+  isValid,
+  recaptchaStatus,
+  onVerifyRecaptcha,
+}: Props) => {
   const classNames = {
     cardContainer: clsx(s.cardContainer, isVerified && s.verifiedContainer),
     title: s.title,
@@ -50,6 +63,7 @@ export const ForgotPassword = ({ onSubmit, isVerified, control, errors, isValid 
         <Typography className={classNames.forgotPasswordLink} variant="regular_14">
           Enter your email address and we will send you further instructions
         </Typography>
+
         {isVerified && (
           <div className={classNames.notificationEmail}>
             <Typography variant="regular_14">The link has been sent by email.</Typography>
@@ -58,13 +72,26 @@ export const ForgotPassword = ({ onSubmit, isVerified, control, errors, isValid 
             </Typography>
           </div>
         )}
-        <Button fullWidth className={classNames.buttonSendLink} disabled={!isValid} type="submit">
-          Send Link {isVerified && 'Again'}
+
+        <Button
+          fullWidth
+          className={classNames.buttonSendLink}
+          disabled={!isValid || isLoading}
+          type="submit"
+        >
+          {isLoading ? 'Sending...' : `Send Link${isVerified ? ' Again' : ''}`}
         </Button>
       </form>
+
       <Button asChild fullWidth className={classNames.backToSignIn} variant="miniOutlined">
         <Link href={PublicPages.signIn}>Back to Sign In</Link>
       </Button>
+      {!isVerified && (
+        <div className={s.recaptchaWrapper}>
+          <Recaptcha isStatus={recaptchaStatus} onVerify={onVerifyRecaptcha} />
+        </div>
+      )}
+
       {!isVerified && <div style={{ height: '84px', width: '300px' }} />}
     </Card>
   )

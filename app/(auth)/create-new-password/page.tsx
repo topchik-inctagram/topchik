@@ -9,6 +9,7 @@ import {
 } from '@/features/auth/api'
 import { CreateNewPassword } from '@/features/auth/forms/CreateNewPassword'
 import { PageContainer, Toast } from '@/shared/components'
+import { PublicPages } from '@/shared/enums'
 
 const Page = () => {
   const router = useRouter()
@@ -16,7 +17,7 @@ const Page = () => {
   const recoveryCode = searchParams.get('recoveryCode')
 
   const [checkRecoveryCode] = useCheckRecoveryCodeMutation()
-  const [newPassword] = useNewPasswordMutation()
+  const [newPassword, { isLoading }] = useNewPasswordMutation()
   const [deleteAllDevices] = useDeleteAllDevicesMutation()
 
   const [isCodeValid, setIsCodeValid] = useState(false)
@@ -25,7 +26,7 @@ const Page = () => {
 
   useEffect(() => {
     if (!recoveryCode) {
-      router.replace('/password-recovery-verification-expired')
+      router.replace(PublicPages.passwordRecoveryVerificationExpired)
       return
     }
 
@@ -33,7 +34,7 @@ const Page = () => {
       .unwrap()
       .then(() => setIsCodeValid(true))
       .catch(() => {
-        router.replace('/password-recovery-verification-expired')
+        router.replace(PublicPages.passwordRecoveryVerificationExpired)
       })
   }, [checkRecoveryCode, router, recoveryCode])
 
@@ -64,7 +65,7 @@ const Page = () => {
       {showToast && error && (
         <Toast description={error} open={showToast} variant="error" onOpenChange={setShowToast} />
       )}
-      <CreateNewPassword onSubmit={handleSubmit} />
+      <CreateNewPassword isLoading={isLoading} onSubmit={handleSubmit} />
     </PageContainer>
   )
 }
