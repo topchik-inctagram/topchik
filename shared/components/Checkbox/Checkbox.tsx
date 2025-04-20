@@ -6,23 +6,44 @@ import { Vector } from '@/public/icons'
 import { Label } from '@/shared/components'
 
 export type CheckboxProps = {
-  label?: string | ReactNode
+  label?: ReactNode
+  rootClassName?: string
+  indicatorClassName?: string
+  labelClassName?: string
 } & ComponentPropsWithRef<typeof CheckboxRadix.Root>
 
-export const Checkbox = ({ disabled, id, label, className, ...rest }: CheckboxProps) => {
+export const Checkbox = ({
+  disabled,
+  id,
+  label,
+  className,
+  checked,
+  onCheckedChange,
+  indicatorClassName,
+  rootClassName,
+  labelClassName,
+  ...rest
+}: CheckboxProps) => {
   const generatedId = useId()
   const checkboxId = id ?? generatedId
 
   const classNames = {
     container: clsx(s.container, className),
-    root: clsx(s.root, disabled && s.disabled),
-    indicator: s.indicator,
-    label: clsx(s.label, disabled && s.disabled),
+    root: clsx(s.root, disabled && s.disabled, rootClassName),
+    indicator: clsx(s.indicator, indicatorClassName),
+    label: clsx(s.label, disabled && s.disabled, labelClassName),
   }
 
   return (
     <div className={classNames.container}>
-      <CheckboxRadix.Root {...rest} className={classNames.root} disabled={disabled} id={checkboxId}>
+      <CheckboxRadix.Root
+        {...rest}
+        checked={checked}
+        className={classNames.root}
+        disabled={disabled}
+        id={checkboxId}
+        onCheckedChange={onCheckedChange}
+      >
         <CheckboxRadix.Indicator className={classNames.indicator}>
           <Vector />
         </CheckboxRadix.Indicator>

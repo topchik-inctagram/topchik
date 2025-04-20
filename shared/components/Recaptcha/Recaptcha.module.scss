@@ -1,0 +1,177 @@
+.wrapper {
+  position: relative;
+  display: inline-block;
+
+  &Error {
+    padding: 10px;
+    border: 2px solid rgb(255 0 0 / 100%);
+    border-radius: 1px;
+  }
+}
+
+.checkbox {
+  padding: 0;
+}
+
+.rootChekbox {
+  border: 1px solid rgb(183 183 183 / 100%);
+  border-radius: 1px;
+  background: var(--color-light-100);
+
+  &::after {
+    width: 0;
+  }
+
+  &:hover {
+    border-radius: 0;
+    background-color: var(--color-light-100) !important;
+  }
+}
+
+.labelchekbox {
+  font-family: Roboto, sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 100%;
+  color: var(--color-light-100);
+  letter-spacing: 0%;
+}
+
+
+
+.container {
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  width: 300px;
+  height: 70px;
+  padding: 20px;
+  border: 1px solid var(--color-dark-300);
+
+  background: var(--color-dark-500);
+
+  transition: all 0.3s;
+}
+
+.errorContainer {
+  &.errorInside {
+    position: absolute;
+    bottom: 4px;
+    left: 8px;
+  }
+
+  &.errorAbove {
+    position: absolute;
+    top: -10px;
+    width: 175px;
+    height: 25px;
+  }
+}
+
+.errorMessage {
+  margin-top: 13px;
+
+  font-family: Roboto, sans-serif;
+  font-size: 10px;
+  font-weight: 400;
+  line-height: 100%;
+  color: rgb(255 0 0 / 100%);
+  letter-spacing: 0%;
+}
+
+
+.checkboxWrapper {
+  position: relative;
+  z-index: 1;
+
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.loaderContainer {
+  display: flex;
+  gap: 17px;
+  align-items: center;
+}
+
+.label {
+  font-family: Roboto, sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 100%;
+  color: var(--color-light-100);
+  letter-spacing: 0%;
+}
+
+.icon {
+  width: 30px;
+  height: 30px;
+}
+
+.cornerLabel {
+  position: absolute;
+  right: 8px;
+  bottom: 4px;
+
+  font-size: 8px;
+  color: var(--color-danger-300)
+}
+
+.privacy {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.link {
+  display: flex;
+  flex-direction: row;
+  gap: 2px;
+  align-items: center;
+
+  margin-top: 2px;
+
+  a {
+    font-family: Roboto, sans-serif;
+    font-size: 6px;
+    font-weight: 500;
+    line-height: 100%;
+    color: var(--color-light-100);
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+
+  span {
+    font-family: Roboto, sans-serif;
+    font-size: 6px;
+    font-weight: 500;
+    line-height: 100%;
+    color: var(--color-light-100);
+    text-decoration: none;
+  }
+
+}
+
+.recaptcha {
+  margin-top: 7px;
+
+  font-family: Roboto, sans-serif;
+  font-size: 8px;
+  font-weight: 500;
+  line-height: 100%;
+  color: var(--color-light-100);
+  letter-spacing: 0%;
+}
+
+.check {
+  width: 25px;
+  height: 18px;
+}
