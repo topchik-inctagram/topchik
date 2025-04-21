@@ -1,0 +1,131 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.placeholder {
+    cursor: pointer;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 222px;
+    height: 228px;
+    margin-top: 72px;
+    margin-bottom: 60px;
+    border-radius: 2px;
+
+    background: var(--color-dark-500);
+}
+
+
+.imagePreview {
+    position: relative;
+
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 2px;
+}
+
+.aspectWrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 100%;
+
+    background: #1f1f1f;
+
+    img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+    }
+}
+
+.group {
+    position: absolute;
+    right: 11px;
+    bottom: 10px;
+    left: 11px;
+
+    display: flex;
+    gap: 24px;
+}
+
+.btn {
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    border-radius: 2px;
+
+    opacity: 0.8;
+    background: var(--color-dark-500);
+
+    svg {
+        margin-left: 24px;
+    }
+}
+
+
+.btnimage {
+    width: 36px;
+    height: 36px;
+    margin-left: auto;
+    padding: 0;
+    border-radius: 2px;
+
+    opacity: 0.8;
+    background: var(--color-dark-500);
+
+    svg {
+        margin-left: 24px;
+    }
+}
+
+.icons {
+    flex-shrink: 0;
+    margin-left: 0;
+}
+
+.groupBtn {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    margin-bottom: 48px;
+}
+
+.dropdown .btn {
+    display: flex;
+    margin-bottom: 2px;
+    opacity: 0.8;
+    background: var(--color-dark-500);
+}
+
+
+
+.dropdownItem {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 128px;
+}
+
+.dropdownZoom {
+    display: flex;
+    align-items: center;
+
+    width: 124px;
+    height: 36px;
+    padding: 0;
+
+    input {
+        width: 100px;
+        height: 12px;
+    }
+}
