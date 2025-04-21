@@ -13,6 +13,16 @@ const config: StorybookConfig = {
     name: '@storybook/nextjs',
     options: {},
   },
+  // webpackFinal: async (config) => {
+  //   if (config.resolve) {
+  //     config.resolve.alias = {
+  //       ...config.resolve.alias,
+  //       'next/link': path.resolve(__dirname, '../mocks/next/link.tsx'),
+  //     };
+  //   }
+  //   return config;
+  // },
+
   // "staticDirs": [
   //   "..\\public"
   // ]

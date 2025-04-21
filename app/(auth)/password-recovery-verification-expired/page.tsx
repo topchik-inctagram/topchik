@@ -6,7 +6,7 @@ import { TimeManagement } from '@/public/icons'
 
 const Page = () => {
   return (
-    <PageContainer mt="35px">
+    <PageContainer direction="column" mt="35px">
       <Typography className={s.title} variant="h1">
         Email verification link expired
       </Typography>
