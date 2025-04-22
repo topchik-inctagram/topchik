@@ -40,8 +40,6 @@ export const Modal = ({ title, children, size = 'sm', className, ...rest }: Prop
               <hr />
             </>
           )}
-
-          {/*//todo try to remove this div*/}
           <div className={classNames.body}>{children}</div>
         </Dialog.Content>
       </Dialog.Portal>

@@ -7,3 +7,8 @@
   max-width: 972px;
   height: 564px;
 }
+
+.contentContainer {
+  display: flex;
+  flex-direction: column;
+}

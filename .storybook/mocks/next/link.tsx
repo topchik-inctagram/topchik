@@ -9,7 +9,9 @@ const MockedLink: any = ({
   ...props
 }: React.ComponentProps<typeof Link>) => {
   const router = useContext(AppRouterContext)
-
+  console.log('BLANK LINK RENDER')
+  console.log('BLANK LINK RENDER')
+  console.log('BLANK LINK RENDER')
   const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault()
 

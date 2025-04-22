@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import { PostModal } from '@/features/PostModal'
 import photo from './../../public/proj1.webp'
+import photo2 from '@/public/vercel.svg'
 
 const meta = {
   title: 'Components/PostModal',
@@ -15,8 +16,8 @@ type Story = StoryObj<typeof PostModal>
 const blankComment = {
   alt: 'user photo',
   src: photo,
-  author: 'john',
-  comment: 'nice to see you , bro',
+  author: 'John',
+  comment: 'nice to see you , bro qweqwe qwe qekjsd kaj ioqweoi ajdo ajioqwe asd adkj kl',
   href: '#',
   created: '2 hours ago',
 }

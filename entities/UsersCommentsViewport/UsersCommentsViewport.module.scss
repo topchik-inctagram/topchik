@@ -10,5 +10,8 @@
 }
 
 .contentWrapper {
-  position: relative;
+  overflow-y: auto;
+  flex-grow: 1;
+  height: 0;
+  min-height: 0;
 }

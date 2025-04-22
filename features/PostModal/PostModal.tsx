@@ -37,7 +37,7 @@ export const PostModal = ({
     <Modal open className={s.modal} size="postSize">
       <div className={s.container}>
         <PostModalPhotoSlider photoContent={photoContent} />
-        <div className={s.contentWrapper}>
+        <div className={s.contentContainer}>
           <PostModalTitle
             author={author}
             postAuthorAlt={postAuthorAlt}
