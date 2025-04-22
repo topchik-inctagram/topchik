@@ -1,32 +1,42 @@
 'use client'
 import clsx from 'clsx'
-import { type ComponentPropsWithRef, type CSSProperties } from 'react'
+import {type ComponentPropsWithRef, type CSSProperties, type ElementType} from 'react'
 import s from './PageContainer.module.scss'
 
-type Props = ComponentPropsWithRef<'main'> & {
+type Props<T extends ElementType = 'main'> =
+    ComponentPropsWithRef<T> & {
+  as?: T
   mt?: CSSProperties['marginTop']
   pr?: CSSProperties['paddingRight']
   pl?: CSSProperties['paddingLeft']
   direction?: 'row' | 'column'
+  maxWidth?: string
 }
 
-export function PageContainer({
+export function PageContainer<T extends ElementType = 'main'>({
+  as,
   className,
   mt = '24px',
   pr,
   pl,
-  direction,
+  direction = 'column',
   style,
   ref,
-  ...rest }: Props) {
+  maxWidth,
+  ...rest }: Props<T>) {
+
+  const Component = as || 'main'
+
   const classNames = {
     page: clsx(className, s.container, direction === 'row' && s.row,
       direction === 'column' && s.column),
   }
-  const styles: CSSProperties = { marginTop: mt,
+  const styles: CSSProperties = {
+    marginTop: mt,
     paddingRight: pr,
     paddingLeft: pl,
+    maxWidth: maxWidth,
     ...style }
 
-  return <main ref={ref} className={classNames.page} style={styles} {...rest} />
+  return <Component ref={ref} className={classNames.page} style={styles} {...rest} />
 }
