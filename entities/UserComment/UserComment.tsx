@@ -20,7 +20,7 @@ export const UserComment = ({ href, comment, author, created, className }: UserC
           {comment}
         </Typography>
       </div>
-      <Typography className={s.createdDate} variant="small">
+      <Typography as="span" className={s.createdDate} variant="small">
         {created}
       </Typography>
     </div>

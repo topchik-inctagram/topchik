@@ -4,8 +4,7 @@ import { Typography } from '@/shared/components'
 import { useState } from 'react'
 import { ArrowIosBackOutline, ArrowIosForwardOutline } from '@/public/icons'
 import useEmblaCarousel from 'embla-carousel-react'
-import { usePrevNextButtons } from '@/entities/PostCard/usePrevNextButton'
-import { useDotButton } from '@/entities/PostCard/useDotButton'
+import { usePrevNextButtons, useDotButton } from '@/shared/hooks/embla-carousel'
 import { clsx } from 'clsx'
 import { UserSmallPhoto } from '@/entities/UserSmallPhoto'
 import { UserProfileLink } from '@/entities/UserProfileLink'
@@ -96,11 +95,15 @@ export const PostCard = ({ postText, postCreated, postImage, postAuthor, authorI
         <Typography className={s.postText} variant="regular_14">
           {postTextToDisplay}
           {postTextTooLong && (
-            <button className={s.showMoreButton} type="button" onClick={showMoreButtonHandler}>
-              <Typography as="span" variant="regular_14">
-                {showMoreButton ? 'Hide' : 'Show more'}
-              </Typography>
-            </button>
+            <Typography
+              as="button"
+              className={s.showMoreButton}
+              type="button"
+              variant="regular_14"
+              onClick={showMoreButtonHandler}
+            >
+              {showMoreButton ? 'Hide' : 'Show more'}
+            </Typography>
           )}
         </Typography>
       </div>

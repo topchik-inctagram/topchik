@@ -13,7 +13,7 @@ export const RegisteredUsersBar = ({ usersCount }: Props) => {
       </Typography>
       <div className={s.valueContainer}>
         {totalUsersNumberToDisplay.map((t, i) => (
-          <Typography className={s.value} variant="h2">
+          <Typography key={i} as="span" className={s.value} variant="h2">
             {t}
           </Typography>
         ))}

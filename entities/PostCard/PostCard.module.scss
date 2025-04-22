@@ -24,8 +24,13 @@
 }
 
 .showMoreButton {
+  all: unset;
+
   cursor: pointer;
 
+  display: inline;
+
+  padding-left: 4px;
   border: none;
 
   color: var(--color-accent-500);
@@ -35,6 +40,8 @@
 }
 
 .postText {
+  hyphens: auto;
+  word-break: break-word;
   overflow-wrap: break-word;
 }
 

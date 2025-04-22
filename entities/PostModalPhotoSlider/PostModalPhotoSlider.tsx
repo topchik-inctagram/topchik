@@ -1,6 +1,5 @@
 import useEmblaCarousel from 'embla-carousel-react'
-import { usePrevNextButtons } from '@/entities/PostCard/usePrevNextButton'
-import { useDotButton } from '@/entities/PostCard/useDotButton'
+import { usePrevNextButtons, useDotButton } from '@/shared/hooks/embla-carousel'
 import s from './PostModalPhotoSlider.module.scss'
 import Image, { type StaticImageData } from 'next/image'
 import clsx from 'clsx'
