@@ -1,0 +1,29 @@
+.closeButton {
+  all: unset;
+
+  cursor: pointer;
+
+  position: absolute;
+  top: 0;
+  right: 0;
+  transform: translate(42px, -36px);
+
+  width: 24px;
+  height: 24px;
+
+  color: red;
+
+  background-color: red;
+}
+
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 24px 11px;
+}
+
+.userContainer {
+  display: flex;
+  gap: 12px;
+}

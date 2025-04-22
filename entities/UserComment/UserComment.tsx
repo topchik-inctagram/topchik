@@ -1,18 +1,21 @@
 import { Typography } from '@/shared/components/Typography'
 import s from './UserComment.module.scss'
-type Props = {
+import { UserProfileLink } from '@/entities/UserProfileLink'
+import clsx from 'clsx'
+
+export type UserCommentProps = {
   author: string
   comment: string
   created: string
+  href: string
+  className?: string
 }
 
-export const UserComment = ({ comment, author, created }: Props) => {
+export const UserComment = ({ href, comment, author, created, className }: UserCommentProps) => {
   return (
-    <div className={s.container}>
+    <div className={clsx(s.container, className)}>
       <div>
-        <Typography as="span" variant="bold_14">
-          {author}
-        </Typography>{' '}
+        <UserProfileLink href={href} userName={author} variant="bold_14" />{' '}
         <Typography className={s.commentPost} variant="regular_14">
           {comment}
         </Typography>

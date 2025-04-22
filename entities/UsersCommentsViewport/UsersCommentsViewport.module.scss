@@ -1,0 +1,14 @@
+.container {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  padding: 15px 64px 15px 24px;
+}
+
+.userComment {
+  margin-top: -5px;
+}
+
+.contentWrapper {
+  position: relative;
+}

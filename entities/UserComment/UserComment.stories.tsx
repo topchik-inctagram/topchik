@@ -14,6 +14,7 @@ export const UserCommentStory: Story = {
   args: {
     created: '22m ago',
     author: 'John',
+    href: '#',
     comment:
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
   },

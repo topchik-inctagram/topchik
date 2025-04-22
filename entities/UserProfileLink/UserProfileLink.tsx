@@ -5,18 +5,25 @@ import Link from 'next/link'
 import s from './UserProfileLink.module.scss'
 import clsx from 'clsx'
 
-type Props = {
-  userName: string
+interface Props extends ComponentPropsWithRef<typeof Link> {
+  userName?: string
   variant?: TypographyVariant
-} & ComponentPropsWithRef<typeof Link>
+}
 
-export const UserProfileLink = ({ className, userName, variant = 'h3', href, ...rest }: Props) => {
+export const UserProfileLink = ({
+  className,
+  children,
+  userName,
+  variant = 'h3',
+  href,
+  ...rest
+}: Props) => {
   const classNames = {
     link: clsx(s.userProfileLink, className),
   }
   return (
     <Typography as={Link} className={classNames.link} href={href} variant={variant} {...rest}>
-      {userName}
+      {userName ?? children}
     </Typography>
   )
 }

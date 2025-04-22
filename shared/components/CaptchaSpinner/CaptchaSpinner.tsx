@@ -5,10 +5,5 @@ type CaptchaSpinnerProps = {
 }
 
 export const CaptchaSpinner = ({ onComplete }: CaptchaSpinnerProps) => {
-  return (
-    <span 
-      className={s.loader}
-      onAnimationEnd={() => onComplete?.(true)}
-    ></span>
-  )
+  return <span className={s.loader} onAnimationEnd={() => onComplete?.(true)}></span>
 }
