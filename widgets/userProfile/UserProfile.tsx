@@ -46,19 +46,19 @@ export const UserProfile = ({
         </div>
         <dl className={s.details}>
           <div className={s.detail} role="group">
-            <dt><Typography as="p" variant="bold_14">{followingCount}</Typography></dt>
-            <dd className={s.countsOfDetail}><Typography as="p" variant="regular_14">Following</Typography></dd>
+            <dt><Typography variant="bold_14">{followingCount}</Typography></dt>
+            <dd className={s.countsOfDetail}><Typography variant="regular_14">Following</Typography></dd>
           </div>
           <div className={s.detail} role="group">
-            <dt><Typography as="p" variant="bold_14">{followersCount}</Typography></dt>
-            <dd className={s.countsOfDetail}><Typography as="p" variant="regular_14">Followers</Typography></dd>
+            <dt><Typography variant="bold_14">{followersCount}</Typography></dt>
+            <dd className={s.countsOfDetail}><Typography variant="regular_14">Followers</Typography></dd>
           </div>
           <div className={s.detail} role="group">
-            <dt><Typography as="p" variant="bold_14">{publicationsCount}</Typography></dt>
-            <dd className={s.countsOfDetail}><Typography as="p" variant="regular_14">Publications</Typography></dd>
+            <dt><Typography variant="bold_14">{publicationsCount}</Typography></dt>
+            <dd className={s.countsOfDetail}><Typography variant="regular_14">Publications</Typography></dd>
           </div>
         </dl>
-        <Typography as="p" className={s.name} variant="regular_16">
+        <Typography className={s.name} variant="regular_16">
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim quis nostrud exercitation ullamco <Typography as={Link} href="#">laboris nisi ut aliquip ex ea commodo consequat.</Typography>
         </Typography>
       </div>
