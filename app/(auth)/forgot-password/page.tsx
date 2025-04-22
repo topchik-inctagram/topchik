@@ -8,7 +8,7 @@ const Page = () => {
     console.log('Form submitted:', data)
   }
   return (
-    <PageContainer direction="column" mt="36px">
+    <PageContainer mt="36px">
       <ForgotPassword isVerified={false} onSubmit={handleSubmit} />
     </PageContainer>
   )

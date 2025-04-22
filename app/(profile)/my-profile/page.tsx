@@ -1,8 +1,10 @@
 'use client'
 
-import { withAuth } from '@/shared/HOC'
-import {UserProfile} from '@/widgets/userProfile/UserProfile';
+import { withAuth } from '@/shared/HOC';
 import {PageContainer} from '@/shared/components'
+import {ImagesGallery} from '@/features/posts/imagesOfPosts';
+import {UserProfile} from '@/widgets/userProfile';
+
 
 function MyProfilePage() {
 
@@ -16,7 +18,7 @@ function MyProfilePage() {
   }
 
   return (
-    <PageContainer direction="column" mt="36px" pl="24px" pr="64px">
+    <PageContainer as="div" direction="column" maxWidth="1300px" mt="36px" pl="24px" pr="64px">
       <UserProfile
         isMyProfile
         avatarUrl={user.avatarUrl}
@@ -25,6 +27,7 @@ function MyProfilePage() {
         publicationsCount={user.publications}
         userId={user.userId}
         userName={user.userName}/>
+      <ImagesGallery/>
     </PageContainer>
   )
 }
