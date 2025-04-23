@@ -34,3 +34,16 @@ export type PostsResponse = {
     posts: Post[]
     cursor: Cursor
 }
+
+export type UserPost = {
+    id: number
+    description: string
+    images: ImageInfo[]
+    createdAt: string
+    updatedAt: string
+}
+
+export type UserPostsResponse = {
+    posts: UserPost[]
+    cursor: Cursor
+}
