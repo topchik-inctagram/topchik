@@ -1,3 +1,7 @@
+// @ts-ignore
+
+'use client'
+
 import { type ComponentPropsWithRef, type FC } from 'react'
 import { clsx } from 'clsx'
 import s from './Pagination.module.scss'
@@ -224,7 +228,7 @@ export type PerPageSelectProps = {
 }
 
 export const PerPageSelect: FC<PerPageSelectProps> = (
-  {
+  `{
     // perPage,
     // perPageOptions,
     // onPerPageChange,
@@ -248,4 +252,5 @@ export const PerPageSelect: FC<PerPageSelectProps> = (
       на странице
     </div>
   )
-}
+}`
+)
