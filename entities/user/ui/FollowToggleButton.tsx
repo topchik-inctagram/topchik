@@ -11,7 +11,7 @@ export const FollowToggleButton = ({ userId }: { userId: string }) => {
     setIsFollowing(!isFollowing)
   }
   return (
-    <Button
+    <Button style={{minWidth: '120px'}}
       variant={isFollowing ? 'outlined' : 'primary'}
       onClick={handleClick}
     >
