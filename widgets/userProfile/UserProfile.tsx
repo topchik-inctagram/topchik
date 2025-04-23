@@ -1,5 +1,5 @@
 import s from './UserProfile.module.scss'
-import {Typography} from '@/shared/components';
+import {Container, Typography} from '@/shared/components';
 import Image from 'next/image';
 import Link from 'next/link';
 import {ProfileSettingsButton, FollowToggleButton, SendMessageButton} from '@/entities/user/ui'
@@ -28,7 +28,7 @@ export const UserProfile = ({
   userId,
   about}: Props) => {
   return (
-    <section className={s.profile}>
+    <Container className={s.profile}>
       <Image alt={userName} className={s.avatar} height={204} src={avatarUrl} width={204} />
       <div className={s.info}>
         <div className={s.actions}>
@@ -62,6 +62,6 @@ export const UserProfile = ({
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim quis nostrud exercitation ullamco <Typography as={Link} href="#">laboris nisi ut aliquip ex ea commodo consequat.</Typography>
         </Typography>
       </div>
-    </section>
+    </Container>
   )
 }

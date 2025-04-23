@@ -1,8 +1,10 @@
-import {useState} from 'react'
-import {useGetPostsQuery} from '@/features/posts/api';
-import {Typography} from '@/shared/components';
+import {useEffect, useState} from 'react'
+import { useGetUserIdPostsQuery, type UserPost} from '@/features/posts/api';
+import {Container, Typography} from '@/shared/components';
 import Image from 'next/image';
 import s from './ImagesGallery.module.scss'
+
+
 
 const TestPics = [
   {
@@ -39,10 +41,23 @@ const TestPics = [
   }
 ]
 
-export const ImagesGallery = () => {
-  const [cursor, setCursor] = useState<number | void>(undefined)
-  const {data, isLoading, isError} = useGetPostsQuery(cursor)
+type Props = {
+  userId: string | number
+}
+
+export const ImagesGallery = ({userId}: Props) => {
+  const [cursor, setCursor] = useState<number | null>(null)
+  const [allPosts, setAllPosts] = useState<UserPost[]>([])
+
+  const {data, isLoading, isError, error} = useGetUserIdPostsQuery({ id: userId,
+    cursor })
   const posts = data?.posts
+
+  useEffect(() => {
+    if (posts?.length) {
+      setAllPosts((prev) => [...prev, ...posts])
+    }
+  }, [posts])
 
   const handleLoadMore = () => {
     if (data?.cursor) {
@@ -53,28 +68,35 @@ export const ImagesGallery = () => {
   if (isLoading) {
     return <Typography as='p' variant="regular_16">Loading posts...</Typography>
   }
-  if (isError) {
-    return <Typography as='p' variant="regular_16">Failed to load posts</Typography>
-  }
+
+  // Если ошибка только из-за отсутствия постов, показываем заглушки
+  const showEmptyStub =
+      isError &&
+      error &&
+      'data' in error &&
+      typeof error.data === 'object' &&
+      (error.data as any)?.errorsMessage === "Post doesn't exist"
 
   return (
-    <section className={s.imgContainer}>
-      {posts && posts.length > 0 ? (posts?.map((post) => (
+    <Container className={s.imgContainer}>
+      {allPosts.length > 0 ? (allPosts?.map((post) => (
         post.images.map((image) => (
           <Image key={image.id} alt="Post image" className={s.image} src={image.smallFilePath}/>
         ))
-      ))) : (
+      ))) : showEmptyStub ? (
         TestPics.map((image) => (
           <div key={image.id} className={s.imgBlock}>
             <Image alt="Post image" className={s.image} height={228} src={image.smallFilePath} width={244}/>
           </div>
-        )) )
-      }
+        )))
+        : (
+          <Typography as="p" variant="regular_16">Произошла ошибка при загрузке</Typography>
+        )}
       {data?.cursor !== 0 && (
         <button className={s.loadMoreButton} onClick={handleLoadMore}>
-                Загрузить ещё
+            Загрузить ещё
         </button>
       )}
-    </section>
+    </Container>
   )
 }

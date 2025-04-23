@@ -1,15 +1,12 @@
 .imgContainer {
-  display: flex;
   gap: 12px;
   flex-wrap: wrap;
   justify-content: center;
-  width: 100%;
 }
 
 .imgBlock {
   cursor: pointer;
 }
-
 
 .image {
   width: 100%;
