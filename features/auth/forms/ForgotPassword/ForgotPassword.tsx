@@ -76,7 +76,7 @@ export const ForgotPassword = ({
         <Button
           fullWidth
           className={classNames.buttonSendLink}
-          disabled={!isValid || isLoading}
+          disabled={!isValid || isLoading || recaptchaStatus !== 'verified'}
           type="submit"
         >
           {isLoading ? 'Sending...' : `Send Link${isVerified ? ' Again' : ''}`}
