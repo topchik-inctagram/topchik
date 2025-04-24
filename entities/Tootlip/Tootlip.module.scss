@@ -20,7 +20,6 @@
     background: var(--color-dark-500);
 }
 
-
 .imagePreview {
     position: relative;
 
@@ -72,11 +71,10 @@
     }
 }
 
-
 .btnimage {
     width: 36px;
     height: 36px;
-    margin-left: auto;
+    margin-left: 220px;
     padding: 0;
     border-radius: 2px;
 
@@ -107,8 +105,6 @@
     background: var(--color-dark-500);
 }
 
-
-
 .dropdownItem {
     display: flex;
     flex-direction: row;
@@ -127,5 +123,91 @@
     input {
         width: 100px;
         height: 12px;
+    }
+}
+
+.dropdownAddimage {
+    width: 260px;
+    padding: 12px;
+}
+
+.thumbnailsGrid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    max-height: 300px;
+}
+
+.thumbnailWrapper {
+    cursor: pointer;
+    position: relative;
+    width: 80px;
+    height: 82px;
+}
+
+.thumbnail {
+    width: 100%;
+    height: 100%;
+    border-radius: 2px;
+    object-fit: cover;
+}
+
+.removeButton {
+    cursor: pointer;
+
+    position: absolute;
+    top: 4px;
+    right: 4px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 16px;
+    height: 16px;
+    padding: 0;
+    border: none;
+
+    font-size: 12px;
+    line-height: 1;
+    color: white;
+
+    background: var(--color-dark-500);
+
+    &:hover {
+        background: var(--color-danger-500);
+    }
+}
+
+.addButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 80px;
+    height: 82px;
+
+
+    background: transparent;
+
+    &:hover {
+        background: var(--color-dark-500);
+    }
+
+    svg {
+        flex-shrink: 0;
+        width: 36px;
+        height: 36px;
+    }
+}
+
+.thumbnailItem {
+    width: 80px;
+    height: 82px;
+
+    img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
     }
 }
