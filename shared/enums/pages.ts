@@ -10,5 +10,5 @@ export enum PublicPages {
 }
 
 export enum PrivatePages {
-  profile = '/profile/me',
+  profile = '/profile',
 }

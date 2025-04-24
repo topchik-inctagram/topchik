@@ -4,25 +4,33 @@ import {PageContainer, Typography} from '@/shared/components'
 import {ImagesGallery} from '@/features/posts/imagesOfPosts';
 import {UserProfile} from '@/widgets/userProfile';
 import {useParams} from 'next/navigation';
+import {useMeQuery} from '@/features/auth/api';
+import {withAuth} from '@/shared/HOC';
 
 
 function ProfilePage() {
 
-  const params = useParams()
-  const userId = String(params.userId)
+  const { data: meData, isLoading } = useMeQuery()
+  const userId = String(useParams().userId)
 
-  if (!userId) {
+  const isMyProfile = meData?.id === userId
+
+  if (isLoading) {
     return <Typography>Загрузка профиля...</Typography>
   }
 
 
   const user = {
-    avatarUrl: '/photos/Avatar.webp',
-    userName: 'Someone Else',
+    avatarUrl: isMyProfile
+      ? meData?.profile?.avatarInfo?.mediumFilePath || '/photos/Avatar.webp'
+      : '/photos/Avatar.webp',
+    userName: isMyProfile ? meData.username : 'Someone Else',
     followers: 2358,
     following: 2218,
     publications: 2764,
-    userId: 55,
+    userId: isMyProfile
+      ? meData?.id
+      : '55',   // потом использовать просто userId
   }
 
   return (
@@ -32,7 +40,7 @@ function ProfilePage() {
         avatarUrl={user.avatarUrl}
         followersCount={user.followers}
         followingCount={user.following}
-        isMyProfile={false}
+        meData={meData}
         publicationsCount={user.publications}
         userId={userId}
         userName={user.userName}/>
@@ -40,4 +48,4 @@ function ProfilePage() {
     </PageContainer>
   )
 }
-export default ProfilePage
+export default withAuth(ProfilePage)

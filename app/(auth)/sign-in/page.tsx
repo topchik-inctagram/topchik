@@ -2,18 +2,19 @@
 
 import { SignIn } from '@/features/auth/forms/SignIn'
 import { PageContainer, Toast } from '@/shared/components'
-import { useLoginMutation } from '@/features/auth/api'
+import {useLoginMutation, useMeQuery} from '@/features/auth/api'
 import { useRouter } from 'next/navigation'
 import { PrivatePages } from '@/shared/enums'
 
 const SignInPage = () => {
   const [login, { error, ...rest }] = useLoginMutation()
+  const { data: meData, isLoading } = useMeQuery()
   const router = useRouter()
 
   const loginHandler = async (data: any) => {
     try {
       await login(data)
-      router.push(PrivatePages.profile)
+      router.push(`${PrivatePages.profile}/${meData.id}`)
     } catch (e: any) {
       console.log(e)
     }

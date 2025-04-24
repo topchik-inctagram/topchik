@@ -5,16 +5,16 @@ import clsx from 'clsx';
 type Props<T extends ElementType = 'section'> =
     ComponentPropsWithRef<T> & {
     as?: T
-    mt?: CSSProperties['marginTop']
-    pr?: CSSProperties['paddingRight']
-    pl?: CSSProperties['paddingLeft']
+    marginTop?: CSSProperties['marginTop']
+    paddingRight?: CSSProperties['paddingRight']
+    paddingLeft?: CSSProperties['paddingLeft']
     direction?: 'row' | 'column'
     maxWidth?: string
 }
 
 export function Container<T extends ElementType = 'section'> ({
   children, className,
-  direction, mt, pr, pl,
+  direction, marginTop, paddingRight, paddingLeft,
   maxWidth, style, ref, as, ...rest}: Props<T>) {
 
   const Component = as || 'section'
@@ -24,9 +24,9 @@ export function Container<T extends ElementType = 'section'> ({
       direction === 'column' && s.column),
   }
   const styles: CSSProperties = {
-    marginTop: mt,
-    paddingRight: pr,
-    paddingLeft: pl,
+    marginTop: paddingRight,
+    paddingRight: paddingRight,
+    paddingLeft: paddingLeft,
     maxWidth: maxWidth,
     ...style }
 

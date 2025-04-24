@@ -1,5 +1,5 @@
 import {useEffect, useState} from 'react'
-import { useGetUserIdPostsQuery, type UserPost} from '@/features/posts/api';
+import {type Cursor, useGetUserIdPostsQuery, type UserPost} from '@/features/posts/api';
 import {Container, Typography} from '@/shared/components';
 import Image from 'next/image';
 import s from './ImagesGallery.module.scss'
@@ -42,11 +42,11 @@ const TestPics = [
 ]
 
 type Props = {
-  userId: string | number
+  userId: string
 }
 
 export const ImagesGallery = ({userId}: Props) => {
-  const [cursor, setCursor] = useState<number | null>(null)
+  const [cursor, setCursor] = useState<Cursor>(null)
   const [allPosts, setAllPosts] = useState<UserPost[]>([])
 
   const {data, isLoading, isError, error} = useGetUserIdPostsQuery({ id: userId,

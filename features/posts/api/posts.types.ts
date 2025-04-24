@@ -5,18 +5,11 @@ export type ImageInfo = {
   originFilePath: string,
 }
 
-export type avatarInfo = {
-    id: string,
-    smallFilePath: string,
-    mediumFilePath: string,
-    originFilePath: string
-}
-
 export type UserInfo = {
     id: string,
     firstName: string,
     lastName: string,
-    avatarInfo: avatarInfo
+    avatarInfo: ImageInfo
 }
 
 export type Post = {
@@ -46,4 +39,9 @@ export type UserPost = {
 export type UserPostsResponse = {
     posts: UserPost[]
     cursor: Cursor
+}
+
+export interface GetUserIdPostsArgs {
+    id: string;
+    cursor?: Cursor;
 }

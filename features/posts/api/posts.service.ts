@@ -1,24 +1,28 @@
 import {baseApi} from '@/shared/store';
-import {type PostsResponse, type UserPostsResponse} from '@/features/posts/api/posts.types';
+import {
+  type Cursor,
+  type GetUserIdPostsArgs,
+  type PostsResponse,
+  type UserPostsResponse
+} from '@/features/posts/api/posts.types';
 
 export const PostsService = baseApi.injectEndpoints({
   endpoints: builder => {
     return {
-      getPosts: builder.query<PostsResponse, number | void>({
+      getPosts: builder.query<PostsResponse, Cursor>({
         providesTags: [''],
         query: (cursor) => ({
-          params: cursor !== null ? { cursor } : {},
+          params: cursor ? { cursor } : {},
           url: '/api/v1/posts',
         }),
       }),
-      getUserIdPosts: builder.query<UserPostsResponse, {
-        id: string | number; cursor?: number | null }>({
-          providesTags: [''],
-          query: ({ id, cursor }) => ({
-            params: cursor !== null ? { cursor } : {},
-            url: `/api/v1/posts/${id}`,
-          }),
+      getUserIdPosts: builder.query<UserPostsResponse, GetUserIdPostsArgs>({
+        providesTags: [''],
+        query: ({ id, cursor }) => ({
+          params: cursor ? { cursor } : {},
+          url: `/api/v1/posts/${id}`,
         }),
+      }),
     }
   },
 })

@@ -11,7 +11,7 @@ type Props = {
     followersCount: number
     followingCount: number
     publicationsCount: number
-    isMyProfile?: boolean
+    meData?: { id: string }
     isAuth?: boolean
     userId: string
     isFollowing?: boolean
@@ -23,10 +23,12 @@ export const UserProfile = ({
   followingCount,
   followersCount,
   publicationsCount,
-  isMyProfile,
+  meData,
   isAuth,
   userId,
   about}: Props) => {
+
+  const isMyProfile = userId === meData?.id
   return (
     <Container className={s.profile}>
       <Image alt={userName} className={s.avatar} height={204} src={avatarUrl} width={204} />
@@ -39,7 +41,7 @@ export const UserProfile = ({
           {isMyProfile && <ProfileSettingsButton />}
           {!isMyProfile && isAuth && (
             <div className={s.followAndMessageButtonGroup}>
-              <FollowToggleButton userId={userId} />
+              <FollowToggleButton />
               <SendMessageButton />
             </div>
           )}

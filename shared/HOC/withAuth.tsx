@@ -4,6 +4,7 @@ import { type ComponentType, useEffect, useState } from 'react'
 import { usePathname, useRouter } from 'next/navigation'
 import { PrivatePages, PublicPages } from '@/shared/enums'
 import { TOKEN } from '@/shared/constants'
+import {useMeQuery} from '@/features/auth/api';
 
 const PUBLIC_PATHS = [
   PublicPages.emailConfirmed,
@@ -22,6 +23,7 @@ export const withAuth = <P extends object>(WrappedComponent: ComponentType<P>) =
   const AuthComponent = (props: P) => {
     const router = useRouter()
     const pathname = usePathname()
+    const { data: meData, isLoading } = useMeQuery()
     const [authStatus, setAuthStatus] = useState<'checking' | 'auth' | 'unauth'>('checking')
 
     useEffect(() => {
@@ -33,9 +35,18 @@ export const withAuth = <P extends object>(WrappedComponent: ComponentType<P>) =
         const isPublic = PUBLIC_PATHS.some(p => pathname.startsWith(p))
         const isProtected = PROTECTED_PATHS.some(p => pathname.startsWith(p))
 
+        // Если токен есть, но user не получен (невалидный токен)
+        if (isAuthenticated && !isLoading && !meData) {
+          router.replace('/')
+          setAuthStatus('unauth')
+          return
+        }
+
         if (isAuthenticated) {
           if (isPublic) {
-            router.replace(PrivatePages.profile)
+            if (meData?.id) {
+              router.replace(`/profile/${meData.id}`)
+            }
             setAuthStatus('auth')
           } else {
             setAuthStatus('auth')
@@ -51,9 +62,9 @@ export const withAuth = <P extends object>(WrappedComponent: ComponentType<P>) =
       }
 
       verifyAuth()
-    }, [pathname, router])
+    }, [pathname, router, isLoading, meData])
 
-    if (authStatus === 'checking') {
+    if (authStatus === 'checking' || (authStatus === 'auth' && isLoading)) {
       return <div></div>
     }
 
