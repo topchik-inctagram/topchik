@@ -3,13 +3,12 @@
 import clsx from 'clsx'
 import s from './Recaptcha.module.scss'
 import { CheckmarkRecaptcha, RecaptchaIcon } from '@/public/icons'
-import { Checkbox } from '@/shared/components'
-import { CaptchaSpinner } from '@/shared/components'
+import { Checkbox, CaptchaSpinner } from '@/shared/components'
 import { Label } from '../Label/Label'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 
-type RecaptchaStatus = 'idle' | 'pending' | 'verified' | 'error' | 'expired' | 'notVerified'
+export type RecaptchaStatus = 'idle' | 'pending' | 'verified' | 'error' | 'expired' | 'notVerified'
 
 type RecaptchaProps = {
   label?: string
@@ -64,41 +63,41 @@ export const Recaptcha = ({ className, isStatus = 'idle', onVerify }: RecaptchaP
 
   const getErrorMessage = () => {
     switch (isStatus) {
-    case 'expired':
-      return 'Verification expired. Check the checkbox again.'
-    case 'notVerified':
-      return 'Please verify that you are not a robot'
-    default:
-      return null
+      case 'expired':
+        return 'Verification expired. Check the checkbox again.'
+      case 'notVerified':
+        return 'Please verify that you are not a robot'
+      default:
+        return null
     }
   }
   const renderCheckboxContent = () => {
     switch (isStatus) {
-    case 'pending':
-      return (
-        <div className={s.loaderContainer}>
-          <CaptchaSpinner />
-          <Label className={classNames.label}>I'm not a robot</Label>
-        </div>
-      )
-    case 'verified':
-      return (
-        <>
-          <CheckmarkRecaptcha className={s.check} />
-          <Label className={classNames.label}>I'm not a robot</Label>
-        </>
-      )
-    default:
-      return (
-        <Checkbox
-          checked={checked}
-          className={s.checkbox}
-          label={'I\'m not a robot'}
-          labelClassName={s.labelchekbox}
-          rootClassName={s.rootChekbox}
-          onCheckedChange={handleCheckboxChange}
-        />
-      )
+      case 'pending':
+        return (
+          <div className={s.loaderContainer}>
+            <CaptchaSpinner />
+            <Label className={classNames.label}>I'm not a robot</Label>
+          </div>
+        )
+      case 'verified':
+        return (
+          <>
+            <CheckmarkRecaptcha className={s.check} />
+            <Label className={classNames.label}>I'm not a robot</Label>
+          </>
+        )
+      default:
+        return (
+          <Checkbox
+            checked={checked}
+            className={s.checkbox}
+            label="I'm not a robot"
+            labelClassName={s.labelchekbox}
+            rootClassName={s.rootChekbox}
+            onCheckedChange={handleCheckboxChange}
+          />
+        )
     }
   }
 

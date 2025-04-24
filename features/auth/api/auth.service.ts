@@ -61,6 +61,33 @@ export const AuthService = baseApi.injectEndpoints({
           url: '/api/v1/auth/logout',
         }),
       }),
+      forgotPassword: builder.mutation<void, { email: string }>({
+        query: body => ({
+          url: '/api/v1/auth/password-recovery',
+          method: 'POST',
+          body,
+        }),
+      }),
+      checkRecoveryCode: builder.mutation<void, { recoveryCode: string }>({
+        query: body => ({
+          url: '/api/v1/auth/check-recovery-code',
+          method: 'POST',
+          body,
+        }),
+      }),
+      newPassword: builder.mutation<void, { newPassword: string; recoveryCode: string }>({
+        query: body => ({
+          url: '/api/v1/auth/new-password',
+          method: 'POST',
+          body,
+        }),
+      }),
+      deleteAllDevices: builder.mutation<void, void>({
+        query: () => ({
+          url: '/api/v1/security/devices',
+          method: 'DELETE',
+        }),
+      }),
     }
   },
 })
@@ -69,6 +96,10 @@ export const {
   useLogoutMutation,
   useMeQuery,
   useRegistrationUserMutation,
+  useForgotPasswordMutation,
+  useCheckRecoveryCodeMutation,
+  useNewPasswordMutation,
+  useDeleteAllDevicesMutation,
   useConfirmEmailMutation,
   useEmailResendingMutation,
 } = AuthService
