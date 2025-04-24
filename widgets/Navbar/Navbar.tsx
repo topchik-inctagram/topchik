@@ -21,10 +21,13 @@ import {
   TrendUpOutline,
 } from '@/public/icons'
 import { Typography } from '@/shared/components'
-import { type ComponentPropsWithRef, useCallback } from 'react'
-import { LogoutModal } from '@/entities/LogoutModal'
+import { type ComponentPropsWithRef, useCallback, useState } from 'react'
+import { ConfirmModal } from '@/entities/ConfirmModal'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
-import { PrivatePages } from '@/shared/enums'
+import { PrivatePages, PublicPages } from '@/shared/enums'
+import { useLogoutMutation, useMeQuery } from '@/features/auth/api'
+import { TOKEN } from '@/shared/constants'
+import { baseApi } from '@/shared/store'
 
 type Props = {
   isMobile?: boolean
@@ -72,9 +75,26 @@ function DesktopNavbar({ className, ...rest }: ComponentPropsWithRef<'nav'>) {
     secondContainer: clsx(s.desktopSecondContainer, s.desktopContainer),
     activeLink: s.activeLink,
   }
+
   const router = useRouter()
   const pathname = usePathname()
   const searchParams = useSearchParams()
+  const { data: meData } = useMeQuery()
+  const [logoutMutation] = useLogoutMutation()
+  const [isLogoutOpen, setIsLogoutOpen] = useState(false)
+
+  const handleConfirmLogout = async () => {
+    try {
+      await logoutMutation().unwrap()
+      localStorage.removeItem(TOKEN)
+      baseApi.util.resetApiState()
+      setIsLogoutOpen(false)
+      router.push(PublicPages.signIn)
+    } catch (error) {
+      console.error('Logout failed', error)
+    }
+  }
+
   const createQueryString = useCallback(
     (name: string, value: string) => {
       const params = new URLSearchParams(searchParams.toString())
@@ -92,10 +112,7 @@ function DesktopNavbar({ className, ...rest }: ComponentPropsWithRef<'nav'>) {
   const active = false
   // if you want to disable link you need to add data-disabled='disabled' in link props
   // data-disabled="disabled"
-  const action = searchParams.get('action')
 
-  const isLogoutAction = action === 'logout'
-  const logoutHandler = () => router.replace(pathname)
   return (
     <>
       <nav className={classNames.nav} {...rest}>
@@ -150,13 +167,23 @@ function DesktopNavbar({ className, ...rest }: ComponentPropsWithRef<'nav'>) {
               as={Link}
               href={pathname + '?' + createQueryString('action', 'logout')}
               variant="medium_14"
+              onClick={() => setIsLogoutOpen(true)}
             >
               {active ? <LogOut /> : <LogOutOutline />} Log Out
             </Typography>
           </li>
         </ul>
       </nav>
-      <LogoutModal open={isLogoutAction} onClose={logoutHandler} />
+
+      {isLogoutOpen && meData?.email && (
+        <ConfirmModal
+          open
+          description={`Are you really want to log out of your account “${meData.email}”?`}
+          title="Log Out"
+          onCancel={() => setIsLogoutOpen(false)}
+          onConfirm={handleConfirmLogout}
+        />
+      )}
     </>
   )
 }
