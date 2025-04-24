@@ -1,3 +1,5 @@
+'use client'
+
 import { type ComponentPropsWithRef, type FC } from 'react'
 import { clsx } from 'clsx'
 import s from './Pagination.module.scss'

@@ -8,6 +8,7 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { useEffect } from 'react'
+import { PublicPages } from '@/shared/enums'
 
 const schema = z.object({
   email: z.string().email('Enter your email'),
@@ -75,7 +76,12 @@ export const SignIn = ({ onSubmit, errorsFromApi }: Props) => {
           placeholder="Minimum X symbols"
           type="password"
         />
-        <Typography as={Link} className={s.forgotPasswordLink} href="#" variant="regular_14">
+        <Typography
+          as={Link}
+          className={s.forgotPasswordLink}
+          href={PublicPages.forgotPassword}
+          variant="regular_14"
+        >
           Forgot Password
         </Typography>
         <Button fullWidth className={s.buttonSignIn} type="submit">
