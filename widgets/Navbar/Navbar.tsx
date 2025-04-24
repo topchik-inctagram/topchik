@@ -21,11 +21,10 @@ import {
   TrendUpOutline,
 } from '@/public/icons'
 import { Typography } from '@/shared/components'
-import { type ComponentPropsWithRef, useCallback, useEffect, useState } from 'react'
+import { type ComponentPropsWithRef, useCallback } from 'react'
 import { LogoutModal } from '@/entities/LogoutModal'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
-import { PrivatePages, PublicPages } from '@/shared/enums'
-import { router } from 'next/client'
+import { PrivatePages } from '@/shared/enums'
 
 type Props = {
   isMobile?: boolean
