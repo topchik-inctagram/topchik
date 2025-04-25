@@ -1,4 +1,4 @@
-import {useEffect, useState} from 'react'
+import {useEffect, useRef, useState} from 'react'
 import {type Cursor, useGetUserIdPostsQuery, type UserPost} from '@/features/posts/api';
 import {Container, Typography} from '@/shared/components';
 import Image from 'next/image';
@@ -48,9 +48,13 @@ type Props = {
 export const ImagesGallery = ({userId}: Props) => {
   const [cursor, setCursor] = useState<Cursor>(null)
   const [allPosts, setAllPosts] = useState<UserPost[]>([])
+  const loaderPosts = useRef<HTMLDivElement>(null)
+
 
   const {data, isLoading, isError, error} = useGetUserIdPostsQuery({ id: userId,
-    cursor })
+    cursor }, {
+    skip: cursor === 0
+  })
   const posts = data?.posts
 
   useEffect(() => {
@@ -59,15 +63,38 @@ export const ImagesGallery = ({userId}: Props) => {
     }
   }, [posts])
 
-  const handleLoadMore = () => {
-    if (data?.cursor) {
-      setCursor(data.cursor)
+  // loading posts with scroll
+  useEffect(() => {
+    if (!loaderPosts.current) {
+      return
     }
-  }
+
+    const observer = new IntersectionObserver(entries => {
+      const entry = entries[0]
+      if (entry.isIntersecting && data?.cursor !== 0) {
+        setCursor(data?.cursor ?? null)
+      }
+    }, {
+      rootMargin: '100px',
+    })
+
+    observer.observe(loaderPosts.current)
+
+    return () => {
+      if (loaderPosts.current) {
+        observer.unobserve(loaderPosts.current)
+      }
+    }
+  }, [data?.cursor])
 
   if (isLoading) {
-    return <Typography as='p' variant="regular_16">Loading posts...</Typography>
+    return (
+      <Container className={s.imgContainer}>
+        <Typography>Loading posts...</Typography>
+      </Container>
+    )
   }
+
 
   // Если ошибка только из-за отсутствия постов, показываем заглушки
   const showEmptyStub =
@@ -92,11 +119,7 @@ export const ImagesGallery = ({userId}: Props) => {
         : (
           <Typography as="p" variant="regular_16">Произошла ошибка при загрузке</Typography>
         )}
-      {data?.cursor !== 0 && (
-        <button className={s.loadMoreButton} onClick={handleLoadMore}>
-            Загрузить ещё
-        </button>
-      )}
+      <div ref={loaderPosts} className={s.loaderPosts}></div>
     </Container>
   )
 }

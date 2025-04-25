@@ -5,7 +5,6 @@ import {ImagesGallery} from '@/features/posts/imagesOfPosts';
 import {UserProfile} from '@/widgets/userProfile';
 import {useParams} from 'next/navigation';
 import {useMeQuery} from '@/features/auth/api';
-import {withAuth} from '@/shared/HOC';
 
 
 function ProfilePage() {
@@ -13,7 +12,7 @@ function ProfilePage() {
   const { data: meData, isLoading } = useMeQuery()
   const userId = String(useParams().userId)
 
-  const isMyProfile = meData?.id === userId
+  const isMyProfile = !!meData && meData?.id === userId
 
   if (isLoading) {
     return <Typography>Загрузка профиля...</Typography>
@@ -48,4 +47,4 @@ function ProfilePage() {
     </PageContainer>
   )
 }
-export default withAuth(ProfilePage)
+export default ProfilePage

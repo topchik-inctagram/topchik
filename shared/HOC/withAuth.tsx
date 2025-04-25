@@ -45,9 +45,6 @@ export const withAuth = <P extends object>(WrappedComponent: ComponentType<P>) =
 
         if (isAuthenticated) {
           if (isPublic) {
-            if (meData?.id) {
-              router.replace(`${PrivatePages.profile}/${meData?.id}`)
-            }
             setAuthStatus('auth')
           } else {
             setAuthStatus('auth')
