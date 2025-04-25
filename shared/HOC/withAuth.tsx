@@ -14,6 +14,7 @@ const PUBLIC_PATHS = [
   PublicPages.terms,
   PublicPages.passwordRecoveryVerificationExpired,
   PublicPages.forgotPassword,
+  PublicPages.createNewPassword,
 ].map(String)
 
 const PROTECTED_PATHS = [PrivatePages.profile].map(String)

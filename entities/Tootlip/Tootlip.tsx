@@ -208,7 +208,7 @@ export const Tootlip = ({
   const currentImage = images[currentImageIndex]
 
   return (
-    <ModalWrapper open={open} size="md" title="Добавить фото" onClose={onClose}>
+    <ModalWrapper open={open} size="md" title="Cropping" onClose={onClose}>
       <div className={classNames.container}>
         {currentImage ? (
           <>

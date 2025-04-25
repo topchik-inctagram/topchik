@@ -1,13 +1,14 @@
+'use client'
+
 import clsx from 'clsx'
 import s from './Recaptcha.module.scss'
 import { CheckmarkRecaptcha, RecaptchaIcon } from '@/public/icons'
-import { Checkbox } from '@/shared/components'
-import { CaptchaSpinner } from '@/shared/components'
+import { Checkbox, CaptchaSpinner } from '@/shared/components'
 import { Label } from '../Label/Label'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 
-type RecaptchaStatus = 'idle' | 'pending' | 'verified' | 'error' | 'expired' | 'notVerified'
+export type RecaptchaStatus = 'idle' | 'pending' | 'verified' | 'error' | 'expired' | 'notVerified'
 
 type RecaptchaProps = {
   label?: string
@@ -90,11 +91,11 @@ export const Recaptcha = ({ className, isStatus = 'idle', onVerify }: RecaptchaP
         return (
           <Checkbox
             checked={checked}
-            onCheckedChange={handleCheckboxChange}
-            rootClassName={s.rootChekbox}
-            labelClassName={s.labelchekbox}
             className={s.checkbox}
-            label={`I'm not a robot`}
+            label="I'm not a robot"
+            labelClassName={s.labelchekbox}
+            rootClassName={s.rootChekbox}
+            onCheckedChange={handleCheckboxChange}
           />
         )
     }
@@ -119,9 +120,9 @@ export const Recaptcha = ({ className, isStatus = 'idle', onVerify }: RecaptchaP
           <RecaptchaIcon className={s.icon} />
           <label className={s.recaptcha}>reCAPTCHA</label>
           <div className={s.link}>
-            <Link href={'/'}>Privacy</Link>
+            <Link href="/">Privacy</Link>
             <span>-</span>
-            <Link href={'/'}>Terms</Link>
+            <Link href="/">Terms</Link>
           </div>
         </div>
       </div>

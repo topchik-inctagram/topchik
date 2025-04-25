@@ -32,8 +32,12 @@
     "@reduxjs/toolkit": "^2.6.1",
     "async-mutex": "^0.5.0",
     "clsx": "^2.1.1",
+<<<<<<< HEAD
     "glob": "^11.0.2",
     "inflight": "^1.0.6",
+=======
+    "date-fns": "^4.1.0",
+>>>>>>> 5498d1c2bc6ec9aaeea2cd75dd108fac6415900f
     "next": "15.3.0",
     "radix-ui": "^1.2.0",
     "react": "^19.1.0",
