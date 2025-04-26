@@ -74,7 +74,7 @@
 .btnimage {
     width: 36px;
     height: 36px;
-    margin-left: 220px;
+    margin-left: 240px;
     padding: 0;
     border-radius: 2px;
 
@@ -115,21 +115,21 @@
 .dropdownZoom {
     display: flex;
     align-items: center;
-
     width: 124px;
-    height: 36px;
-    padding: 0;
 
     input {
         width: 100px;
         height: 12px;
     }
+
+
 }
 
 .dropdownAddimage {
-    width: 260px;
     padding: 12px;
 }
+
+
 
 .thumbnailsGrid {
     display: grid;
@@ -211,3 +211,97 @@
         object-fit: cover;
     }
 }
+
+
+.stepHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+}
+
+.stepTitle {
+    flex-grow: 1;
+    text-align: center;
+}
+
+.titleAdd {
+    margin-left: 24px;
+}
+
+.backButton,
+.nextButton {
+    cursor: pointer;
+    padding: 8px;
+    border: none;
+    background: none;
+}
+
+.backButton {
+    margin-left: 24px;
+}
+
+.closeButton {
+    margin-right: 24px;
+    border: none;
+    background: none;
+}
+
+.nextButton {
+    margin-right: 24px;
+}
+
+.gridFilter {
+    display: grid;
+    grid-template-columns: repeat(3, 108px);
+    grid-template-rows: repeat(3, 108px);
+    gap: 12px;
+
+    margin-left: 20px;
+}
+
+.filterThumbnail {
+    cursor: pointer;
+    position: relative;
+    border: 2px solid transparent;
+    transition: border 0.2s;
+
+    &:hover {
+        border-color: #aaa;
+    }
+
+    img {
+        display: block;
+        width: 108px;
+        height: 108px;
+        object-fit: cover;
+    }
+
+    .filterLabel {
+        position: absolute;
+        bottom: 4px;
+        left: 4px;
+
+        padding: 2px 6px;
+        border-radius: 4px;
+
+        font-size: 12px;
+        color: white;
+
+        background: rgb(0 0 0 / 40%);
+    }
+}
+
+.containerFilter {
+    display: flex;
+    flex-direction: column;
+    width: 950px;
+    height: 565px;
+}
+
+.mainFilterImage {
+    width: 490px;
+    height: 503px;
+}
+
+.gridFilter {}

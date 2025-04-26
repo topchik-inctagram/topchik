@@ -53,18 +53,18 @@ importers:
       '@reduxjs/toolkit':
         specifier: ^2.6.1
         version: 2.6.1(react-redux@9.2.0(@types/react@19.1.1)(react@19.1.0)(redux@5.0.1))(react@19.1.0)
+      '@types/swiper':
+        specifier: ^6.0.0
+        version: 6.0.0
       async-mutex:
         specifier: ^0.5.0
         version: 0.5.0
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
-      glob:
-        specifier: ^11.0.2
-        version: 11.0.2
-      inflight:
-        specifier: ^1.0.6
-        version: 1.0.6
+      date-fns:
+        specifier: ^4.1.0
+        version: 4.1.0
       next:
         specifier: 15.3.0
         version: 15.3.0(@babel/core@7.26.10)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(sass@1.86.3)
@@ -95,6 +95,9 @@ importers:
       rimraf:
         specifier: ^6.0.1
         version: 6.0.1
+      swiper:
+        specifier: ^11.2.6
+        version: 11.2.6
       zod:
         specifier: ^3.24.2
         version: 3.24.2
@@ -131,7 +134,7 @@ importers:
         version: 8.6.7(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(storybook@8.6.7(prettier@3.0.0))
       '@storybook/experimental-addon-test':
         specifier: 8.6.7
-        version: 8.6.7(@vitest/browser@3.1.1(playwright@1.51.1)(vite@6.2.6(@types/node@22.14.1)(jiti@1.21.7)(sass@1.86.3)(terser@5.39.0))(vitest@3.1.1))(@vitest/runner@3.1.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(storybook@8.6.7(prettier@3.0.0))(vitest@3.1.1(@types/node@22.14.1)(@vitest/browser@3.1.1)(jiti@1.21.7)(jsdom@26.1.0)(sass@1.86.3)(terser@5.39.0))
+        version: 8.6.7(@vitest/browser@3.1.1)(@vitest/runner@3.1.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(storybook@8.6.7(prettier@3.0.0))(vitest@3.1.1)
       '@storybook/nextjs':
         specifier: 8.6.7
         version: 8.6.7(esbuild@0.25.2)(next@15.3.0(@babel/core@7.26.10)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(sass@1.86.3))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(sass@1.86.3)(storybook@8.6.7(prettier@3.0.0))(type-fest@2.19.0)(typescript@5.8.3)(webpack-hot-middleware@2.26.1)(webpack@5.99.5(esbuild@0.25.2))
@@ -167,7 +170,7 @@ importers:
         version: 3.1.1(playwright@1.51.1)(vite@6.2.6(@types/node@22.14.1)(jiti@1.21.7)(sass@1.86.3)(terser@5.39.0))(vitest@3.1.1)
       '@vitest/coverage-v8':
         specifier: ^3.1.1
-        version: 3.1.1(@vitest/browser@3.1.1(playwright@1.51.1)(vite@6.2.6(@types/node@22.14.1)(jiti@1.21.7)(sass@1.86.3)(terser@5.39.0))(vitest@3.1.1))(vitest@3.1.1(@types/node@22.14.1)(@vitest/browser@3.1.1)(jiti@1.21.7)(jsdom@26.1.0)(sass@1.86.3)(terser@5.39.0))
+        version: 3.1.1(@vitest/browser@3.1.1)(vitest@3.1.1)
       eslint:
         specifier: ^9.24.0
         version: 9.24.0(jiti@1.21.7)
@@ -2673,6 +2676,10 @@ packages:
 
   '@types/semver@7.7.0':
     resolution: {integrity: sha512-k107IF4+Xr7UHjwDc7Cfd6PRQfbdkiRabXGRjo07b4WyPahFBZCZ1sE+BNxYIJPPg73UkfOsVOLwqVc/6ETrIA==}
+
+  '@types/swiper@6.0.0':
+    resolution: {integrity: sha512-QPZRgxZ+ivXXtzV43B3LxpXUIC7FE/EoKM+rtxngmgt2M7eeUYypZhyqZD8UxJtlBcUDw/ATGoVeSNpvBBrz2w==}
+    deprecated: This is a stub types definition. swiper provides its own type definitions, so you do not need this installed.
 
   '@types/use-sync-external-store@0.0.6':
     resolution: {integrity: sha512-zFDAD+tlpf2r4asuHEj0XH6pY6i0g5NeAHPn+15wk3BV6JA69eERFXC1gyGThDkVa1zCyKr5jox1+2LbV/AMLg==}
@@ -5636,6 +5643,10 @@ packages:
   svg-tags@1.0.0:
     resolution: {integrity: sha512-ovssysQTa+luh7A5Weu3Rta6FJlFBBbInjOh722LIt6klpU2/HtdUbszju/G4devcvk8PGt7FCLv5wftu3THUA==}
 
+  swiper@11.2.6:
+    resolution: {integrity: sha512-8aXpYKtjy3DjcbzZfz+/OX/GhcU5h+looA6PbAzHMZT6ESSycSp9nAjPCenczgJyslV+rUGse64LMGpWE3PX9Q==}
+    engines: {node: '>= 4.7.0'}
+
   symbol-tree@3.2.4:
     resolution: {integrity: sha512-9QNk5KwDF+Bvz+PyObkmSYjI5ksVUYtjW7AU22r2NKcfLJcXp96hkDWU3+XndOsUb+AQ9QhfzfCT2O+CNWT5Tw==}
 
@@ -8465,7 +8476,7 @@ snapshots:
     dependencies:
       type-fest: 2.19.0
 
-  '@storybook/experimental-addon-test@8.6.7(@vitest/browser@3.1.1(playwright@1.51.1)(vite@6.2.6(@types/node@22.14.1)(jiti@1.21.7)(sass@1.86.3)(terser@5.39.0))(vitest@3.1.1))(@vitest/runner@3.1.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(storybook@8.6.7(prettier@3.0.0))(vitest@3.1.1(@types/node@22.14.1)(@vitest/browser@3.1.1)(jiti@1.21.7)(jsdom@26.1.0)(sass@1.86.3)(terser@5.39.0))':
+  '@storybook/experimental-addon-test@8.6.7(@vitest/browser@3.1.1)(@vitest/runner@3.1.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(storybook@8.6.7(prettier@3.0.0))(vitest@3.1.1)':
     dependencies:
       '@storybook/global': 5.0.0
       '@storybook/icons': 1.4.0(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
@@ -8770,6 +8781,10 @@ snapshots:
 
   '@types/semver@7.7.0': {}
 
+  '@types/swiper@6.0.0':
+    dependencies:
+      swiper: 11.2.6
+
   '@types/use-sync-external-store@0.0.6': {}
 
   '@types/uuid@9.0.8': {}
@@ -8920,7 +8935,7 @@ snapshots:
       - utf-8-validate
       - vite
 
-  '@vitest/coverage-v8@3.1.1(@vitest/browser@3.1.1(playwright@1.51.1)(vite@6.2.6(@types/node@22.14.1)(jiti@1.21.7)(sass@1.86.3)(terser@5.39.0))(vitest@3.1.1))(vitest@3.1.1(@types/node@22.14.1)(@vitest/browser@3.1.1)(jiti@1.21.7)(jsdom@26.1.0)(sass@1.86.3)(terser@5.39.0))':
+  '@vitest/coverage-v8@3.1.1(@vitest/browser@3.1.1)(vitest@3.1.1)':
     dependencies:
       '@ampproject/remapping': 2.3.0
       '@bcoe/v8-coverage': 1.0.2
@@ -10014,7 +10029,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  eslint-module-utils@2.12.0(@typescript-eslint/parser@8.29.1(eslint@9.24.0(jiti@1.21.7))(typescript@5.8.3))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.10.0(eslint-plugin-import@2.31.0)(eslint@9.24.0(jiti@1.21.7)))(eslint@9.24.0(jiti@1.21.7)):
+  eslint-module-utils@2.12.0(@typescript-eslint/parser@8.29.1(eslint@9.24.0(jiti@1.21.7))(typescript@5.8.3))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.10.0)(eslint@9.24.0(jiti@1.21.7)):
     dependencies:
       debug: 3.2.7
     optionalDependencies:
@@ -10036,7 +10051,7 @@ snapshots:
       doctrine: 2.1.0
       eslint: 9.24.0(jiti@1.21.7)
       eslint-import-resolver-node: 0.3.9
-      eslint-module-utils: 2.12.0(@typescript-eslint/parser@8.29.1(eslint@9.24.0(jiti@1.21.7))(typescript@5.8.3))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.10.0(eslint-plugin-import@2.31.0)(eslint@9.24.0(jiti@1.21.7)))(eslint@9.24.0(jiti@1.21.7))
+      eslint-module-utils: 2.12.0(@typescript-eslint/parser@8.29.1(eslint@9.24.0(jiti@1.21.7))(typescript@5.8.3))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.10.0)(eslint@9.24.0(jiti@1.21.7))
       hasown: 2.0.2
       is-core-module: 2.16.1
       is-glob: 4.0.3
@@ -12272,6 +12287,8 @@ snapshots:
   supports-preserve-symlinks-flag@1.0.0: {}
 
   svg-tags@1.0.0: {}
+
+  swiper@11.2.6: {}
 
   symbol-tree@3.2.4: {}
 

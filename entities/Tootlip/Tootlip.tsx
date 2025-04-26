@@ -1,25 +1,28 @@
 import { clsx } from 'clsx'
 import s from './Tootlip.module.scss'
+import { Button, Dropdown, DropdownItem, Input, Textarea, Typography } from '@/shared/components'
 import {
-  Button,
-  Dropdown,
-  DropdownItem,
-  Input,
-  ModalWrapper,
-  Typography,
-} from '@/shared/components'
-import { ImageOutline, ExpandOutline, MaximizeOutline, PlusCircleOutline } from '@/public/icons'
-import { type ChangeEvent, useState, useRef } from 'react'
+  ImageOutline,
+  ExpandOutline,
+  MaximizeOutline,
+  PlusCircleOutline,
+  ArrowIosBack,
+  CloseOutline,
+} from '@/public/icons'
+import { type ChangeEvent, useState, useRef, useCallback, useEffect } from 'react'
 import HorizontalRectangle from './HorizontalRectangle'
 import Rectangle from './Rectangle'
 import Square from './Square'
-import ReactCrop, { type Crop } from 'react-image-crop'
+import ReactCrop, { type Crop, centerCrop, makeAspectCrop } from 'react-image-crop'
+import 'react-image-crop/dist/ReactCrop.css'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import ImageFilter from 'react-image-filter'
+import { TootlipModals } from './TootlipModals/TootlipModals'
+import { Swiper, SwiperSlide } from 'swiper/react'
 
-const MAX_FILE_SIZE = 20 * 1024 * 1024 // 10MB
+const MAX_FILE_SIZE = 20 * 1024 * 1024
 const ACCEPTED_IMAGE_TYPES = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp']
 
 const imageSchema = z
@@ -28,7 +31,7 @@ const imageSchema = z
     file => ACCEPTED_IMAGE_TYPES.includes(file.type),
     'Поддерживаются только форматы .jpg, .jpeg, .png и .webp'
   )
-  .refine(file => file.size <= MAX_FILE_SIZE, 'Максимальный размер изображения - 10MB')
+  .refine(file => file.size <= MAX_FILE_SIZE, 'Максимальный размер изображения - 20MB')
 
 const formSchema = z.object({
   images: z.array(imageSchema).max(10, 'Максимум 10 изображений'),
@@ -42,6 +45,7 @@ type UploadedImage = {
   file: File
   filter?: string
   crop?: Crop
+  completedCrop?: Crop
 }
 
 type Props = {
@@ -51,6 +55,34 @@ type Props = {
   isAuth?: boolean
   placeholder?: string
   onImageSelect?: (file: File) => void
+}
+
+function centerAspectCrop(mediaWidth: number, mediaHeight: number, aspect: number) {
+  return centerCrop(
+    makeAspectCrop(
+      {
+        unit: '%',
+        width: 90,
+      },
+      aspect,
+      mediaWidth,
+      mediaHeight
+    ),
+    mediaWidth,
+    mediaHeight
+  )
+}
+
+const SafeImageFilter = ({ filter, image }: { filter?: string; image: string }) => {
+  try {
+    if (!filter) {
+      return <img alt="Preview" className={s.filterPreview} src={image} />
+    }
+    return <ImageFilter className={s.filterPreview} filter={filter} image={image} />
+  } catch (error) {
+    console.error('Error applying filter:', error)
+    return <img alt="Filter error" className={s.filterPreview} src={image} />
+  }
 }
 
 export const Tootlip = ({
@@ -66,8 +98,13 @@ export const Tootlip = ({
   const [aspectRatio, setAspectRatio] = useState<string>('Original')
   const [zoomLevel, setZoomLevel] = useState<number>(1)
   const [crop, setCrop] = useState<Crop>()
-  const [showFilters, setShowFilters] = useState(false)
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null)
   const imgRef = useRef<HTMLImageElement>(null)
+  const previewCanvasRef = useRef<HTMLCanvasElement>(null)
+  const [shouldApplyCrop, setShouldApplyCrop] = useState(false)
+  const [step, setStep] = useState<'add' | 'crop' | 'filter' | 'publish'>('add')
+  const [description, setDescription] = useState('')
+  const [location, setLocation] = useState('')
 
   const {
     formState: { errors },
@@ -78,23 +115,23 @@ export const Tootlip = ({
     },
   })
 
-  const classNames = {
-    container: clsx(s.container, className, {
-      [s.hasImage]: images.length > 0,
-    }),
-    placeholder: clsx(s.placeholder, className),
-    imagePreview: clsx(s.imagePreview, className),
-    iconButton: s.iconButton,
-    controls: s.controls,
-  }
-
   const filters = [
-    { name: 'Normal', filter: '' },
-    { name: 'Clarendon', filter: 'clarendon' },
-    { name: 'Lark', filter: 'lark' },
-    { name: 'Gingham', filter: 'gingham' },
-    { name: 'Moon', filter: 'moon' },
+    { name: 'Normal', value: undefined },
+    { name: 'Clarendon', value: 'clarendon' },
+    { name: 'Lark', value: 'lark' },
+    { name: 'Gingham', value: 'gingham' },
+    { name: 'Moon', value: 'moon' },
   ]
+
+  useEffect(() => {
+    if (open) {
+      setStep('add')
+      setImages([])
+      setCurrentImageIndex(0)
+      setDescription('')
+      setLocation('')
+    }
+  }, [open])
 
   const handleImageUpload = async (e: ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files
@@ -132,6 +169,7 @@ export const Tootlip = ({
             setImages(prev => [...prev, ...newImages])
             if (images.length === 0) {
               setCurrentImageIndex(0)
+              setStep('crop')
             }
             onImageSelect?.(file)
           }
@@ -148,302 +186,161 @@ export const Tootlip = ({
     if (currentImageIndex >= images.length - 1) {
       setCurrentImageIndex(Math.max(0, images.length - 2))
     }
+    if (images.length === 1) {
+      setStep('add')
+    }
   }
 
   const handleAspectRatioChange = (ratio: string) => {
     setAspectRatio(ratio)
+    setShouldApplyCrop(false)
+    if (imgRef.current && ratio !== 'Original') {
+      const aspect = ratio === '1:1' ? 1 : ratio === '4:5' ? 4 / 5 : 16 / 9
+      const newCrop = centerAspectCrop(imgRef.current.width, imgRef.current.height, aspect)
+      setCrop(newCrop)
+    } else {
+      setCrop(undefined)
+    }
   }
 
   const handleZoomChange = (e: ChangeEvent<HTMLInputElement>) => {
     setZoomLevel(parseFloat(e.target.value))
   }
 
-  const handleApplyCrop = () => {
-    if (!crop || !imgRef.current) {
+  const onImageLoad = useCallback(
+    (e: React.SyntheticEvent<HTMLImageElement>) => {
+      if (aspectRatio !== 'Original' && shouldApplyCrop) {
+        const aspect = aspectRatio === '1:1' ? 1 : aspectRatio === '4:5' ? 4 / 5 : 16 / 9
+        const newCrop = centerAspectCrop(e.currentTarget.width, e.currentTarget.height, aspect)
+        setCrop(newCrop)
+      }
+    },
+    [aspectRatio, shouldApplyCrop]
+  )
+
+  const handleApplyCrop = useCallback(() => {
+    if (!crop || !imgRef.current || !previewCanvasRef.current) {
       return
     }
 
-    const currentImage = images[currentImageIndex]
-    const canvas = document.createElement('canvas')
     const scaleX = imgRef.current.naturalWidth / imgRef.current.width
     const scaleY = imgRef.current.naturalHeight / imgRef.current.height
 
-    canvas.width = crop.width
-    canvas.height = crop.height
+    const canvas = previewCanvasRef.current
     const ctx = canvas.getContext('2d')
-
-    if (ctx) {
-      ctx.drawImage(
-        imgRef.current,
-        crop.x * scaleX,
-        crop.y * scaleY,
-        crop.width * scaleX,
-        crop.height * scaleY,
-        0,
-        0,
-        crop.width,
-        crop.height
-      )
-
-      const croppedUrl = canvas.toDataURL('image/jpeg')
-      const updatedImages = [...images]
-      updatedImages[currentImageIndex] = {
-        ...currentImage,
-        url: croppedUrl,
-        crop,
-      }
-      setImages(updatedImages)
+    if (!ctx) {
+      return
     }
-  }
 
-  const handleApplyFilter = (filter: string) => {
+    const pixelRatio = window.devicePixelRatio
+    canvas.width = crop.width * pixelRatio
+    canvas.height = crop.height * pixelRatio
+
+    ctx.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0)
+    ctx.imageSmoothingQuality = 'high'
+
+    ctx.drawImage(
+      imgRef.current,
+      crop.x * scaleX,
+      crop.y * scaleY,
+      crop.width * scaleX,
+      crop.height * scaleY,
+      0,
+      0,
+      crop.width,
+      crop.height
+    )
+
+    const croppedUrl = canvas.toDataURL('image/jpeg', 0.9)
+    setPreviewUrl(croppedUrl)
+
     const updatedImages = [...images]
     updatedImages[currentImageIndex] = {
       ...updatedImages[currentImageIndex],
-      filter,
+      completedCrop: crop,
+      url: croppedUrl,
     }
     setImages(updatedImages)
+  }, [crop, currentImageIndex, images])
+
+  const renderHeader = () => {
+    switch (step) {
+      case 'add':
+        return (
+          <div className={s.stepHeader}>
+            <Typography className={s.titleAdd} variant="h1">
+              Add Photo
+            </Typography>
+            <button className={s.closeButton} onClick={onClose}>
+              <CloseOutline />
+            </button>
+          </div>
+        )
+      case 'crop':
+        return (
+          <div className={s.stepHeader}>
+            <button className={s.backButton} onClick={() => setStep('add')}>
+              <ArrowIosBack />
+            </button>
+            <Typography className={s.stepTitle} variant="h1">
+              Cropping
+            </Typography>
+            <button
+              className={s.nextButton}
+              onClick={() => {
+                handleApplyCrop()
+                setStep('filter')
+              }}
+            >
+              Next
+            </button>
+          </div>
+        )
+      case 'filter':
+        return (
+          <div className={s.stepHeader}>
+            <button className={s.backButton} onClick={() => setStep('crop')}>
+              <ArrowIosBack />
+            </button>
+            <Typography className={s.stepTitle}>Filters</Typography>
+            <button className={s.nextButton} onClick={() => setStep('publish')}>
+              Next
+            </button>
+          </div>
+        )
+      case 'publish':
+        return (
+          <div className={s.stepHeader}>
+            <button className={s.backButton} onClick={() => setStep('filter')}>
+              <ArrowIosBack />
+            </button>
+            <Typography className={s.stepTitle}>Publish</Typography>
+            <button className={s.nextButton} onClick={() => {}}>
+              Publish
+            </button>
+          </div>
+        )
+      default:
+        return 'add'
+    }
   }
 
   const currentImage = images[currentImageIndex]
 
+  const classNames = {
+    container: clsx(s.container, className, {
+      [s.hasImage]: images.length > 0,
+    }),
+    placeholder: clsx(s.placeholder, className),
+    imagePreview: clsx(s.imagePreview, className),
+    iconButton: s.iconButton,
+    controls: s.controls,
+  }
+
   return (
-    <ModalWrapper open={open} size="md" title="Cropping" onClose={onClose}>
+    <TootlipModals open={open} size="lg" title={renderHeader()} onClose={onClose}>
       <div className={classNames.container}>
-        {currentImage ? (
-          <>
-            <div className={classNames.imagePreview}>
-              <div className={s.aspectWrapper}>
-                {showFilters ? (
-                  <ImageFilter
-                    filter={currentImage.filter || ''}
-                    image={currentImage.url}
-                    style={{
-                      aspectRatio:
-                        aspectRatio === '1:1'
-                          ? '1/1'
-                          : aspectRatio === '4:5'
-                          ? '4/5'
-                          : aspectRatio === '16:9'
-                          ? '16/9'
-                          : 'initial',
-                      transform: `scale(${zoomLevel})`,
-                      transformOrigin: 'center center',
-                      width: '100%',
-                      height: '100%',
-                      objectFit: 'contain',
-                    }}
-                  />
-                ) : (
-                  <ReactCrop
-                    aspect={
-                      aspectRatio === '1:1'
-                        ? 1
-                        : aspectRatio === '4:5'
-                        ? 4 / 5
-                        : aspectRatio === '16:9'
-                        ? 16 / 9
-                        : undefined
-                    }
-                    crop={crop}
-                    onChange={c => setCrop(c)}
-                  >
-                    <img
-                      ref={imgRef}
-                      alt="Превью"
-                      src={currentImage.url}
-                      style={{
-                        aspectRatio:
-                          aspectRatio === '1:1'
-                            ? '1/1'
-                            : aspectRatio === '4:5'
-                            ? '4/5'
-                            : aspectRatio === '16:9'
-                            ? '16/9'
-                            : 'initial',
-                        transform: `scale(${zoomLevel})`,
-                        transformOrigin: 'center center',
-                      }}
-                    />
-                  </ReactCrop>
-                )}
-              </div>
-            </div>
-
-            {showFilters && (
-              <div className={s.filtersContainer}>
-                {filters.map(({ name, filter }) => (
-                  <Button
-                    key={name}
-                    variant={currentImage.filter === filter ? 'primary' : 'outlined'}
-                    onClick={() => handleApplyFilter(filter)}
-                  >
-                    {name}
-                  </Button>
-                ))}
-              </div>
-            )}
-
-            <div className={classNames.controls}>
-              {isAuth && (
-                <div className={s.group}>
-                  {images.length > 1 && (
-                    <Dropdown
-                      align="start"
-                      className={s.dropdown}
-                      trigger={<Button className={s.btn} variant="languageButton"></Button>}
-                    >
-                      {images.map((img, index) => (
-                        <DropdownItem
-                          key={img.id}
-                          className={s.dropdownItem}
-                          onClick={() => setCurrentImageIndex(index)}
-                        >
-                          <div className={s.thumbnailItem}>
-                            <img
-                              alt={`Миниатюра ${index + 1}`}
-                              className={s.thumbnail}
-                              src={img.url}
-                            />
-                          </div>
-                        </DropdownItem>
-                      ))}
-                    </Dropdown>
-                  )}
-
-                  <Dropdown
-                    align="start"
-                    className={s.dropdown}
-                    trigger={
-                      <Button className={s.btn} variant="languageButton">
-                        <ExpandOutline className={s.icons} />
-                      </Button>
-                    }
-                  >
-                    <DropdownItem
-                      className={s.dropdownItem}
-                      onClick={() => handleAspectRatioChange('Original')}
-                    >
-                      <Typography text="Оригинал" variant="h3" />
-                      <ImageOutline />
-                    </DropdownItem>
-                    <DropdownItem
-                      className={s.dropdownItem}
-                      onClick={() => handleAspectRatioChange('1:1')}
-                    >
-                      <Typography text="1:1" variant="regular_16" />
-                      <Square />
-                    </DropdownItem>
-                    <DropdownItem
-                      className={s.dropdownItem}
-                      onClick={() => handleAspectRatioChange('4:5')}
-                    >
-                      <Typography text="4:5" variant="regular_16" />
-                      <Rectangle />
-                    </DropdownItem>
-                    <DropdownItem
-                      className={s.dropdownItem}
-                      onClick={() => handleAspectRatioChange('16:9')}
-                    >
-                      <Typography text="16:9" variant="regular_16" />
-                      <HorizontalRectangle />
-                    </DropdownItem>
-                  </Dropdown>
-
-                  <Dropdown
-                    align="start"
-                    className={s.dropdownZoom}
-                    trigger={
-                      <Button className={s.btn} variant="languageButton">
-                        <MaximizeOutline className={s.icons} />
-                      </Button>
-                    }
-                  >
-                    <input
-                      className={s.zoomSlider}
-                      max="3"
-                      min="0.5"
-                      step="0.1"
-                      type="range"
-                      value={zoomLevel}
-                      onChange={handleZoomChange}
-                    />
-                  </Dropdown>
-
-                  <Button className={s.btn} variant="languageButton" onClick={handleApplyCrop}>
-                    Применить кадрирование
-                  </Button>
-
-                  <Button
-                    className={s.btn}
-                    variant="languageButton"
-                    onClick={() => setShowFilters(!showFilters)}
-                  >
-                    {showFilters ? 'Скрыть фильтры' : 'Показать фильтры'}
-                  </Button>
-
-                  <Dropdown
-                    align="end"
-                    className={s.dropdownAddimage}
-                    trigger={
-                      <Button className={s.btnimage} variant="languageButton">
-                        <ImageOutline className={s.icons} />
-                      </Button>
-                    }
-                  >
-                    <div className={s.thumbnailsGrid}>
-                      {images.map(img => (
-                        <div key={img.id} className={s.thumbnailWrapper}>
-                          <img
-                            alt={`Миниатюра ${img.id}`}
-                            className={s.thumbnail}
-                            src={img.url}
-                            onClick={() => {
-                              const index = images.findIndex(i => i.id === img.id)
-                              setCurrentImageIndex(index)
-                            }}
-                          />
-                          <button
-                            className={s.removeButton}
-                            onClick={e => {
-                              e.stopPropagation()
-                              handleRemoveImage(img.id)
-                            }}
-                          >
-                            ×
-                          </button>
-                        </div>
-                      ))}
-                      {images.length < 10 && (
-                        <Button
-                          className={s.addButton}
-                          variant="miniOutlined"
-                          onClick={() => document.getElementById('file-upload')?.click()}
-                        >
-                          <PlusCircleOutline />
-                        </Button>
-                      )}
-                    </div>
-                  </Dropdown>
-
-                  <Input
-                    multiple
-                    accept="image/jpeg,image/jpg,image/png,image/webp"
-                    id="file-upload"
-                    style={{ display: 'none' }}
-                    type="file"
-                    onChange={handleImageUpload}
-                  />
-                  {errors.images && (
-                    <Typography color="error" variant="medium_14">
-                      {errors.images.message}
-                    </Typography>
-                  )}
-                </div>
-              )}
-            </div>
-          </>
-        ) : (
+        {step === 'add' ? (
           <>
             {placeholder && (
               <div className={classNames.placeholder}>
@@ -462,9 +359,9 @@ export const Tootlip = ({
                 variant="primary"
                 onClick={() => document.getElementById('file-upload')?.click()}
               >
-                Выбрать с компьютера
+                Select from Computer
               </Button>
-              <Button variant="outlined">Открыть черновик</Button>
+              <Button variant="outlined">Open Draft</Button>
               {errors.images && (
                 <Typography color="error" variant="medium_14">
                   {errors.images.message}
@@ -472,8 +369,249 @@ export const Tootlip = ({
               )}
             </div>
           </>
+        ) : currentImage ? (
+          <>
+            {step === 'crop' && (
+              <div className={classNames.imagePreview}>
+                <div className={s.aspectWrapper}>
+                  <ReactCrop
+                    ruleOfThirds
+                    aspect={
+                      aspectRatio === '1:1'
+                        ? 1
+                        : aspectRatio === '4:5'
+                        ? 4 / 5
+                        : aspectRatio === '16:9'
+                        ? 16 / 9
+                        : undefined
+                    }
+                    crop={crop}
+                    minHeight={100}
+                    minWidth={100}
+                    onChange={c => setCrop(c)}
+                  >
+                    <img
+                      ref={imgRef}
+                      alt="Preview"
+                      src={currentImage.url}
+                      style={{
+                        transform: `scale(${zoomLevel})`,
+                        transformOrigin: 'center center',
+                        maxWidth: '100%',
+                        maxHeight: '100%',
+                      }}
+                      onLoad={onImageLoad}
+                    />
+                  </ReactCrop>
+                </div>
+                <canvas ref={previewCanvasRef} style={{ display: 'none' }} />
+              </div>
+            )}
+
+            {step === 'filter' && (
+              <div className={classNames.imagePreview}>
+                <div className={s.containerFilter}>
+                  <div className={s.mainFilterImage}>
+                    <SafeImageFilter filter={currentImage.filter} image={currentImage.url} />
+                  </div>
+                  <div className={s.gridFilter}>
+                    <ImageFilter filter={filters} image={currentImage} />
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {step === 'publish' && (
+              <div className={s.containerPublish}>
+                <div className={s.imageColumn}>
+                  <img className={s.publishImage} src={currentImage.url} />
+                </div>
+
+                <div className={s.infoColumn}>
+                  <div className={s.userInfo}>
+                    <img alt="User avatar" className={s.avatar} src="" />
+                    <Typography variant="small_link">Your profile</Typography>
+                  </div>
+
+                  <Textarea
+                    className={s.description}
+                    title="Add publication descriptions"
+                    value={description}
+                    onChange={e => setDescription(e.target.value)}
+                  />
+
+                  <hr className={s.divider} />
+
+                  <Input
+                    className={s.locationInput}
+                    placeholder="Your location"
+                    title="Add location"
+                    type="text"
+                    value={location}
+                    onChange={e => setLocation(e.target.value)}
+                  />
+                </div>
+              </div>
+            )}
+
+            {step !== 'publish' && (
+              <div className={classNames.controls}>
+                {isAuth && (
+                  <div className={s.group}>
+                    {images.length > 1 && (
+                      <Dropdown
+                        align="start"
+                        className={s.dropdown}
+                        trigger={
+                          <Button className={s.btn} variant="languageButton">
+                            {currentImageIndex + 1}/{images.length}
+                          </Button>
+                        }
+                      >
+                        {images.map((img, index) => (
+                          <DropdownItem
+                            key={img.id}
+                            className={s.dropdownItem}
+                            onClick={() => {
+                              setCurrentImageIndex(index)
+                              setPreviewUrl(null)
+                            }}
+                          >
+                            <div className={s.thumbnailItem}>
+                              <img
+                                alt={`Thumbnail ${index + 1}`}
+                                className={s.thumbnail}
+                                src={img.url}
+                              />
+                            </div>
+                          </DropdownItem>
+                        ))}
+                      </Dropdown>
+                    )}
+
+                    {step === 'crop' && (
+                      <>
+                        <Dropdown
+                          align="start"
+                          className={s.dropdownCrops}
+                          trigger={
+                            <Button className={s.btn} variant="languageButton">
+                              <ExpandOutline className={s.icons} />
+                            </Button>
+                          }
+                        >
+                          <DropdownItem
+                            className={s.dropdownItem}
+                            onClick={() => handleAspectRatioChange('Original')}
+                          >
+                            <Typography text="Original" variant="h3" />
+                            <ImageOutline />
+                          </DropdownItem>
+                          <DropdownItem
+                            className={s.dropdownItem}
+                            onClick={() => handleAspectRatioChange('1:1')}
+                          >
+                            <Typography text="1:1" variant="regular_16" />
+                            <Square />
+                          </DropdownItem>
+                          <DropdownItem
+                            className={s.dropdownItem}
+                            onClick={() => handleAspectRatioChange('4:5')}
+                          >
+                            <Typography text="4:5" variant="regular_16" />
+                            <Rectangle />
+                          </DropdownItem>
+                          <DropdownItem
+                            className={s.dropdownItem}
+                            onClick={() => handleAspectRatioChange('16:9')}
+                          >
+                            <Typography text="16:9" variant="regular_16" />
+                            <HorizontalRectangle />
+                          </DropdownItem>
+                        </Dropdown>
+
+                        <Dropdown
+                          align="start"
+                          className={s.dropdownZoom}
+                          trigger={
+                            <Button className={s.btn} variant="languageButton">
+                              <MaximizeOutline className={s.icons} />
+                            </Button>
+                          }
+                        >
+                          <input
+                            className={s.zoomSlider}
+                            max="3"
+                            min="0.5"
+                            step="0.1"
+                            type="range"
+                            value={zoomLevel}
+                            onChange={handleZoomChange}
+                          />
+                        </Dropdown>
+                      </>
+                    )}
+
+                    <Dropdown
+                      align="end"
+                      className={s.dropdownAddimage}
+                      trigger={
+                        <Button className={s.btn} variant="languageButton">
+                          <ImageOutline className={s.icons} />
+                        </Button>
+                      }
+                    >
+                      <div className={s.thumbnailsGrid}>
+                        {images.map(img => (
+                          <div key={img.id} className={s.thumbnailWrapper}>
+                            <img
+                              alt={`Thumbnail ${img.id}`}
+                              className={s.thumbnail}
+                              src={img.url}
+                              onClick={() => {
+                                const index = images.findIndex(i => i.id === img.id)
+                                setCurrentImageIndex(index)
+                                setPreviewUrl(null)
+                              }}
+                            />
+                            <button
+                              className={s.removeButton}
+                              onClick={e => {
+                                e.stopPropagation()
+                                handleRemoveImage(img.id)
+                              }}
+                            >
+                              ×
+                            </button>
+                          </div>
+                        ))}
+                        {images.length < 10 && (
+                          <Button
+                            className={s.addButton}
+                            variant="miniOutlined"
+                            onClick={() => document.getElementById('file-upload')?.click()}
+                          >
+                            <PlusCircleOutline />
+                            <Input
+                              accept="image/jpeg,image/jpg,image/png,image/webp"
+                              id="file-upload"
+                              style={{ display: 'none' }}
+                              type="file"
+                              onChange={handleImageUpload}
+                            />
+                          </Button>
+                        )}
+                      </div>
+                    </Dropdown>
+                  </div>
+                )}
+              </div>
+            )}
+          </>
+        ) : (
+          'add'
         )}
       </div>
-    </ModalWrapper>
+    </TootlipModals>
   )
 }
