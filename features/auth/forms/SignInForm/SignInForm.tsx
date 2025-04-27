@@ -46,16 +46,26 @@ export const SignInForm = ({ onSubmit, errorsFromApi }: Props) => {
     })
   }, [errorsFromApi, setError])
 
+  const onClickGoogleButtonHandler = () => googleTrigger()
+  const onClickGithubButtonHandler = () => gitHubTrigger()
   return (
     <Card className={s.cardContainer}>
       <Typography as="h2" className={s.title} variant="h1">
         Sign In
       </Typography>
       <div className={s.svgContainer}>
-        <Button className={s.redirectButton} variant="secondary" onClick={() => googleTrigger()}>
+        <Button
+          className={s.redirectButton}
+          variant="secondary"
+          onClick={onClickGoogleButtonHandler}
+        >
           <Google />
         </Button>
-        <Button className={s.redirectButton} variant="secondary" onClick={() => gitHubTrigger()}>
+        <Button
+          className={s.redirectButton}
+          variant="secondary"
+          onClick={onClickGithubButtonHandler}
+        >
           <Github />
         </Button>
       </div>
