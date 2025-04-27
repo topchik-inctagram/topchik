@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react'
 import { Button } from './Button'
 import Link from 'next/link' // Импортируйте ваш компонент
 
-const meta: Meta<typeof Button> = {
+const meta = {
   title: 'Components/Button', // Название вашего компонента в Storybook
   component: Button,
   tags: ['autodocs'], // Автоматическая документация
@@ -18,7 +18,7 @@ const meta: Meta<typeof Button> = {
       control: { type: 'boolean' },
     },
   },
-}
+} satisfies Meta<typeof Button>
 
 export default meta
 

@@ -1,6 +1,6 @@
 export enum PublicPages {
   emailConfirmed = '/email-confirmed',
-  forgotPassword = '/forgotPassword',
+  forgotPassword = '/forgot-password',
   passwordRecoveryVerificationExpired = '/password-recovery-verification-expired',
   policy = '/policy',
   signIn = '/sign-in',

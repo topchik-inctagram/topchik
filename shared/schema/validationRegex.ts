@@ -27,7 +27,3 @@ export const confirmPasswordSchema = passwordSchema
 export const agreementSchema = z.literal<boolean>(true, {
   errorMap: () => ({ message: 'You must accept the agreement' }),
 })
-
-
-
-

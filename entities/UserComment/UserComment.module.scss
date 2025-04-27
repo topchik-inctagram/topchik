@@ -1,0 +1,14 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  width: 385px;
+}
+
+.createdDate {
+  color: var(--color-light-900);
+}
+
+.commentPost {
+  display: inline;
+}

@@ -37,8 +37,6 @@
   letter-spacing: 0%;
 }
 
-
-
 .container {
   position: relative;
 
@@ -82,7 +80,6 @@
   letter-spacing: 0%;
 }
 
-
 .checkboxWrapper {
   position: relative;
   z-index: 1;
@@ -118,7 +115,7 @@
   bottom: 4px;
 
   font-size: 8px;
-  color: var(--color-danger-300)
+  color: var(--color-danger-300);
 }
 
 .privacy {
@@ -148,7 +145,6 @@
     }
   }
 
-
   span {
     font-family: Roboto, sans-serif;
     font-size: 6px;
@@ -157,7 +153,6 @@
     color: var(--color-light-100);
     text-decoration: none;
   }
-
 }
 
 .recaptcha {

@@ -1,7 +1,6 @@
 'use client'
-
 import { PageContainer } from '@/shared/components'
-import { ForgotPassword } from '@/features/auth/forms/ForgotPassword'
+import { ForgotPassword } from '@/features/auth/forms'
 
 const Page = () => {
   const handleSubmit = (data: unknown) => {

@@ -3,7 +3,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import s from './SignUpVerificationExpired.module.scss'
 import { z } from 'zod'
-import { emailSchema} from '@/shared/schema'
+import { emailSchema } from '@/shared/schema'
 
 const emailOnlySchema = z.object({
   email: emailSchema,
