@@ -9,6 +9,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { useEffect } from 'react'
 import { PublicPages } from '@/shared/enums'
+import { useLazyGitHubSignInQuery, useLazyGoogleSignInQuery } from '@/features/auth/api'
 
 const schema = z.object({
   email: z.string().email('Enter your email'),
@@ -36,11 +37,14 @@ export const SignIn = ({ onSubmit, errorsFromApi }: Props) => {
   })
   //todo add Devtool when it will be fixed by dev
 
+  const [gitHubTrigger] = useLazyGitHubSignInQuery()
+  const [googleTrigger] = useLazyGoogleSignInQuery()
+
   useEffect(() => {
     errorsFromApi?.forEach(error => {
       setError(error.field, { message: error.message })
     })
-  }, [errorsFromApi])
+  }, [errorsFromApi, setError])
 
   return (
     <Card className={s.cardContainer}>
@@ -48,12 +52,12 @@ export const SignIn = ({ onSubmit, errorsFromApi }: Props) => {
         Sign In
       </Typography>
       <div className={s.svgContainer}>
-        <Link href="#">
+        <Button className={s.redirectButton} variant="secondary" onClick={() => googleTrigger()}>
           <Google />
-        </Link>
-        <Link href="#">
+        </Button>
+        <Button className={s.redirectButton} variant="secondary" onClick={() => gitHubTrigger()}>
           <Github />
-        </Link>
+        </Button>
       </div>
       <form className={s.formContainer} onSubmit={handleSubmit(onSubmit)}>
         <ControlledInput
