@@ -7,6 +7,7 @@ export enum PublicPages {
   signUp = '/sign-up',
   signUpVerificationExpired = '/sign-up-verification-expired',
   terms = '/terms',
+  createNewPassword = '/create-new-password',
 }
 
 export enum PrivatePages {

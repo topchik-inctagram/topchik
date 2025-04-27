@@ -2,35 +2,37 @@
 
 import { Button, Card, ControlledInput, Typography } from '@/shared/components'
 import Link from 'next/link'
-import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { z } from 'zod'
+import { type Control, type FieldErrors } from 'react-hook-form'
 import s from './ForgotPassword.module.scss'
 import clsx from 'clsx'
+import { PublicPages } from '@/shared/enums'
+import { Recaptcha, type RecaptchaStatus } from '@/shared/components/Recaptcha'
 
-const schema = z.object({
-  email: z.string().email('Enter your email'),
-})
-
-type FormTypes = z.infer<typeof schema>
-type Props = {
-  onSubmit: (data: FormTypes) => void
-  isVerified: boolean
+type FormTypes = {
+  email: string
 }
 
-export const ForgotPassword = ({ onSubmit, isVerified }: Props) => {
-  const {
-    control,
-    formState: { errors },
-    handleSubmit,
-  } = useForm<FormTypes>({
-    defaultValues: {
-      email: '',
-    },
-    resolver: zodResolver(schema),
-  })
-  //todo add Devtool when it will be fixed by dev
+type Props = {
+  onSubmit: () => void
+  isVerified: boolean
+  control: Control<FormTypes>
+  errors: FieldErrors<FormTypes>
+  isValid: boolean
+  isLoading: boolean
+  recaptchaStatus: RecaptchaStatus
+  onVerifyRecaptcha: () => void
+}
 
+export const ForgotPassword = ({
+  onSubmit,
+  isVerified,
+  control,
+  errors,
+  isLoading,
+  isValid,
+  recaptchaStatus,
+  onVerifyRecaptcha,
+}: Props) => {
   const classNames = {
     cardContainer: clsx(s.cardContainer, isVerified && s.verifiedContainer),
     title: s.title,
@@ -47,7 +49,7 @@ export const ForgotPassword = ({ onSubmit, isVerified }: Props) => {
       <Typography as="h2" className={classNames.title} variant="h1">
         Forgot Password
       </Typography>
-      <form className={classNames.formContainer} onSubmit={handleSubmit(onSubmit)}>
+      <form className={classNames.formContainer} onSubmit={onSubmit}>
         <ControlledInput
           autoComplete="email"
           className={classNames.emailInput}
@@ -61,6 +63,7 @@ export const ForgotPassword = ({ onSubmit, isVerified }: Props) => {
         <Typography className={classNames.forgotPasswordLink} variant="regular_14">
           Enter your email address and we will send you further instructions
         </Typography>
+
         {isVerified && (
           <div className={classNames.notificationEmail}>
             <Typography variant="regular_14">The link has been sent by email.</Typography>
@@ -69,16 +72,27 @@ export const ForgotPassword = ({ onSubmit, isVerified }: Props) => {
             </Typography>
           </div>
         )}
-        <Button fullWidth className={classNames.buttonSendLink} type="submit">
-          Send Link {isVerified && 'Again'}
+
+        <Button
+          fullWidth
+          className={classNames.buttonSendLink}
+          disabled={!isValid || isLoading || recaptchaStatus !== 'verified'}
+          type="submit"
+        >
+          {isLoading ? 'Sending...' : `Send Link${isVerified ? ' Again' : ''}`}
         </Button>
       </form>
+
       <Button asChild fullWidth className={classNames.backToSignIn} variant="miniOutlined">
-        <Link href="#">Back to Sign In</Link>
+        <Link href={PublicPages.signIn}>Back to Sign In</Link>
       </Button>
       {!isVerified && (
-        <div style={{ height: '84px', width: '300px', backgroundColor: 'red' }}></div>
+        <div className={s.recaptchaWrapper}>
+          <Recaptcha isStatus={recaptchaStatus} onVerify={onVerifyRecaptcha} />
+        </div>
       )}
+
+      {!isVerified && <div style={{ height: '84px', width: '300px' }} />}
     </Card>
   )
 }
