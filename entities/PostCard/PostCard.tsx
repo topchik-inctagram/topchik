@@ -37,7 +37,7 @@ export const PostCard = ({ postText, postCreated, postImage, postAuthor, authorI
   }
 
   return (
-    <section className={s.container}>
+    <article className={s.container}>
       {Array.isArray(postImage) ? (
         <div ref={emblaRef} className={s.embla__viewport}>
           <div className={s.embla__container}>
@@ -107,6 +107,6 @@ export const PostCard = ({ postText, postCreated, postImage, postAuthor, authorI
           )}
         </Typography>
       </div>
-    </section>
+    </article>
   )
 }

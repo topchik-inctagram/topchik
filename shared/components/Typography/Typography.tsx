@@ -1,7 +1,7 @@
 import { type ComponentPropsWithRef, type ElementType } from 'react'
 
 import s from './Typography.module.scss'
-import Link, { type LinkProps } from 'next/link'
+import Link from 'next/link'
 import clsx from 'clsx'
 
 export type TypographyVariant =
@@ -22,7 +22,7 @@ export type TypographyVariant =
 type Props<T extends ElementType> = {
   as?: T
   variant?: TypographyVariant
-} & (T extends typeof Link ? LinkProps : ComponentPropsWithRef<T>)
+} & (T extends typeof Link ? ComponentPropsWithRef<typeof Link> : ComponentPropsWithRef<T>)
 
 export const Typography = <T extends ElementType = 'p'>(props: Props<T>) => {
   const { as, className, children, variant = 'regular_16', ...rest } = props
