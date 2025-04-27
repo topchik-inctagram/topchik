@@ -1,6 +1,6 @@
 'use client'
 
-import { SignIn } from '@/features/auth/forms/SignIn'
+import { SignInForm } from '@/features/auth/forms/SignIn'
 import { PageContainer, Toast } from '@/shared/components'
 import { useLoginMutation } from '@/features/auth/api'
 import { useRouter } from 'next/navigation'
@@ -34,7 +34,7 @@ const SignInPage = () => {
           variant="error"
         />
       )}
-      <SignIn
+      <SignInForm
         errorsFromApi={
           error &&
           'data' in error &&

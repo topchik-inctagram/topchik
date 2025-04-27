@@ -3,7 +3,7 @@
 import { Button, Card, ControlledInput, Typography } from '@/shared/components'
 import Link from 'next/link'
 import { Github, Google } from '@/public/icons'
-import s from './SignIn.module.scss'
+import s from './SignInForm.module.scss'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
@@ -22,7 +22,7 @@ type Props = {
   errorsFromApi?: { field: keyof FormTypes; message: string }[]
 }
 
-export const SignIn = ({ onSubmit, errorsFromApi }: Props) => {
+export const SignInForm = ({ onSubmit, errorsFromApi }: Props) => {
   const {
     control,
     formState: { errors },
