@@ -12,7 +12,7 @@ import { Toast } from '@/shared/components/Toast/Toast'
 import { LogOutOutline, ChromeIcon, DesktopIcon, MobileIcon } from '@/public/icons'
 
 export const Devices = () => {
-  const { data: devices = [], isLoading } = useGetDevicesQuery()
+  const { data: devices = { devices: [] }, isLoading } = useGetDevicesQuery()
   const [deleteAllDevices, { isLoading: isDeletingAll }] = useDeleteAllDevicesMutation()
   const [deleteDevice] = useDeleteDeviceMutation()
   const [toast, setToast] = useState<{ variant: 'success' | 'error'; description: string } | null>(
@@ -23,8 +23,8 @@ export const Devices = () => {
     return <div>Loading...</div>
   }
 
-  const currentDevice = devices.find(device => device.current)
-  const activeDevices = devices.filter(device => !device.current)
+  const currentDevice = devices.devices?.find(device => device.current)
+  const activeDevices = devices.devices?.filter(device => !device.current) || []
 
   const handleTerminateAll = async () => {
     try {

@@ -1,9 +1,9 @@
 import { baseApi } from '@/shared/store'
-import type { Device } from './devices.types'
+import type { DevicesResponse } from './devices.types'
 
 export const DevicesService = baseApi.injectEndpoints({
   endpoints: builder => ({
-    getDevices: builder.query<Device[], void>({
+    getDevices: builder.query<DevicesResponse, void>({
       query: () => ({
         url: '/api/v1/security/devices',
         method: 'GET',
