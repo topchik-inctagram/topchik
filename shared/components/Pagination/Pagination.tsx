@@ -1,98 +1,95 @@
 'use client'
 
-import { type ComponentPropsWithRef, type FC } from 'react'
 import { clsx } from 'clsx'
 import s from './Pagination.module.scss'
-import { usePagination } from './usePagination'
 import { ArrowIosBack, ArrowIosForward } from '@/public/icons'
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
-
-type PaginationConditionals =
-  | {
-      onPerPageChange: (itemPerPage: number) => void
-      perPage: number
-      perPageOptions: number[]
-    }
-  | {
-      onPerPageChange?: never
-      perPage?: null
-      perPageOptions?: never
-    }
-
-export type PaginationProps = {
-  count: number
-  onValuePageChange: (page: number) => void
-  onPerPageChange?: (itemPerPage: number) => void
-  page: number
-  perPage?: number
-  perPageOptions?: number[]
-  siblings?: number
-} & PaginationConditionals &
-  Omit<ComponentPropsWithRef<'div'>, 'onChange'>
-
-const classNames = {
-  container: s.container,
-  dots: s.dots,
-  icon: s.icon,
-  item: s.item,
-  pageButton(selected?: boolean) {
-    return clsx(this.item, selected && s.selected)
-  },
-  root(className?: string) {
-    return clsx(s.root, className)
-  },
-  select: s.select,
-  selectBox: s.selectBox,
+import { DOTS, usePagination } from '@/shared/components/Pagination'
+// original code
+// https://www.freecodecamp.org/news/build-a-custom-pagination-component-in-react/
+type Props = {
+  className?: string
+  totalCount: number
+  onPageChange: (page: number) => void
+  onPageSizeChange?: (itemPerPage: number) => void
+  currentPage: number
+  pageSize: number
+  selectOptions?: number[]
+  siblingCount?: number
 }
 
-export const Pagination: FC<PaginationProps> = ({
-  className,
-  count,
-  onValuePageChange,
-  onPerPageChange,
-  page,
-  perPage = null,
-  perPageOptions,
-  siblings,
-  ...rest
-}) => {
-  const {
-    handleMainPageClicked,
-    handleNextPageClicked,
-    handlePreviousPageClicked,
-    isFirstPage,
-    isLastPage,
-    paginationRange,
-  } = usePagination({
-    count,
-    onValuePageChange,
-    page,
-    siblings,
-  })
+// const classNames = {
+//   container: s.container,
+//   dots: s.dots,
+//   icon: s.icon,
+//   item: s.item,
+//   pageButton(selected?: boolean) {
+//     return clsx(this.item, selected && s.selected)
+//   },
+//   root(className?: string) {
+//     return clsx(s.root, className)
+//   },
+//   select: s.select,
+//   selectBox: s.selectBox,
+// }
 
-  const showPerPageSelect = !!perPage && !!perPageOptions && !!onPerPageChange
+export const Pagination = ({
+  className,
+  totalCount,
+  onPageChange,
+  onPageSizeChange,
+  currentPage,
+  pageSize,
+  selectOptions,
+  siblingCount = 1,
+}: Props) => {
+  const classNames = {
+    container: s.container,
+    root: clsx(s.root, className),
+  }
+
+  const paginationRange = usePagination({
+    totalCount,
+    pageSize,
+    currentPage,
+    siblingCount,
+  })
+  if (currentPage === 0 || (paginationRange && paginationRange?.length < 2)) {
+    return null
+  }
+
+  const isLastPage = paginationRange?.at(-1) === currentPage
+  const isFirstPage = currentPage === 1
+  const prevButtonHandler = () => {
+    onPageChange(currentPage - 1)
+  }
+  const nextButtonHandler = () => {
+    onPageChange(currentPage + 1)
+  }
+  const mainButtonHandler = (page: number) => {
+    onPageChange(page)
+  }
+  const showPerPageSelect = !!pageSize && !!selectOptions && !!onPageSizeChange
 
   return (
-    <div className={classNames.root(className)} {...rest}>
+    <div className={classNames.root}>
       <div className={classNames.container}>
-        <PrevButton disabled={isFirstPage} onClick={handlePreviousPageClicked} />
-
-        <MainPaginationButtons
-          currentPage={page}
+        <PrevLink disabled={isFirstPage} onClick={prevButtonHandler} />
+        <MainLinks
+          currentPage={currentPage}
           paginationRange={paginationRange}
-          onClick={handleMainPageClicked}
+          onClick={mainButtonHandler}
         />
-
-        <NextButton disabled={isLastPage} onClick={handleNextPageClicked} />
+        <NextLink disabled={isLastPage} onClick={nextButtonHandler} />
       </div>
 
       {showPerPageSelect && (
         <PerPageSelect
           {...{
-            onPerPageChange,
-            perPage,
-            perPageOptions,
+            onPageSizeChange,
+            pageSize,
+            selectOptions,
           }}
         />
       )}
@@ -100,21 +97,20 @@ export const Pagination: FC<PaginationProps> = ({
   )
 }
 
-type NavigationButtonProps = {
+type NavigationLinkProps = {
   disabled?: boolean
   onClick: () => void
 }
 
-type PageButtonProps = NavigationButtonProps & {
-  page: number
-  selected: boolean
+const Dots = () => {
+  return <span className={s.dots}>&#8230;</span>
 }
 
-const Dots: FC = () => {
-  return <span className={classNames.dots}>&#8230;</span>
-}
-
-const PrevButton: FC<NavigationButtonProps> = ({ disabled, onClick }) => {
+const PrevLink = ({ disabled, onClick }: NavigationLinkProps) => {
+  const classNames = {
+    icon: s.icon,
+    item: s.item,
+  }
   const searchParams = useSearchParams()
   const currentPage = searchParams.get('page') || '1'
 
@@ -130,18 +126,21 @@ const PrevButton: FC<NavigationButtonProps> = ({ disabled, onClick }) => {
   return (
     <Link
       aria-disabled={disabled}
-      className={disabled ? classNames.item : undefined}
+      className={clsx(disabled && classNames.item)}
       href={`?${newSearchParams.toString()}`}
       onClick={onClick}
     >
-      <button className={classNames.item} disabled={disabled}>
-        <ArrowIosBack className={classNames.icon} />
-      </button>
+      {/*<button className={classNames.item} disabled={disabled}>*/}
+      <ArrowIosBack className={classNames.icon} />
     </Link>
   )
 }
 
-const NextButton: FC<NavigationButtonProps> = ({ disabled, onClick }) => {
+const NextLink = ({ disabled, onClick }: NavigationLinkProps) => {
+  const classNames = {
+    icon: s.icon,
+    item: s.item,
+  }
   const searchParams = useSearchParams()
   const currentPage = searchParams.get('page') || '1'
 
@@ -152,13 +151,13 @@ const NextButton: FC<NavigationButtonProps> = ({ disabled, onClick }) => {
   return (
     <Link
       aria-disabled={disabled}
-      className={disabled ? classNames.item : undefined}
+      className={clsx(disabled && classNames.item)}
       href={`?${newSearchParams.toString()}`}
       onClick={onClick}
     >
-      <button className={classNames.item} disabled={disabled}>
-        <ArrowIosForward className={classNames.icon} />
-      </button>
+      {/*<button className={classNames.item} disabled={disabled}>*/}
+      <ArrowIosForward className={classNames.icon} />
+      {/*</button>*/}
     </Link>
   )
 }
@@ -169,11 +168,14 @@ type MainPaginationButtonsProps = {
   paginationRange: (number | string)[]
 }
 
-const MainPaginationButtons: FC<MainPaginationButtonsProps> = ({
-  currentPage,
-  onClick,
-  paginationRange,
-}) => {
+const MainLinks = ({ currentPage, onClick, paginationRange }: MainPaginationButtonsProps) => {
+  const classNames = {
+    container: s.container,
+    item: s.item,
+    pageButton(selected?: boolean) {
+      return clsx(selected && s.selected)
+    },
+  }
   const searchParams = useSearchParams()
 
   return (
@@ -181,12 +183,12 @@ const MainPaginationButtons: FC<MainPaginationButtonsProps> = ({
       {paginationRange.map((page: number | string, index) => {
         const isSelected = page === currentPage
 
-        if (typeof page !== 'number') {
+        if (page === DOTS) {
           return <Dots key={index} />
         }
 
         const newSearchParams = new URLSearchParams(searchParams.toString())
-        if (page === 1) {
+        if (+page === 1) {
           newSearchParams.delete('page')
         } else {
           newSearchParams.set('page', page.toString())
@@ -200,7 +202,7 @@ const MainPaginationButtons: FC<MainPaginationButtonsProps> = ({
               [classNames.pageButton(true)]: isSelected,
               disabled: isSelected,
             })}
-            href={isSelected ? '#' : `?${newSearchParams.toString()}`}
+            href={`?${newSearchParams.toString()}`}
             scroll={false}
             tabIndex={0}
             onClick={(e: React.MouseEvent) => {
@@ -208,7 +210,7 @@ const MainPaginationButtons: FC<MainPaginationButtonsProps> = ({
                 e.preventDefault()
                 return
               }
-              onClick(page)()
+              onClick(+page)()
             }}
           >
             {page}
@@ -225,27 +227,25 @@ export type PerPageSelectProps = {
   perPageOptions: number[]
 }
 
-export const PerPageSelect: FC<PerPageSelectProps> = (
-  {
-    // perPage,
-    // perPageOptions,
-    // onPerPageChange,
+export const PerPageSelect = ({ perPage, perPageOptions, onPerPageChange }: PerPageSelectProps) => {
+  const classNames = {
+    select: s.select,
+    selectBox: s.selectBox,
   }
-) => {
-  // const selectOptions = perPageOptions.map(value => ({
-  //   label: value,
-  //   value,
-  // }))
+  const selectOptions = perPageOptions.map(value => ({
+    label: value,
+    value,
+  }))
 
   return (
     <div className={classNames.selectBox}>
       Показать
       {/*<Select*/}
       {/*  className={classNames.select}*/}
-      {/*  value={perPage}*/}
       {/*  options={selectOptions}*/}
-      {/*  onChange={onPerPageChange}*/}
+      {/*  value={perPage}*/}
       {/*  variant="pagination"*/}
+      {/*  onChange={onPerPageChange}*/}
       {/*/>*/}
       на странице
     </div>
