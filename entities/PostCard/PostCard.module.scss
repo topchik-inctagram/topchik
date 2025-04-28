@@ -1,0 +1,172 @@
+.container {
+  position: relative;
+  overflow: visible;
+  width: 234px;
+  height: 391px;
+}
+
+.postPhoto {
+  width: 234px;
+  height: 240px;
+  object-fit: cover;
+}
+
+.imageContainer {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin: 12px 0;
+}
+
+.createdDate {
+  margin-bottom: 3px;
+  color: var(--color-light-900);
+}
+
+.showMoreButton {
+  all: unset;
+
+  cursor: pointer;
+
+  display: inline;
+
+  padding-left: 4px;
+  border: none;
+
+  color: var(--color-accent-500);
+  text-decoration: underline;
+
+  background-color: transparent;
+}
+
+.postText {
+  hyphens: auto;
+  word-break: break-word;
+  overflow-wrap: break-word;
+}
+
+.postContainer {
+  position: absolute;
+  z-index: 3;
+  right: 0;
+  bottom: 0;
+  left: 0;
+
+  width: 100%;
+
+  background-color: var(--color-dark-900);
+}
+
+.embla__viewport {
+  overflow: hidden;
+}
+
+.embla__container {
+  touch-action: pan-y pinch-zoom;
+  display: flex;
+}
+
+.embla__controls {
+  position: absolute;
+  top: 26%;
+  left: 0;
+  width: 100%;
+}
+
+.embla__buttons {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0 6px;
+}
+
+.embla__button {
+  touch-action: manipulation;
+  cursor: pointer;
+
+  z-index: 2;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 24px;
+  height: 24px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 2px;
+
+  color: var(--color-light-100);
+  text-decoration: none;
+
+  appearance: none;
+  background-color: transparent;
+  box-shadow: inset 0 0 0 12px rgb(0 0 0 / 40%);
+}
+
+.embla__button:disabled {
+  color: var(--color-light-900);
+}
+
+.embla__dots {
+  position: absolute;
+  z-index: 2;
+  top: 218px;
+  right: 50%;
+  transform: translateX(50%);
+
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  justify-content: flex-end;
+
+  width: fit-content;
+  padding: 3px 8px;
+  border-radius: 2px;
+
+  box-shadow: inset 0 0 0 12px rgb(0 0 0 / 40%);
+}
+
+.embla__dot {
+  touch-action: manipulation;
+  cursor: pointer;
+
+  z-index: 2;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 6px;
+  height: 6px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+
+  text-decoration: none;
+
+  appearance: none;
+  background-color: transparent;
+}
+
+.embla__dot::after {
+  content: '';
+
+  z-index: 2;
+
+  display: flex;
+  align-items: center;
+
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+
+  box-shadow: inset 0 0 0 0.2rem var(--color-light-100);
+}
+
+.embla__dot__selected::after {
+  box-shadow: inset 0 0 0 0.2rem var(--color-accent-500);
+}

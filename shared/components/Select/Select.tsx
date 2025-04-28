@@ -121,9 +121,7 @@ const SelectItem = ({ children, isPagination, className, value, ...props }: Sele
       {...props}
     >
       <SelectRadix.ItemText asChild>
-        <Typography variant={isPagination ? 'regular_14' : 'regular_16'}>
-          {children}
-        </Typography>
+        <Typography variant={isPagination ? 'regular_14' : 'regular_16'}>{children}</Typography>
       </SelectRadix.ItemText>
     </SelectRadix.Item>
   )

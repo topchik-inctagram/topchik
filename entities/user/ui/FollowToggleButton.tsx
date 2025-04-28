@@ -3,7 +3,6 @@
 import { Button } from '@/shared/components'
 import { useState } from 'react'
 
-
 export const FollowToggleButton = ({ userId }: { userId: string }) => {
   const [isFollowing, setIsFollowing] = useState(false)
 
@@ -11,10 +10,7 @@ export const FollowToggleButton = ({ userId }: { userId: string }) => {
     setIsFollowing(!isFollowing)
   }
   return (
-    <Button
-      variant={isFollowing ? 'outlined' : 'primary'}
-      onClick={handleClick}
-    >
+    <Button variant={isFollowing ? 'outlined' : 'primary'} onClick={handleClick}>
       {isFollowing ? 'Unfollow' : 'Follow'}
     </Button>
   )

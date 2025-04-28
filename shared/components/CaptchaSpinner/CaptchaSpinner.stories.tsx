@@ -1,13 +1,11 @@
 import { type Meta, type StoryObj } from '@storybook/react'
 import { CaptchaSpinner } from './CaptchaSpinner'
 
-
 const meta = {
   component: CaptchaSpinner,
   tags: ['autodocs'],
   title: 'Components/UI/CaptchaSpinner',
-  args: {
-  },
+  args: {},
 } satisfies Meta<typeof CaptchaSpinner>
 
 export default meta
@@ -18,5 +16,3 @@ export const Loading: Story = {
     isLoading: true,
   },
 }
-
-

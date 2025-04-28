@@ -50,9 +50,15 @@ export const DisabledRadioGroup: Story = {
   },
   render: args => (
     <RadioGroup {...args}>
-      <RadioItem disabled value="pre-junior">Pre-junior</RadioItem>
-      <RadioItem disabled value="junior">Junior</RadioItem>
-      <RadioItem disabled value="junior-plus">Junior +</RadioItem>
+      <RadioItem disabled value="pre-junior">
+        Pre-junior
+      </RadioItem>
+      <RadioItem disabled value="junior">
+        Junior
+      </RadioItem>
+      <RadioItem disabled value="junior-plus">
+        Junior +
+      </RadioItem>
     </RadioGroup>
   ),
 }

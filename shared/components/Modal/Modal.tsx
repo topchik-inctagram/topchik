@@ -5,23 +5,15 @@ import clsx from 'clsx'
 import { CloseOutline } from '@/public/icons'
 import { Typography } from '@/shared/components'
 
-type ModalSize = 'lg' | 'md' | 'sm'
+type ModalSize = 'lg' | 'md' | 'sm' | 'postSize'
 
 type Props = {
-  title: string
+  title?: string
   size?: ModalSize
   className?: string
 } & ComponentPropsWithRef<typeof Dialog.Root>
 
-export const Modal = ({
-  title,
-  onOpenChange,
-  children,
-  open,
-  size = 'sm',
-  className,
-  ...rest
-}: Props) => {
+export const Modal = ({ title, children, size = 'sm', className, ...rest }: Props) => {
   const classNames = {
     overlay: s.overlay,
     content: clsx(s.content, s[size], className),
@@ -31,19 +23,23 @@ export const Modal = ({
     body: s.modalBody,
   }
   return (
-    <Dialog.Root open={open} onOpenChange={onOpenChange} {...rest}>
+    <Dialog.Root {...rest}>
       <Dialog.Portal>
         <Dialog.Overlay className={classNames.overlay} />
         <Dialog.Content className={classNames.content}>
-          <div className={classNames.header}>
-            <Dialog.Title asChild className={classNames.title}>
-              <Typography variant="h1">{title}</Typography>
-            </Dialog.Title>
-            <Dialog.Close asChild>
-              <CloseOutline aria-label="Close" className={classNames.closeButton} />
-            </Dialog.Close>
-          </div>
-          <hr />
+          {title && (
+            <>
+              <div className={classNames.header}>
+                <Dialog.Title asChild className={classNames.title}>
+                  <Typography variant="h1">{title}</Typography>
+                </Dialog.Title>
+                <Dialog.Close className={classNames.closeButton}>
+                  <CloseOutline aria-label="Close" />
+                </Dialog.Close>
+              </div>
+              <hr />
+            </>
+          )}
           <div className={classNames.body}>{children}</div>
         </Dialog.Content>
       </Dialog.Portal>

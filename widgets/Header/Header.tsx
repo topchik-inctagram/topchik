@@ -20,7 +20,7 @@ type Props = {
 }
 
 export const Header = ({
-  selectedLanguage ='EN',
+  selectedLanguage = 'EN',
   onLanguageChange,
   notificationCount = 0,
 }: Props) => {
@@ -48,7 +48,6 @@ export const Header = ({
   useEffect(() => {
     setIsLogged(localStorage.getItem(TOKEN))
   }, [pathname])
-
 
   const languageOptions = [
     { value: 'RU', label: 'Russian', icon: <RussiaFlag /> },
