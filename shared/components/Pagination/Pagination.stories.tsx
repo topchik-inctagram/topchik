@@ -9,19 +9,24 @@ const meta = {
 } satisfies Meta<typeof Pagination>
 
 export default meta
-type Story = StoryObj<typeof meta>
+type Story = StoryObj<typeof Pagination>
 
-export const Default: Story = {
-  render: () => {
-    const [currentPage, setCurrentPage] = useState(1)
+export const PaginationWithSelect: Story = {
+  render: Render,
+}
 
-    return (
-      <Pagination
-        currentPage={currentPage}
-        pageSize={1}
-        totalCount={100}
-        onPageChange={page => setCurrentPage(page)}
-      />
-    )
-  },
+function Render() {
+  const pageSizeOptions = [5, 7, 10, 15, 20]
+  const [currentPage, setCurrentPage] = useState(1)
+  const [pageSize, setPageSize] = useState(pageSizeOptions[0])
+  return (
+    <Pagination
+      currentPage={currentPage}
+      pageSize={pageSize}
+      selectOptions={pageSizeOptions}
+      totalCount={100}
+      onPageChange={page => setCurrentPage(page)}
+      onPageSizeChange={setPageSize}
+    />
+  )
 }

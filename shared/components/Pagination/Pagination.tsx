@@ -7,6 +7,7 @@ import Link from 'next/link'
 import { type MouseEvent } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { DOTS, usePagination } from '@/shared/components/Pagination'
+import { Select, Typography } from '@/shared/components'
 // original code
 // https://www.freecodecamp.org/news/build-a-custom-pagination-component-in-react/
 type Props = {
@@ -56,6 +57,20 @@ export const Pagination = ({
   const mainButtonHandler = (pageNumber: number) => {
     onPageChange(pageNumber)
   }
+
+  const onValueChangeHandler = (newPageSize: number) => {
+    onPageSizeChange?.(newPageSize)
+    let page
+
+    if (+newPageSize < pageSize) {
+      page = Math.ceil((currentPage * pageSize) / +newPageSize) - 1
+    } else {
+      page = Math.ceil((currentPage * pageSize) / +newPageSize)
+    }
+
+    onPageChange(page)
+  }
+
   const showPerPageSelect = !!pageSize && !!selectOptions && !!onPageSizeChange
 
   return (
@@ -70,15 +85,15 @@ export const Pagination = ({
         <NextLink disabled={isLastPage} onClick={nextButtonHandler} />
       </div>
 
-      {/*{showPerPageSelect && (*/}
-      {/*  <PerPageSelect*/}
-      {/*    {...{*/}
-      {/*      onPageSizeChange,*/}
-      {/*      pageSize,*/}
-      {/*      selectOptions,*/}
-      {/*    }}*/}
-      {/*  />*/}
-      {/*)}*/}
+      {showPerPageSelect && (
+        <PerPageSelect
+          {...{
+            onPageSizeChange: onValueChangeHandler,
+            pageSize,
+            selectOptions,
+          }}
+        />
+      )}
     </div>
   )
 }
@@ -114,7 +129,7 @@ const PrevLink = ({ disabled, onClick }: NavigationLink) => {
       className={classNames.item}
       data-disabled={disabled || undefined}
       href={`?${newSearchParams.toString()}`}
-      tabIndex={0}
+      tabIndex={disabled ? -1 : 0}
       onClick={onClick}
     >
       <ArrowIosBack />
@@ -139,7 +154,7 @@ const NextLink = ({ disabled, onClick }: NavigationLink) => {
       className={classNames.item}
       data-disabled={disabled || undefined}
       href={`?${newSearchParams.toString()}`}
-      tabIndex={0}
+      tabIndex={disabled ? -1 : 0}
       onClick={onClick}
     >
       <ArrowIosForward />
@@ -155,9 +170,8 @@ type MainPaginationButtons = {
 
 const MainLinks = ({ currentPage, onClick, paginationRange }: MainPaginationButtons) => {
   const classNames = {
-    item: s.item,
-    pageButton(selected: boolean) {
-      return clsx(selected && s.selected)
+    item(selected: boolean) {
+      return clsx(s.item, selected && s.selected)
     },
   }
   const searchParams = useSearchParams()
@@ -181,10 +195,7 @@ const MainLinks = ({ currentPage, onClick, paginationRange }: MainPaginationButt
         return (
           <Link
             key={index}
-            className={clsx(classNames.item, {
-              [classNames.pageButton(true)]: isSelected,
-              disabled: isSelected,
-            })}
+            className={classNames.item(isSelected)}
             href={`?${newSearchParams.toString()}`}
             scroll={false}
             tabIndex={0}
@@ -204,33 +215,40 @@ const MainLinks = ({ currentPage, onClick, paginationRange }: MainPaginationButt
   )
 }
 
-export type PerPageSelectProps = {
-  onPerPageChange: (itemPerPage: number) => void
-  perPage: number
-  perPageOptions: number[]
+export type PaginationSelect = {
+  onPageSizeChange: (itemPerPage: number) => void
+  pageSize: number
+  selectOptions: number[]
 }
 
-export const PerPageSelect = ({ perPage, perPageOptions, onPerPageChange }: PerPageSelectProps) => {
+export const PerPageSelect = ({ pageSize, selectOptions, onPageSizeChange }: PaginationSelect) => {
   const classNames = {
     select: s.select,
     selectBox: s.selectBox,
   }
-  const selectOptions = perPageOptions.map(value => ({
-    label: value,
-    value,
-  }))
+  const selectItems = selectOptions.map(value => (
+    <Select.Item key={value} isPagination value={value.toString()}>
+      {value}
+    </Select.Item>
+  ))
 
+  const selectHandler = (value: string) => onPageSizeChange(+value)
   return (
     <div className={classNames.selectBox}>
-      Показать
-      {/*<Select*/}
-      {/*  className={classNames.select}*/}
-      {/*  options={selectOptions}*/}
-      {/*  value={perPage}*/}
-      {/*  variant="pagination"*/}
-      {/*  onChange={onPerPageChange}*/}
-      {/*/>*/}
-      на странице
+      <Typography as="span" variant="regular_14">
+        Show
+      </Typography>
+      <Select
+        isPagination
+        className={classNames.select}
+        value={pageSize.toString()}
+        onValueChange={selectHandler}
+      >
+        {selectItems}
+      </Select>
+      <Typography as="span" variant="regular_14">
+        on Page
+      </Typography>
     </div>
   )
 }
