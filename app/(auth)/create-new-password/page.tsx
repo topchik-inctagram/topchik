@@ -2,11 +2,8 @@
 
 import { useEffect, useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
-import {
-  useCheckRecoveryCodeMutation,
-  useNewPasswordMutation,
-  useDeleteAllDevicesMutation,
-} from '@/features/auth/api'
+import { useCheckRecoveryCodeMutation, useNewPasswordMutation } from '@/features/auth/api'
+import { useDeleteAllDevicesMutation } from '@/features/devices/api'
 import { CreateNewPassword } from '@/features/auth/forms/CreateNewPassword'
 import { PageContainer, Toast } from '@/shared/components'
 import { PublicPages } from '@/shared/enums'

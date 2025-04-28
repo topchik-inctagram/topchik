@@ -82,12 +82,6 @@ export const AuthService = baseApi.injectEndpoints({
           body,
         }),
       }),
-      deleteAllDevices: builder.mutation<void, void>({
-        query: () => ({
-          url: '/api/v1/security/devices',
-          method: 'DELETE',
-        }),
-      }),
       gitHubSignIn: builder.query<void, void>({
         query: () => ({
           params: undefined,
@@ -112,7 +106,6 @@ export const {
   useForgotPasswordMutation,
   useCheckRecoveryCodeMutation,
   useNewPasswordMutation,
-  useDeleteAllDevicesMutation,
   useConfirmEmailMutation,
   useEmailResendingMutation,
   useLazyGitHubSignInQuery,
