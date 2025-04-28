@@ -3,7 +3,6 @@
 import { withAuth } from '@/shared/HOC'
 import { UserProfile } from '@/widgets/userProfile/UserProfile'
 import { PageContainer } from '@/shared/components'
-import { Devices } from '@/features/devices'
 
 function MyProfilePage() {
   const user = {
