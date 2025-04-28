@@ -54,16 +54,20 @@
   &.selected {
     color: var(--color-dark-900);
     background-color: var(--color-light-100);
+
+    &:hover {
+      background-color: var(--color-light-900);
+    }
   }
-}
 
-.icon {
-  width: 16px;
-  height: 16px;
+  &[data-disabled] {
+    pointer-events: none;
+    color: var(--color-dark-100);
+  }
 
-  .item:disabled & {
-    // important because icons have style prop
-    color: var(--color-dark-100) !important;
+  svg {
+    width: 16px;
+    height: 16px;
   }
 }
 

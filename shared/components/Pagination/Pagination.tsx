@@ -4,6 +4,7 @@ import { clsx } from 'clsx'
 import s from './Pagination.module.scss'
 import { ArrowIosBack, ArrowIosForward } from '@/public/icons'
 import Link from 'next/link'
+import { type MouseEvent } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { DOTS, usePagination } from '@/shared/components/Pagination'
 // original code
@@ -18,21 +19,6 @@ type Props = {
   selectOptions?: number[]
   siblingCount?: number
 }
-
-// const classNames = {
-//   container: s.container,
-//   dots: s.dots,
-//   icon: s.icon,
-//   item: s.item,
-//   pageButton(selected?: boolean) {
-//     return clsx(this.item, selected && s.selected)
-//   },
-//   root(className?: string) {
-//     return clsx(s.root, className)
-//   },
-//   select: s.select,
-//   selectBox: s.selectBox,
-// }
 
 export const Pagination = ({
   className,
@@ -55,7 +41,7 @@ export const Pagination = ({
     currentPage,
     siblingCount,
   })
-  if (currentPage === 0 || (paginationRange && paginationRange?.length < 2)) {
+  if (!paginationRange || (paginationRange && paginationRange.length < 2)) {
     return null
   }
 
@@ -67,8 +53,8 @@ export const Pagination = ({
   const nextButtonHandler = () => {
     onPageChange(currentPage + 1)
   }
-  const mainButtonHandler = (page: number) => {
-    onPageChange(page)
+  const mainButtonHandler = (pageNumber: number) => {
+    onPageChange(pageNumber)
   }
   const showPerPageSelect = !!pageSize && !!selectOptions && !!onPageSizeChange
 
@@ -84,20 +70,20 @@ export const Pagination = ({
         <NextLink disabled={isLastPage} onClick={nextButtonHandler} />
       </div>
 
-      {showPerPageSelect && (
-        <PerPageSelect
-          {...{
-            onPageSizeChange,
-            pageSize,
-            selectOptions,
-          }}
-        />
-      )}
+      {/*{showPerPageSelect && (*/}
+      {/*  <PerPageSelect*/}
+      {/*    {...{*/}
+      {/*      onPageSizeChange,*/}
+      {/*      pageSize,*/}
+      {/*      selectOptions,*/}
+      {/*    }}*/}
+      {/*  />*/}
+      {/*)}*/}
     </div>
   )
 }
 
-type NavigationLinkProps = {
+type NavigationLink = {
   disabled?: boolean
   onClick: () => void
 }
@@ -106,9 +92,8 @@ const Dots = () => {
   return <span className={s.dots}>&#8230;</span>
 }
 
-const PrevLink = ({ disabled, onClick }: NavigationLinkProps) => {
+const PrevLink = ({ disabled, onClick }: NavigationLink) => {
   const classNames = {
-    icon: s.icon,
     item: s.item,
   }
   const searchParams = useSearchParams()
@@ -126,19 +111,19 @@ const PrevLink = ({ disabled, onClick }: NavigationLinkProps) => {
   return (
     <Link
       aria-disabled={disabled}
-      className={clsx(disabled && classNames.item)}
+      className={classNames.item}
+      data-disabled={disabled || undefined}
       href={`?${newSearchParams.toString()}`}
+      tabIndex={0}
       onClick={onClick}
     >
-      {/*<button className={classNames.item} disabled={disabled}>*/}
-      <ArrowIosBack className={classNames.icon} />
+      <ArrowIosBack />
     </Link>
   )
 }
 
-const NextLink = ({ disabled, onClick }: NavigationLinkProps) => {
+const NextLink = ({ disabled, onClick }: NavigationLink) => {
   const classNames = {
-    icon: s.icon,
     item: s.item,
   }
   const searchParams = useSearchParams()
@@ -151,28 +136,27 @@ const NextLink = ({ disabled, onClick }: NavigationLinkProps) => {
   return (
     <Link
       aria-disabled={disabled}
-      className={clsx(disabled && classNames.item)}
+      className={classNames.item}
+      data-disabled={disabled || undefined}
       href={`?${newSearchParams.toString()}`}
+      tabIndex={0}
       onClick={onClick}
     >
-      {/*<button className={classNames.item} disabled={disabled}>*/}
-      <ArrowIosForward className={classNames.icon} />
-      {/*</button>*/}
+      <ArrowIosForward />
     </Link>
   )
 }
 
-type MainPaginationButtonsProps = {
+type MainPaginationButtons = {
   currentPage: number
-  onClick: (pageNumber: number) => () => void
+  onClick: (pageNumber: number) => void
   paginationRange: (number | string)[]
 }
 
-const MainLinks = ({ currentPage, onClick, paginationRange }: MainPaginationButtonsProps) => {
+const MainLinks = ({ currentPage, onClick, paginationRange }: MainPaginationButtons) => {
   const classNames = {
-    container: s.container,
     item: s.item,
-    pageButton(selected?: boolean) {
+    pageButton(selected: boolean) {
       return clsx(selected && s.selected)
     },
   }
@@ -197,7 +181,6 @@ const MainLinks = ({ currentPage, onClick, paginationRange }: MainPaginationButt
         return (
           <Link
             key={index}
-            aria-disabled={isSelected}
             className={clsx(classNames.item, {
               [classNames.pageButton(true)]: isSelected,
               disabled: isSelected,
@@ -205,12 +188,12 @@ const MainLinks = ({ currentPage, onClick, paginationRange }: MainPaginationButt
             href={`?${newSearchParams.toString()}`}
             scroll={false}
             tabIndex={0}
-            onClick={(e: React.MouseEvent) => {
+            onClick={(e: MouseEvent) => {
               if (isSelected) {
                 e.preventDefault()
                 return
               }
-              onClick(+page)()
+              onClick(+page)
             }}
           >
             {page}

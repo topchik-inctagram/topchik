@@ -9,10 +9,10 @@ type Props = {
   siblingCount: number
   totalCount: number
 }
-export   const DOTS = '...'
+export const DOTS = '...'
 
 export const usePagination = ({ currentPage, pageSize, siblingCount, totalCount }: Props) => {
-  const paginationRange = useMemo(() => {
+  return useMemo(() => {
     const totalPageCount = Math.ceil(totalCount / pageSize)
 
     // Pages count is determined as siblingCount + firstPage + lastPage + currentPage + 2*DOTS
@@ -69,6 +69,4 @@ export const usePagination = ({ currentPage, pageSize, siblingCount, totalCount 
       return [firstPageIndex, DOTS, ...middleRange, DOTS, lastPageIndex]
     }
   }, [totalCount, pageSize, siblingCount, currentPage])
-
-  return paginationRange
 }
