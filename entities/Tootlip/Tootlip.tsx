@@ -102,6 +102,7 @@ export const Tootlip = ({
   const imgRef = useRef<HTMLImageElement>(null)
   const previewCanvasRef = useRef<HTMLCanvasElement>(null)
   const [shouldApplyCrop, setShouldApplyCrop] = useState(false)
+  const [showCrop, setShowCrop] = useState(false)
   const [step, setStep] = useState<'add' | 'crop' | 'filter' | 'publish'>('add')
   const [description, setDescription] = useState('')
   const [location, setLocation] = useState('')
@@ -302,7 +303,9 @@ export const Tootlip = ({
             <button className={s.backButton} onClick={() => setStep('crop')}>
               <ArrowIosBack />
             </button>
-            <Typography className={s.stepTitle}>Filters</Typography>
+            <Typography className={s.stepTitle} variant="h1">
+              Filters
+            </Typography>
             <button className={s.nextButton} onClick={() => setStep('publish')}>
               Next
             </button>
@@ -314,7 +317,9 @@ export const Tootlip = ({
             <button className={s.backButton} onClick={() => setStep('filter')}>
               <ArrowIosBack />
             </button>
-            <Typography className={s.stepTitle}>Publish</Typography>
+            <Typography className={s.stepTitle} variant="h1">
+              Publish
+            </Typography>
             <button className={s.nextButton} onClick={() => {}}>
               Publish
             </button>
@@ -374,22 +379,7 @@ export const Tootlip = ({
             {step === 'crop' && (
               <div className={classNames.imagePreview}>
                 <div className={s.aspectWrapper}>
-                  <ReactCrop
-                    ruleOfThirds
-                    aspect={
-                      aspectRatio === '1:1'
-                        ? 1
-                        : aspectRatio === '4:5'
-                        ? 4 / 5
-                        : aspectRatio === '16:9'
-                        ? 16 / 9
-                        : undefined
-                    }
-                    crop={crop}
-                    minHeight={100}
-                    minWidth={100}
-                    onChange={c => setCrop(c)}
-                  >
+                  {!showCrop ? (
                     <img
                       ref={imgRef}
                       alt="Preview"
@@ -402,7 +392,152 @@ export const Tootlip = ({
                       }}
                       onLoad={onImageLoad}
                     />
-                  </ReactCrop>
+                  ) : (
+                    <ReactCrop
+                      ruleOfThirds
+                      aspect={
+                        aspectRatio === '1:1'
+                          ? 1
+                          : aspectRatio === '4:5'
+                          ? 4 / 5
+                          : aspectRatio === '16:9'
+                          ? 16 / 9
+                          : undefined
+                      }
+                      crop={crop}
+                      minHeight={100}
+                      minWidth={100}
+                      onChange={c => setCrop(c)}
+                    >
+                      <img
+                        ref={imgRef}
+                        alt="Preview"
+                        src={currentImage.url}
+                        style={{
+                          transform: `scale(${zoomLevel})`,
+                          transformOrigin: 'center center',
+                          maxWidth: '100%',
+                          maxHeight: '100%',
+                        }}
+                        onLoad={onImageLoad}
+                      />
+                    </ReactCrop>
+                  )}
+
+                  <Dropdown
+                    align="start"
+                    className={s.dropdownCrops}
+                    trigger={
+                      <Button className={s.btn} variant="languageButton">
+                        <ExpandOutline className={s.icons} />
+                      </Button>
+                    }
+                  >
+                    <DropdownItem
+                      className={s.dropdownItem}
+                      onClick={() => handleAspectRatioChange('Original')}
+                    >
+                      <Typography text="Original" variant="h3" />
+                      <ImageOutline />
+                    </DropdownItem>
+                    <DropdownItem
+                      className={s.dropdownItem}
+                      onClick={() => handleAspectRatioChange('1:1')}
+                    >
+                      <Typography text="1:1" variant="regular_16" />
+                      <Square />
+                    </DropdownItem>
+                    <DropdownItem
+                      className={s.dropdownItem}
+                      onClick={() => handleAspectRatioChange('4:5')}
+                    >
+                      <Typography text="4:5" variant="regular_16" />
+                      <Rectangle />
+                    </DropdownItem>
+                    <DropdownItem
+                      className={s.dropdownItem}
+                      onClick={() => handleAspectRatioChange('16:9')}
+                    >
+                      <Typography text="16:9" variant="regular_16" />
+                      <HorizontalRectangle />
+                    </DropdownItem>
+                    <DropdownItem className={s.dropdownItem} onClick={() => setShowCrop(true)}>
+                      <Typography text="Обрезать" variant="regular_16" />
+                    </DropdownItem>
+                  </Dropdown>
+
+                  <Dropdown
+                    align="start"
+                    className={s.dropdownZoom}
+                    trigger={
+                      <Button className={s.btn} variant="languageButton">
+                        <MaximizeOutline className={s.icons} />
+                      </Button>
+                    }
+                  >
+                    <input
+                      className={s.zoomSlider}
+                      max="3"
+                      min="0.5"
+                      step="0.1"
+                      type="range"
+                      value={zoomLevel}
+                      onChange={handleZoomChange}
+                    />
+                  </Dropdown>
+
+                  <Dropdown
+                    align="end"
+                    className={s.dropdownAddimage}
+                    trigger={
+                      <Button className={s.btn} variant="languageButton">
+                        <ImageOutline className={s.icons} />
+                      </Button>
+                    }
+                  >
+                    <div className={s.thumbnailsGrid}>
+                      {images.map(img => (
+                        <div key={img.id} className={s.thumbnailWrapper}>
+                          <img
+                            alt={`Thumbnail ${img.id}`}
+                            className={s.thumbnail}
+                            src={img.url}
+                            onClick={() => {
+                              const index = images.findIndex(i => i.id === img.id)
+                              setCurrentImageIndex(index)
+                              setPreviewUrl(null)
+                              setShowCrop(false)
+                            }}
+                          />
+                          <button
+                            className={s.removeButton}
+                            onClick={e => {
+                              e.stopPropagation()
+                              handleRemoveImage(img.id)
+                            }}
+                          >
+                            x
+                          </button>
+                        </div>
+                      ))}
+                      {images.length < 10 && (
+                        <Button
+                          className={s.addButton}
+                          variant="miniOutlined"
+                          onClick={() => document.getElementById('file-upload')?.click()}
+                        >
+                          <PlusCircleOutline />
+                          <Input
+                            accept="image/jpeg,image/jpg,image/png,image/webp"
+                            id="file-upload"
+                            style={{ display: 'none' }}
+                            type="file"
+                            onChange={handleImageUpload}
+                          />
+                        </Button>
+                      )}
+                    </div>
+                  </Dropdown>
                 </div>
                 <canvas ref={previewCanvasRef} style={{ display: 'none' }} />
               </div>
@@ -451,160 +586,6 @@ export const Tootlip = ({
                     onChange={e => setLocation(e.target.value)}
                   />
                 </div>
-              </div>
-            )}
-
-            {step !== 'publish' && (
-              <div className={classNames.controls}>
-                {isAuth && (
-                  <div className={s.group}>
-                    {images.length > 1 && (
-                      <Dropdown
-                        align="start"
-                        className={s.dropdown}
-                        trigger={
-                          <Button className={s.btn} variant="languageButton">
-                            {currentImageIndex + 1}/{images.length}
-                          </Button>
-                        }
-                      >
-                        {images.map((img, index) => (
-                          <DropdownItem
-                            key={img.id}
-                            className={s.dropdownItem}
-                            onClick={() => {
-                              setCurrentImageIndex(index)
-                              setPreviewUrl(null)
-                            }}
-                          >
-                            <div className={s.thumbnailItem}>
-                              <img
-                                alt={`Thumbnail ${index + 1}`}
-                                className={s.thumbnail}
-                                src={img.url}
-                              />
-                            </div>
-                          </DropdownItem>
-                        ))}
-                      </Dropdown>
-                    )}
-
-                    {step === 'crop' && (
-                      <>
-                        <Dropdown
-                          align="start"
-                          className={s.dropdownCrops}
-                          trigger={
-                            <Button className={s.btn} variant="languageButton">
-                              <ExpandOutline className={s.icons} />
-                            </Button>
-                          }
-                        >
-                          <DropdownItem
-                            className={s.dropdownItem}
-                            onClick={() => handleAspectRatioChange('Original')}
-                          >
-                            <Typography text="Original" variant="h3" />
-                            <ImageOutline />
-                          </DropdownItem>
-                          <DropdownItem
-                            className={s.dropdownItem}
-                            onClick={() => handleAspectRatioChange('1:1')}
-                          >
-                            <Typography text="1:1" variant="regular_16" />
-                            <Square />
-                          </DropdownItem>
-                          <DropdownItem
-                            className={s.dropdownItem}
-                            onClick={() => handleAspectRatioChange('4:5')}
-                          >
-                            <Typography text="4:5" variant="regular_16" />
-                            <Rectangle />
-                          </DropdownItem>
-                          <DropdownItem
-                            className={s.dropdownItem}
-                            onClick={() => handleAspectRatioChange('16:9')}
-                          >
-                            <Typography text="16:9" variant="regular_16" />
-                            <HorizontalRectangle />
-                          </DropdownItem>
-                        </Dropdown>
-
-                        <Dropdown
-                          align="start"
-                          className={s.dropdownZoom}
-                          trigger={
-                            <Button className={s.btn} variant="languageButton">
-                              <MaximizeOutline className={s.icons} />
-                            </Button>
-                          }
-                        >
-                          <input
-                            className={s.zoomSlider}
-                            max="3"
-                            min="0.5"
-                            step="0.1"
-                            type="range"
-                            value={zoomLevel}
-                            onChange={handleZoomChange}
-                          />
-                        </Dropdown>
-                      </>
-                    )}
-
-                    <Dropdown
-                      align="end"
-                      className={s.dropdownAddimage}
-                      trigger={
-                        <Button className={s.btn} variant="languageButton">
-                          <ImageOutline className={s.icons} />
-                        </Button>
-                      }
-                    >
-                      <div className={s.thumbnailsGrid}>
-                        {images.map(img => (
-                          <div key={img.id} className={s.thumbnailWrapper}>
-                            <img
-                              alt={`Thumbnail ${img.id}`}
-                              className={s.thumbnail}
-                              src={img.url}
-                              onClick={() => {
-                                const index = images.findIndex(i => i.id === img.id)
-                                setCurrentImageIndex(index)
-                                setPreviewUrl(null)
-                              }}
-                            />
-                            <button
-                              className={s.removeButton}
-                              onClick={e => {
-                                e.stopPropagation()
-                                handleRemoveImage(img.id)
-                              }}
-                            >
-                              ×
-                            </button>
-                          </div>
-                        ))}
-                        {images.length < 10 && (
-                          <Button
-                            className={s.addButton}
-                            variant="miniOutlined"
-                            onClick={() => document.getElementById('file-upload')?.click()}
-                          >
-                            <PlusCircleOutline />
-                            <Input
-                              accept="image/jpeg,image/jpg,image/png,image/webp"
-                              id="file-upload"
-                              style={{ display: 'none' }}
-                              type="file"
-                              onChange={handleImageUpload}
-                            />
-                          </Button>
-                        )}
-                      </div>
-                    </Dropdown>
-                  </div>
-                )}
               </div>
             )}
           </>

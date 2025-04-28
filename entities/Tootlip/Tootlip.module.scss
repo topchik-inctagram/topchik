@@ -32,36 +32,41 @@
 }
 
 .aspectWrapper {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
+    position: relative;
     width: 100%;
-
+    height: 100%;
     background: #1f1f1f;
 
     img {
-        width: 100%;
-        height: 100%;
+        max-width: 100%;
+        max-height: 80vh;
         object-fit: contain;
     }
 }
 
-.group {
+.controlsWrapper {
     position: absolute;
-    right: 11px;
-    bottom: 10px;
-    left: 11px;
+    z-index: 10;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
 
     display: flex;
-    gap: 24px;
+    gap: 16px;
+}
+
+.dropdownCrops,
+.dropdownZoom,
+.dropdownAddimage {
+    position: relative;
+    display: inline-block;
 }
 
 .btn {
-    width: 36px;
-    height: 36px;
+    width: 40px;
+    height: 40px;
     padding: 0;
-    border-radius: 2px;
+    border-radius: 4px;
 
     opacity: 0.8;
     background: var(--color-dark-500);
@@ -71,10 +76,33 @@
     }
 }
 
+.dropdownZoom {
+    width: 160px;
+    padding: 12px;
+
+    input {
+        width: 100%;
+    }
+}
+
+.thumbnailsGrid {
+    overflow-y: auto;
+    max-height: 60vh;
+}
+
+
+
+.group {
+    position: absolute;
+    display: flex;
+    gap: 24px;
+}
+
+
+
 .btnimage {
     width: 36px;
     height: 36px;
-    margin-left: 240px;
     padding: 0;
     border-radius: 2px;
 
@@ -251,57 +279,71 @@
     margin-right: 24px;
 }
 
-.gridFilter {
-    display: grid;
-    grid-template-columns: repeat(3, 108px);
-    grid-template-rows: repeat(3, 108px);
-    gap: 12px;
+.filterContainer {
+    display: flex;
+    gap: 24px;
+    width: 100%;
+    height: 100%;
+}
 
-    margin-left: 20px;
+.imagePreviewContainer {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 2px;
+
+    background: var(--color-dark-500);
+
+    .filterPreview {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+    }
+}
+
+.filtersGrid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    align-content: start;
+
+    width: 350px;
 }
 
 .filterThumbnail {
     cursor: pointer;
+
     position: relative;
-    border: 2px solid transparent;
-    transition: border 0.2s;
+
+    overflow: hidden;
+
+    width: 100px;
+    height: 100px;
+    border-radius: 2px;
 
     &:hover {
-        border-color: #aaa;
+        border: 2px solid var(--color-accent-500);
     }
 
-    img {
-        display: block;
-        width: 108px;
-        height: 108px;
+    .filterPreview {
+        width: 100%;
+        height: 100%;
         object-fit: cover;
     }
-
-    .filterLabel {
-        position: absolute;
-        bottom: 4px;
-        left: 4px;
-
-        padding: 2px 6px;
-        border-radius: 4px;
-
-        font-size: 12px;
-        color: white;
-
-        background: rgb(0 0 0 / 40%);
-    }
 }
 
-.containerFilter {
-    display: flex;
-    flex-direction: column;
-    width: 950px;
-    height: 565px;
-}
+.filterLabel {
+    position: absolute;
+    bottom: 4px;
+    left: 4px;
 
-.mainFilterImage {
-    width: 490px;
-    height: 503px;
-}
+    padding: 2px 6px;
+    border-radius: 4px;
 
-.gridFilter {}
+    font-size: 12px;
+    color: white;
+
+    background: rgb(0 0 0 / 40%);
+}
