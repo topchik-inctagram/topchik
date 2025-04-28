@@ -2,33 +2,26 @@
 
 import { SignIn } from '@/features/auth/forms/SignIn'
 import { PageContainer, Toast } from '@/shared/components'
-import {useLoginMutation, useMeQuery} from '@/features/auth/api'
+import {useLazyMeQuery, useLoginMutation} from '@/features/auth/api'
 import { useRouter } from 'next/navigation'
 import { PrivatePages } from '@/shared/enums'
-import {useEffect, useState} from 'react';
 
 const SignInPage = () => {
   const [login, { error, ...rest }] = useLoginMutation()
-  const { data: meData, isLoading } = useMeQuery()
+  const [triggerMeData] = useLazyMeQuery()
   const router = useRouter()
-
-  const [isLoggingIn, setIsLoggingIn] = useState(false)
 
   const loginHandler = async (data: any) => {
     try {
       await login(data)
-      setIsLoggingIn(true)
+      const meData = await triggerMeData().unwrap()
+      if (meData?.id) {
+        router.push(`${PrivatePages.profile}/${meData.id}`)
+      }
     } catch (e: any) {
       console.log(e)
     }
   }
-
-  useEffect(() => {
-    if (isLoggingIn && !isLoading && meData?.id) {
-      router.push(`${PrivatePages.profile}/${meData.id}`)
-    }
-  }, [isLoggingIn, isLoading, meData, router]);
-
 
   console.log(error, 'error ->>>')
   console.log(rest, 'REST =>>>>>>>>>>>')
