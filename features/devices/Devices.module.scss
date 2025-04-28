@@ -1,0 +1,85 @@
+.pageWrapper {
+  width: 100%;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.containerCurrentDevice {
+  width: 100%;
+  min-height: 120px;
+  background-color: var(--color-dark-500);
+  border: 1px solid var(--color-dark-500);
+  border-radius: 2px;
+  margin-bottom: 24px;
+}
+
+.containerActiveSessions {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  min-height: 120px;
+  background-color: var(--color-dark-500);
+  border: 1px solid var(--color-dark-500);
+  border-radius: 2px;
+  margin-bottom: 12px;
+}
+
+.sessionsList {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.terminateAllWrapper {
+  margin-top: 16px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.currentSessionsTitle {
+  margin-top: 30px;
+  margin-bottom: 6px;
+}
+
+.activeSessionsTitle {
+  margin-top: 18px;
+  margin-bottom: 18px;
+}
+
+.logoutText {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  user-select: none;
+  transition: color 0.3s;
+  margin-right: 24px;
+}
+
+.logoutText:hover {
+  color: var(--color-accent-500);
+}
+
+.centerText {
+  text-align: center;
+  margin-top: 84px;
+}
+
+.deviceInfo {
+  display: flex;
+  gap: 12px;
+}
+
+.deviceIcon {
+  margin-top: 24px;
+  margin-left: 24px;
+}
+
+.deviceName {
+  margin-top: 18px;
+  margin-bottom: 13px;
+}
+
+.deviceIP {
+  margin-bottom: 5px;
+}
