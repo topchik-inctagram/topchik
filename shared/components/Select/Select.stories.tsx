@@ -60,7 +60,7 @@ export const PaginationVariant: Story = {
       return (
         <Select {...args} value={value} onValueChange={setValue}>
           <Select.Item isPagination value="5">
-            5
+            100
           </Select.Item>
           <Select.Item isPagination value="10">
             10
