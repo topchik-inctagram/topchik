@@ -1,0 +1,59 @@
+.container {
+  display: flex;
+  gap: 12px;
+  justify-items: center;
+}
+
+.likePhoto {
+  width: 24px;
+  height: 24px;
+}
+
+.likeContainer {
+  position: relative;
+  width: 54px;
+}
+
+.firstLikePhoto {
+  position: absolute;
+  z-index: 3;
+  top: 0;
+  bottom: 0;
+  left: 0;
+}
+
+.secondLikePhoto {
+  position: absolute;
+  z-index: 2;
+  top: 0;
+  bottom: 0;
+  left: 15px;
+}
+
+.thirdLikePhoto {
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  align-items: flex-start;
+
+  padding: 12px 0 26px 24px;
+  border-top: 1px solid var(--color-dark-100);
+}
+
+.likeCountContainer {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.postCreateDate {
+  color: var(--color-light-900);
+}

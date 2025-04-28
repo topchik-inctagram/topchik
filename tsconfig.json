@@ -22,7 +22,6 @@
     "types": ["node"],
     "paths": {
       "@/*": ["./*"],
-      "next/link": [".storybook/mocks/next/link"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],

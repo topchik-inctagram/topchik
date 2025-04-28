@@ -33,6 +33,8 @@
     "async-mutex": "^0.5.0",
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
+    "embla-carousel": "^8.6.0",
+    "embla-carousel-react": "^8.6.0",
     "next": "15.3.0",
     "radix-ui": "^1.2.0",
     "react": "^19.1.0",
@@ -72,7 +74,9 @@
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-storybook": "^0.11.6",
     "jsdom": "^26.1.0",
+    "msw-storybook-addon": "^2.0.4",
     "playwright": "^1.51.1",
+    "prettier": "^3.5.3",
     "sass": "^1.86.3",
     "storybook": "8.6.7",
     "stylelint": "^16.18.0",
@@ -84,5 +88,5 @@
       "plugin:storybook/recommended"
     ]
   },
-  "packageManager": "pnpm@10.6.5+sha512.cdf928fca20832cd59ec53826492b7dc25dc524d4370b6b4adbf65803d32efaa6c1c88147c0ae4e8d579a6c9eec715757b50d4fa35eea179d868eada4ed043af"
+  "packageManager": "pnpm@10.9.0"
 }

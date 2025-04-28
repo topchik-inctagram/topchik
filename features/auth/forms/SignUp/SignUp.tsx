@@ -5,7 +5,13 @@ import { Button, Card, ControlledCheckbox, ControlledInput, Typography } from '@
 import s from './SignUp.module.scss'
 import Link from 'next/link'
 import { Github, Google } from '@/public/icons'
-import {agreementSchema, confirmPasswordSchema, emailSchema, passwordSchema, usernameSchema} from '@/shared/schema';
+import {
+  agreementSchema,
+  confirmPasswordSchema,
+  emailSchema,
+  passwordSchema,
+  usernameSchema,
+} from '@/shared/schema'
 
 const signUpSchema = z
   .object({
