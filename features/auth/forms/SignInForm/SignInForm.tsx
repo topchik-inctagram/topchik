@@ -3,12 +3,13 @@
 import { Button, Card, ControlledInput, Typography } from '@/shared/components'
 import Link from 'next/link'
 import { Github, Google } from '@/public/icons'
-import s from './SignIn.module.scss'
+import s from './SignInForm.module.scss'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { useEffect } from 'react'
 import { PublicPages } from '@/shared/enums'
+import { useLazyGitHubSignInQuery, useLazyGoogleSignInQuery } from '@/features/auth/api'
 
 const schema = z.object({
   email: z.string().email('Enter your email'),
@@ -21,7 +22,7 @@ type Props = {
   errorsFromApi?: { field: keyof FormTypes; message: string }[]
 }
 
-export const SignIn = ({ onSubmit, errorsFromApi }: Props) => {
+export const SignInForm = ({ onSubmit, errorsFromApi }: Props) => {
   const {
     control,
     formState: { errors },
@@ -36,24 +37,37 @@ export const SignIn = ({ onSubmit, errorsFromApi }: Props) => {
   })
   //todo add Devtool when it will be fixed by dev
 
+  const [gitHubTrigger] = useLazyGitHubSignInQuery()
+  const [googleTrigger] = useLazyGoogleSignInQuery()
+
   useEffect(() => {
     errorsFromApi?.forEach(error => {
       setError(error.field, { message: error.message })
     })
-  }, [errorsFromApi])
+  }, [errorsFromApi, setError])
 
+  const onClickGoogleButtonHandler = () => googleTrigger()
+  const onClickGithubButtonHandler = () => gitHubTrigger()
   return (
     <Card className={s.cardContainer}>
       <Typography as="h2" className={s.title} variant="h1">
         Sign In
       </Typography>
       <div className={s.svgContainer}>
-        <Link href="#">
+        <Button
+          className={s.redirectButton}
+          variant="secondary"
+          onClick={onClickGoogleButtonHandler}
+        >
           <Google />
-        </Link>
-        <Link href="#">
+        </Button>
+        <Button
+          className={s.redirectButton}
+          variant="secondary"
+          onClick={onClickGithubButtonHandler}
+        >
           <Github />
-        </Link>
+        </Button>
       </div>
       <form className={s.formContainer} onSubmit={handleSubmit(onSubmit)}>
         <ControlledInput

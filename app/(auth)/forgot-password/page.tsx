@@ -73,7 +73,7 @@ const Page = () => {
   }
 
   return (
-    <PageContainer direction="column" mt="36px">
+    <PageContainer mt="36px">
       <ForgotPassword
         control={control}
         errors={errors}

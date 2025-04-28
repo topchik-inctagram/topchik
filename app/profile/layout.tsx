@@ -6,7 +6,7 @@ export default function ProfileLayout({ children }: { children: ReactNode }) {
   return (
     <PageContainer direction="row" mt="0">
       <Navbar />
-      <main>{children}</main>
+      {children}
     </PageContainer>
   )
 }

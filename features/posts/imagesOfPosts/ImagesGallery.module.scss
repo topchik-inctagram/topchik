@@ -1,0 +1,17 @@
+.imgContainer {
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.imgBlock {
+  cursor: pointer;
+}
+
+.image {
+  width: 100%;
+}
+
+.loaderPosts {
+  height: 1px;
+}
