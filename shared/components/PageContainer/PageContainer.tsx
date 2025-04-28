@@ -15,7 +15,7 @@ export function PageContainer({
   mt = '24px',
   pr,
   pl,
-  direction,
+  direction = 'column',
   style,
   ref,
   ...rest
