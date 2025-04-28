@@ -95,6 +95,7 @@ export const {
   useLoginMutation,
   useLogoutMutation,
   useMeQuery,
+  useLazyMeQuery,
   useRegistrationUserMutation,
   useForgotPasswordMutation,
   useCheckRecoveryCodeMutation,

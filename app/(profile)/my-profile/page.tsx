@@ -17,7 +17,6 @@ function MyProfilePage() {
   return (
     <PageContainer direction="column" mt="36px" pl="24px" pr="64px">
       <UserProfile
-        isMyProfile
         avatarUrl={user.avatarUrl}
         followersCount={user.followers}
         followingCount={user.following}

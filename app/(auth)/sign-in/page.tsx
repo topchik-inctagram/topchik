@@ -2,18 +2,22 @@
 
 import { SignIn } from '@/features/auth/forms/SignIn'
 import { PageContainer, Toast } from '@/shared/components'
-import { useLoginMutation } from '@/features/auth/api'
+import {useLazyMeQuery, useLoginMutation} from '@/features/auth/api'
 import { useRouter } from 'next/navigation'
 import { PrivatePages } from '@/shared/enums'
 
 const SignInPage = () => {
   const [login, { error, ...rest }] = useLoginMutation()
+  const [triggerMeData] = useLazyMeQuery()
   const router = useRouter()
 
   const loginHandler = async (data: any) => {
     try {
       await login(data)
-      router.push(PrivatePages.profile)
+      const meData = await triggerMeData().unwrap()
+      if (meData?.id) {
+        router.push(`${PrivatePages.profile}/${meData.id}`)
+      }
     } catch (e: any) {
       console.log(e)
     }
@@ -26,7 +30,7 @@ const SignInPage = () => {
   // fix later with types
   // no types for error @ts-ignore
   return (
-    <PageContainer direction="column" mt="36px">
+    <PageContainer mt="36px">
       {error && 'data' in error && (error.data as any)?.errorsMessage && (
         <Toast
           defaultOpen={!!(error.data as any)?.errorsMessage}
