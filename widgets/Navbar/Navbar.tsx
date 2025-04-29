@@ -21,9 +21,9 @@ import {
   TrendUpOutline,
 } from '@/public/icons'
 import { Typography } from '@/shared/components'
-import { type ComponentPropsWithRef, useCallback, useState } from 'react'
+import { type ComponentPropsWithRef, useState } from 'react'
 import { SimpleYesNoDialog } from '@/entities/SimpleYesNoDialog'
-import { usePathname, useRouter, useSearchParams } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import { PrivatePages, PublicPages } from '@/shared/enums'
 import { useLogoutMutation, useMeQuery } from '@/features/auth/api'
 import { TOKEN } from '@/shared/constants'
