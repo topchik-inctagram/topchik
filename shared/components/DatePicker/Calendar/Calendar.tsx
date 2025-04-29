@@ -46,10 +46,12 @@ export const Calendar = (props: CalendarProps) => {
         day_outside: s.dayOutside,
         ...classNamesP,
       }}
-      components={{
-        IconLeft: ({ ...props }) => <ArrowIosBackOutline {...props} />,
-        IconRight: ({ ...props }) => <ArrowIosForwardOutline {...props} />,
-      }}
+      components={
+        {
+          // IconLeft: ({ ...props }) => <ArrowIosBackOutline {...props} />,
+          // IconRight: ({ ...props }) => <ArrowIosForwardOutline {...props} />,
+        }
+      }
       modifiers={{
         weekend: day =>
           (day.getDay() === 0 || day.getDay() === 6) &&

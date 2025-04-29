@@ -1,26 +1,27 @@
 'use client'
 
-import { SignIn } from '@/features/auth/forms/SignIn'
+import { SignInForm } from '@/features/auth/forms/SignInForm'
 import { PageContainer, Toast } from '@/shared/components'
-import { useLoginMutation } from '@/features/auth/api'
+import { useLazyMeQuery, useLoginMutation } from '@/features/auth/api'
 import { useRouter } from 'next/navigation'
 import { PrivatePages } from '@/shared/enums'
 
 const SignInPage = () => {
   const [login, { error, ...rest }] = useLoginMutation()
+  const [triggerMeData] = useLazyMeQuery()
   const router = useRouter()
 
   const loginHandler = async (data: any) => {
     try {
       await login(data)
-      router.push(PrivatePages.profile)
+      const meData = await triggerMeData().unwrap()
+      if (meData?.id) {
+        router.push(`${PrivatePages.profile}/${meData.id}`)
+      }
     } catch (e: any) {
       console.log(e)
     }
   }
-
-  console.log(error, 'error ->>>')
-  console.log(rest, 'REST =>>>>>>>>>>>')
 
   // no types for error @ts-expect-error
   // fix later with types
@@ -34,7 +35,7 @@ const SignInPage = () => {
           variant="error"
         />
       )}
-      <SignIn
+      <SignInForm
         errorsFromApi={
           error &&
           'data' in error &&

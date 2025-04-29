@@ -1,7 +1,7 @@
 import { Button, Modal, Typography } from '@/shared/components'
 import { useLogoutMutation, useMeQuery } from '@/features/auth/api'
 import { TOKEN } from '@/shared/constants'
-import { baseApi } from '@/shared/stores'
+import { baseApi } from '@/shared/store'
 import { useRouter } from 'next/navigation'
 import { PublicPages } from '@/shared/enums'
 import s from './LogoutModal.module.scss'
@@ -22,7 +22,6 @@ export function LogoutModal({ open, onClose }: Props) {
       localStorage.removeItem(TOKEN)
       baseApi.util?.resetApiState()
       router.push(PublicPages.signIn)
-      onClose?.()
     } catch (e: any) {
       console.log(e)
     }

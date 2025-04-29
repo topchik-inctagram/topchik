@@ -21,10 +21,11 @@ import {
   TrendUpOutline,
 } from '@/public/icons'
 import { Typography } from '@/shared/components'
-import { type ComponentPropsWithRef, useState } from 'react'
+import { type ComponentPropsWithRef, useCallback } from 'react'
 import { LogoutModal } from '@/entities/LogoutModal'
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import { PrivatePages } from '@/shared/enums'
+import {useMeQuery} from '@/features/auth/api';
 
 type Props = {
   isMobile?: boolean
@@ -72,16 +73,32 @@ function DesktopNavbar({ className, ...rest }: ComponentPropsWithRef<'nav'>) {
     secondContainer: clsx(s.desktopSecondContainer, s.desktopContainer),
     activeLink: s.activeLink,
   }
-  const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false)
+  const router = useRouter()
   const pathname = usePathname()
+  const searchParams = useSearchParams()
+  const createQueryString = useCallback(
+    (name: string, value: string) => {
+      const params = new URLSearchParams(searchParams.toString())
+      params.set(name, value)
+
+      return params.toString()
+    },
+    [searchParams]
+  )
 
   const actualLink = (actualPath: string) => ({
     active: pathname === actualPath,
     className: pathname === actualPath ? classNames.activeLink : '',
   })
   const active = false
+
+  const { data: meData } = useMeQuery()
   // if you want to disable link you need to add data-disabled='disabled' in link props
   // data-disabled="disabled"
+  const action = searchParams.get('action')
+
+  const isLogoutAction = action === 'logout'
+  const logoutHandler = () => router.replace(pathname)
   return (
     <>
       <nav className={classNames.nav} {...rest}>
@@ -100,11 +117,11 @@ function DesktopNavbar({ className, ...rest }: ComponentPropsWithRef<'nav'>) {
             <li>
               <Typography
                 as={Link}
-                className={actualLink(PrivatePages.profile).className}
-                href={PrivatePages.profile}
+                className={actualLink(`${PrivatePages.profile}/${meData?.id}`).className}
+                href={`${PrivatePages.profile}/${meData?.id}`}
                 variant="medium_14"
               >
-                {actualLink(PrivatePages.profile).active ? <Person /> : <PersonOutline />} My
+                {actualLink(`${PrivatePages.profile}/${meData?.id}`).active ? <Person /> : <PersonOutline />} My
                 Profile
               </Typography>
             </li>
@@ -132,13 +149,17 @@ function DesktopNavbar({ className, ...rest }: ComponentPropsWithRef<'nav'>) {
             </li>
           </div>
           <li>
-            <Typography as="button" variant="medium_14" onClick={() => setIsLogoutModalOpen(true)}>
+            <Typography
+              as={Link}
+              href={pathname + '?' + createQueryString('action', 'logout')}
+              variant="medium_14"
+            >
               {active ? <LogOut /> : <LogOutOutline />} Log Out
             </Typography>
           </li>
         </ul>
       </nav>
-      <LogoutModal open={isLogoutModalOpen} onClose={() => setIsLogoutModalOpen(false)} />
+      <LogoutModal open={isLogoutAction} onClose={logoutHandler} />
     </>
   )
 }

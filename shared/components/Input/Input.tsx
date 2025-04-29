@@ -2,8 +2,9 @@
 
 import {
   type ChangeEvent,
-  type KeyboardEvent,
   type ComponentPropsWithRef,
+  type KeyboardEvent,
+  useEffect,
   useId,
   useState,
 } from 'react'
@@ -61,15 +62,17 @@ export const Input = ({
     clearIcon: s.clearIcon,
     errorText: s.errorText,
   }
-
+  const inputEl = document.getElementById(finalId)
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword)
-
-    setTimeout(() => {
-      const inputElement = document.getElementById(finalId)
-      inputElement?.focus()
-    }, 0)
+    inputEl?.focus()
   }
+
+  useEffect(() => {
+    if (type === 'password' && value === '') {
+      setShowPassword(false)
+    }
+  }, [value])
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     onChange?.(e)

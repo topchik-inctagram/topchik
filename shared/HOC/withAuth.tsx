@@ -14,6 +14,7 @@ const PUBLIC_PATHS = [
   PublicPages.terms,
   PublicPages.passwordRecoveryVerificationExpired,
   PublicPages.forgotPassword,
+  PublicPages.createNewPassword,
 ].map(String)
 
 const PROTECTED_PATHS = [PrivatePages.profile].map(String)
@@ -35,7 +36,6 @@ export const withAuth = <P extends object>(WrappedComponent: ComponentType<P>) =
 
         if (isAuthenticated) {
           if (isPublic) {
-            router.replace(PrivatePages.profile)
             setAuthStatus('auth')
           } else {
             setAuthStatus('auth')

@@ -5,50 +5,28 @@ import { Button, Card, ControlledCheckbox, ControlledInput, Typography } from '@
 import s from './SignUp.module.scss'
 import Link from 'next/link'
 import { Github, Google } from '@/public/icons'
+import {
+  agreementSchema,
+  confirmPasswordSchema,
+  emailSchema,
+  passwordSchema,
+  usernameSchema,
+} from '@/shared/schema'
 
-const usernameRegex = /^[0-9A-Za-z_-]+$/
-const passwordRegex = new RegExp(
-  '^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()_+\\-=\\[\\]{};\':"\\\\|,.<>\\/?~`]).+$'
-)
-
-const schema = z
+const signUpSchema = z
   .object({
-    username: z
-      .string()
-      .min(6, 'Minimum number of characters 6')
-      .max(30, 'Maximum number of characters 30')
-      .regex(usernameRegex, 'Only letters, numbers, underscores and dashes allowed'),
-    email: z.string().email('The email must match the format example@example.com'),
-    password: z
-      .string()
-      .min(6, 'Minimum number of characters 6')
-      .max(20, 'Maximum number of characters 20')
-      .regex(
-        passwordRegex,
-        'Password must contain 0-9, a-z, A-Z, ! " # $ % & \' ( ) * + , - . / : ; < = > ? @ [ \\ ] ^ _` { | } ~'
-      ),
-    confirmPassword: z
-      .string()
-      .min(6, 'Minimum number of characters 6')
-      .max(20, 'Maximum number of characters 20')
-      .regex(
-        passwordRegex,
-        'Password must contain 0-9, a-z, A-Z, ! " # $ % & \' ( ) * + , - . / : ; < = > ? @ [ \\ ] ^ _` { | } ~'
-      ),
+    username: usernameSchema,
+    email: emailSchema,
+    password: passwordSchema,
+    confirmPassword: confirmPasswordSchema,
+    agreement: agreementSchema,
   })
   .refine(({ password, confirmPassword }) => password === confirmPassword, {
     message: 'Passwords must match',
     path: ['confirmPassword'],
   })
 
-const fullSchema = schema.and(
-  z.object({
-    agreement: z.literal<boolean>(true, {
-      errorMap: () => ({ message: 'You must accept the agreement' }),
-    }),
-  })
-)
-type FormTypes = z.infer<typeof fullSchema>
+type FormTypes = z.infer<typeof signUpSchema>
 type Props = {
   onSubmit: (data: FormTypes) => void
 }
@@ -59,6 +37,7 @@ export const SignUp = ({ onSubmit }: Props) => {
     formState: { errors, isValid, isSubmitting },
     watch,
     handleSubmit,
+    reset,
   } = useForm<FormTypes>({
     defaultValues: {
       username: '',
@@ -68,10 +47,16 @@ export const SignUp = ({ onSubmit }: Props) => {
       agreement: false,
     },
     mode: 'onBlur',
-    resolver: zodResolver(fullSchema),
+    resolver: zodResolver(signUpSchema),
     reValidateMode: 'onChange',
   })
   //todo add Devtool when it will be fixed by dev
+
+  const submitHandler = (data: FormTypes) => {
+    onSubmit(data)
+    reset()
+  }
+
   return (
     <Card className={s.cardContainer}>
       <Typography as="h2" className={s.title} variant="h1">
@@ -85,7 +70,7 @@ export const SignUp = ({ onSubmit }: Props) => {
           <Github />
         </Link>
       </div>
-      <form className={s.formContainer} onSubmit={handleSubmit(onSubmit)}>
+      <form className={s.formContainer} onSubmit={handleSubmit(submitHandler)}>
         <div className={s.inputsContainer}>
           <ControlledInput
             autoComplete="username"
@@ -144,7 +129,7 @@ export const SignUp = ({ onSubmit }: Props) => {
         <Button
           fullWidth
           className={s.buttonSignUp}
-          disabled={(!watch('agreement') && !isValid) || isSubmitting}
+          disabled={!watch('agreement') || !isValid || isSubmitting}
           type="submit"
         >
           Sign Up

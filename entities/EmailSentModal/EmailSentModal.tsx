@@ -4,12 +4,16 @@ import { useState } from 'react'
 
 type Props = {
   email: string
+  onClose: () => void
 }
 
-export const EmailSentModal = ({ email }: Props) => {
+export const EmailSentModal = ({ email, onClose }: Props) => {
   const [openModal, setOpenModal] = useState(true)
 
-  const modalOpenHandler = () => setOpenModal(false)
+  const modalOpenHandler = () => {
+    setOpenModal(false)
+    onClose()
+  }
 
   return (
     <Modal

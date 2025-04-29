@@ -14,6 +14,6 @@ export const CreateNewPasswordForm: Story = {
   render: () => {
     const callback = (data: any) => console.log(data)
 
-    return <CreateNewPassword onSubmit={callback} />
+    return <CreateNewPassword isLoading={false} onSubmit={callback} />
   },
 }

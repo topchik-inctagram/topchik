@@ -1,22 +1,26 @@
 'use client'
-import { useEffect, useState } from 'react'
 import s from './Header.module.scss'
+import { useEffect, useState } from 'react'
 import BellIcon from '@/public/icons/OutlineBell'
 import Link from 'next/link'
 import { Button, Typography } from '@/shared/components'
 import { PublicPages } from '@/shared/enums'
 import { TOKEN } from '@/shared/constants'
 import { usePathname } from 'next/navigation'
+import RussiaFlag from '@/public/icons/FlagRussia'
+import UnitedKingdomFlag from '@/public/icons/FlagUnitedKingdom'
+import { Select } from '@/shared/components/Select'
+
+export type Language = 'EN' | 'RU'
 
 type Props = {
-  isLoggedIn?: boolean
   selectedLanguage?: string
-  onLanguageChange?: (lang: string) => void
+  onLanguageChange?: (lang: Language) => void
   notificationCount?: number
 }
 
 export const Header = ({
-  selectedLanguage = 'english',
+  selectedLanguage = 'EN',
   onLanguageChange,
   notificationCount = 0,
 }: Props) => {
@@ -45,6 +49,27 @@ export const Header = ({
     setIsLogged(localStorage.getItem(TOKEN))
   }, [pathname])
 
+  const languageOptions = [
+    { value: 'RU', label: 'Russian', icon: <RussiaFlag /> },
+    { value: 'EN', label: 'English', icon: <UnitedKingdomFlag /> },
+  ]
+
+  const selectComponent = (
+    <Select
+      isLanguageSwitcher
+      placeholder="Select language"
+      value={selectedLanguage}
+      onValueChange={(value: string) => onLanguageChange?.(value as Language)}
+    >
+      {languageOptions.map(opt => (
+        <Select.Item key={opt.value} value={opt.value}>
+          {opt.icon}
+          {opt.label}
+        </Select.Item>
+      ))}
+    </Select>
+  )
+
   return (
     <header className={s.header}>
       <Typography as="h1" className={s.brand} variant="large">
@@ -52,31 +77,30 @@ export const Header = ({
       </Typography>
 
       <div className={s.controls}>
-        {!!isLogged && (
-          <div className={s.bellWrapper}>
-            <BellIcon className={s.bellIcon} />
-            {notificationCount > 0 && (
-              <span className={s.badge}>{notificationCount > 99 ? '99+' : notificationCount}</span>
-            )}
+        {isLogged ? (
+          <div className={s.notifyLangGroup}>
+            <div className={s.bellWrapper}>
+              <BellIcon className={s.bellIcon} />
+              {notificationCount > 0 && (
+                <span className={s.badge}>
+                  {notificationCount > 99 ? '99+' : notificationCount}
+                </span>
+              )}
+            </div>
+            {selectComponent}
           </div>
-        )}
-
-        <div className={s.languageSelector}>
-          <select value={selectedLanguage} onChange={e => onLanguageChange?.(e.target.value)}>
-            <option value="english">English</option>
-            <option value="russian">Russian</option>
-          </select>
-        </div>
-
-        {!isLogged && (
-          <>
-            <Button asChild variant="miniOutlined">
-              <Link href={PublicPages.signIn}>Log in</Link>
-            </Button>
-            <Button asChild>
-              <Link href={PublicPages.signUp}>Sign up</Link>
-            </Button>
-          </>
+        ) : (
+          <div className={s.languageAndAuth}>
+            <div className={s.languageSelector}>{selectComponent}</div>
+            <div className={s.authButtons}>
+              <Button asChild variant="miniOutlined">
+                <Link href={PublicPages.signIn}>Log in</Link>
+              </Button>
+              <Button asChild>
+                <Link href={PublicPages.signUp}>Sign up</Link>
+              </Button>
+            </div>
+          </div>
         )}
       </div>
     </header>

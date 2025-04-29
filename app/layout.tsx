@@ -6,11 +6,11 @@ import '@fontsource/inter/400.css'
 import '@fontsource/inter/500.css'
 import '@fontsource/inter/600.css'
 import '@fontsource/inter/700.css'
-import type { ReactNode } from 'react'
+import { type ReactNode, useState } from 'react'
 
-import { store } from '@/shared/stores'
+import { store } from '@/shared/store'
 import { Provider } from 'react-redux'
-import { Header } from '@/widgets/Header'
+import { Header, type Language } from '@/widgets/Header'
 
 //todo fix metadata
 const metadata: Metadata = {
@@ -19,11 +19,12 @@ const metadata: Metadata = {
 }
 
 export default function RootLayout({ children }: Readonly<{ children: ReactNode }>) {
+  const [language, setLanguage] = useState<Language>('EN')
   return (
     <Provider store={store}>
       <html lang="en">
         <body>
-          <Header />
+          <Header selectedLanguage={language} onLanguageChange={setLanguage} />
           {children}
         </body>
       </html>
