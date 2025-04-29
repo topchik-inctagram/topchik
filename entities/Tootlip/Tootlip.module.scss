@@ -2,6 +2,9 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    width: 100%;
+    height: 100%;
+    min-height: 100vh;
 }
 
 .placeholder {
@@ -22,67 +25,57 @@
 
 .imagePreview {
     position: relative;
-
-    overflow: hidden;
+    flex-grow: 1;
     display: flex;
-    align-items: center;
-    justify-content: center;
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+}
 
-    border-radius: 2px;
+.fullSizeImage {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
 }
 
 .aspectWrapper {
     position: relative;
     width: 100%;
     height: 100%;
-    background: #1f1f1f;
-
-    img {
-        max-width: 100%;
-        max-height: 80vh;
-        object-fit: contain;
-    }
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .controlsWrapper {
     position: absolute;
-    z-index: 10;
     bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
+    right: 20px;
+    z-index: 10;
 
     display: flex;
     gap: 16px;
 }
 
-.dropdownCrops,
-.dropdownZoom,
-.dropdownAddimage {
-    position: relative;
-    display: inline-block;
+
+
+.controlsGroup {
+    position: absolute;
+    bottom: 18px;
+    z-index: 10;
+    display: flex;
+    gap: 16px;
+    border-radius: 4px;
 }
 
 .btn {
     width: 40px;
     height: 40px;
-    padding: 0;
     border-radius: 4px;
-
+    align-items: center;
+    display: flex;
     opacity: 0.8;
     background: var(--color-dark-500);
-
-    svg {
-        margin-left: 24px;
-    }
-}
-
-.dropdownZoom {
-    width: 160px;
-    padding: 12px;
-
-    input {
-        width: 100%;
-    }
 }
 
 .thumbnailsGrid {
@@ -90,15 +83,11 @@
     max-height: 60vh;
 }
 
-
-
 .group {
     position: absolute;
     display: flex;
     gap: 24px;
 }
-
-
 
 .btnimage {
     width: 36px;
@@ -116,7 +105,6 @@
 
 .icons {
     flex-shrink: 0;
-    margin-left: 0;
 }
 
 .groupBtn {
@@ -126,11 +114,13 @@
     margin-bottom: 48px;
 }
 
-.dropdown .btn {
-    display: flex;
-    margin-bottom: 2px;
-    opacity: 0.8;
-    background: var(--color-dark-500);
+// dropdowns 
+
+.dropdownCrops,
+.dropdownZoom,
+.dropdownAddimage {
+    position: relative;
+    display: inline-block;
 }
 
 .dropdownItem {
@@ -143,33 +133,31 @@
 .dropdownZoom {
     display: flex;
     align-items: center;
-    width: 124px;
 
     input {
         width: 100px;
         height: 12px;
     }
-
-
 }
 
 .dropdownAddimage {
     padding: 12px;
+    max-width: 350px;
 }
 
-
+// Add photo btn
 
 .thumbnailsGrid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 8px;
+    gap: 12px;
     max-height: 300px;
 }
 
 .thumbnailWrapper {
     cursor: pointer;
     position: relative;
-    width: 80px;
+    width: 98px;
     height: 82px;
 }
 
@@ -207,20 +195,10 @@
     }
 }
 
-.addButton {
+.addButtonPhoto {
     display: flex;
     align-items: center;
     justify-content: center;
-
-    width: 80px;
-    height: 82px;
-
-
-    background: transparent;
-
-    &:hover {
-        background: var(--color-dark-500);
-    }
 
     svg {
         flex-shrink: 0;
@@ -240,6 +218,7 @@
     }
 }
 
+// Modal 
 
 .stepHeader {
     display: flex;
@@ -279,46 +258,39 @@
     margin-right: 24px;
 }
 
+// Step  filter
+
 .filterContainer {
     display: flex;
+    flex-direction: row;
     gap: 24px;
     width: 100%;
     height: 100%;
+    padding: 20px;
 }
 
 .imagePreviewContainer {
-    display: flex;
     flex: 1;
+    display: flex;
     align-items: center;
     justify-content: center;
-
     border-radius: 2px;
-
     background: var(--color-dark-500);
 
-    .filterPreview {
-        max-width: 100%;
-        max-height: 100%;
-        object-fit: contain;
-    }
 }
 
 .filtersGrid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 12px;
-    align-content: start;
-
     width: 350px;
+    align-content: start;
 }
 
 .filterThumbnail {
     cursor: pointer;
-
     position: relative;
-
     overflow: hidden;
-
     width: 100px;
     height: 100px;
     border-radius: 2px;
@@ -338,12 +310,89 @@
     position: absolute;
     bottom: 4px;
     left: 4px;
-
     padding: 2px 6px;
     border-radius: 4px;
-
     font-size: 12px;
     color: white;
-
     background: rgb(0 0 0 / 40%);
+}
+
+// Step  publish
+
+.containerPublish {
+    display: flex;
+    height: 100%;
+    gap: 24px;
+}
+
+.imageColumn {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--color-dark-500);
+
+    .publishImage {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+    }
+}
+
+.infoColumn {
+    width: 350px;
+    display: flex;
+    flex-direction: column;
+    padding: 16px;
+}
+
+.userInfo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 24px;
+
+    .avatar {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        object-fit: cover;
+    }
+}
+
+.description {
+    min-height: 120px;
+    margin-bottom: 24px;
+}
+
+.divider {
+    border: none;
+    border-top: 1px solid var(--color-dark-300);
+    margin: 16px 0;
+}
+
+.locationSection {
+    margin-bottom: 24px;
+}
+
+.locationTitle {
+    margin-bottom: 12px;
+    font-weight: 600;
+}
+
+.locationList {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.locationItem {
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    background: var(--color-dark-300);
+
+    &:hover {
+        background: var(--color-dark-100);
+    }
 }
