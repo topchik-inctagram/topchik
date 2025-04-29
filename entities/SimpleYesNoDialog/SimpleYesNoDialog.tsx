@@ -1,35 +1,39 @@
 import { Modal, Button, Typography } from '@/shared/components'
-import s from './ConfirmModal.module.scss'
+import s from './SimpleYesNoDialog.module.scss'
 
 type Props = {
   open: boolean
   title: string
   description: string
+  boldText?: string
   onConfirm: () => void
   onCancel: () => void
-  confirmText?: string
-  cancelText?: string
 }
 
-export const ConfirmModal = ({
+export const SimpleYesNoDialog = ({
   open,
   title,
   description,
   onConfirm,
   onCancel,
-  confirmText = 'Yes',
-  cancelText = 'No',
+  boldText,
 }: Props) => {
+  const [start, end] = description.split('_boldText_')
   return (
     <Modal open={open} title={title} onOpenChange={onCancel}>
       <div className={s.container}>
-        <Typography variant="regular_16">{description}</Typography>
+        <Typography variant="regular_16">
+          {start}
+          {boldText && <span className={s.email}>{boldText}</span>}
+          {end}
+        </Typography>
+
         <div className={s.buttonContainer}>
           <Button className={s.button} variant="outlined" onClick={onConfirm}>
-            {confirmText}
+            Yes
           </Button>
           <Button className={s.button} onClick={onCancel}>
-            {cancelText}
+            No
           </Button>
         </div>
       </div>

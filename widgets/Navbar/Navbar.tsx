@@ -22,7 +22,7 @@ import {
 } from '@/public/icons'
 import { Typography } from '@/shared/components'
 import { type ComponentPropsWithRef, useCallback, useState } from 'react'
-import { ConfirmModal } from '@/entities/ConfirmModal'
+import { SimpleYesNoDialog } from '@/entities/SimpleYesNoDialog'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import { PrivatePages, PublicPages } from '@/shared/enums'
 import { useLogoutMutation, useMeQuery } from '@/features/auth/api'
@@ -74,13 +74,13 @@ function DesktopNavbar({ className, ...rest }: ComponentPropsWithRef<'nav'>) {
     firstContainer: clsx(s.desktopContainer, s.desktopFirstContainer),
     secondContainer: clsx(s.desktopSecondContainer, s.desktopContainer),
     activeLink: s.activeLink,
+    logoutText: (isDisabled: boolean) => clsx(s.logoutText, isDisabled && s.disabled),
   }
 
   const router = useRouter()
   const pathname = usePathname()
-  const searchParams = useSearchParams()
   const { data: meData } = useMeQuery()
-  const [logoutMutation] = useLogoutMutation()
+  const [logoutMutation, { isLoading: isLoadingLogout }] = useLogoutMutation()
   const [isLogoutOpen, setIsLogoutOpen] = useState(false)
 
   const handleConfirmLogout = async () => {
@@ -94,16 +94,6 @@ function DesktopNavbar({ className, ...rest }: ComponentPropsWithRef<'nav'>) {
       console.error('Logout failed', error)
     }
   }
-
-  const createQueryString = useCallback(
-    (name: string, value: string) => {
-      const params = new URLSearchParams(searchParams.toString())
-      params.set(name, value)
-
-      return params.toString()
-    },
-    [searchParams]
-  )
 
   const actualLink = (actualPath: string) => ({
     active: pathname === actualPath,
@@ -169,8 +159,7 @@ function DesktopNavbar({ className, ...rest }: ComponentPropsWithRef<'nav'>) {
           </div>
           <li>
             <Typography
-              as={Link}
-              href={pathname + '?' + createQueryString('action', 'logout')}
+              className={classNames.logoutText(isLoadingLogout)}
               variant="medium_14"
               onClick={() => setIsLogoutOpen(true)}
             >
@@ -181,9 +170,10 @@ function DesktopNavbar({ className, ...rest }: ComponentPropsWithRef<'nav'>) {
       </nav>
 
       {isLogoutOpen && meData?.email && (
-        <ConfirmModal
+        <SimpleYesNoDialog
           open
-          description={`Are you really want to log out of your account “${meData.email}”?`}
+          boldText={meData.email}
+          description='Are you really want to log out of your account "_boldText_"?'
           title="Log Out"
           onCancel={() => setIsLogoutOpen(false)}
           onConfirm={handleConfirmLogout}
