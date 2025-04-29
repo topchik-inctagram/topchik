@@ -38,7 +38,9 @@ function ScrollAreaWrapper({
 }) {
   const TAGS = Array.from({ length }).map(
     (_, i, a) =>
-      `v1.2.0-beta.v1.2.0-beta.v1.2.0-beta.v1.2.0-beta.v1.2.0-beta.v1.2.0-beta.v1.2.0-beta.v1.2.0-beta.v1.2.0-beta.v1.2.0-beta.v1.2.0-betav1.2.0-beta.v1.2.0-beta.v1.2.0-beta.v1.2.0-beta.v1.2.0-beta.v1.2.0-beta.v1.2.0-beta.v1.2.0-beta.v1.2.0-beta.v1.2.0-beta.v1.2.0-beta.${a.length - i}`
+      `v1.2.0-beta.v1.2.0-beta.v1.2.0-beta.v1.2.0-beta.v1.2.0-beta.v1.2.0-beta.v1.2.0-beta.v1.2.0-beta.v1.2.0-beta.v1.2.0-beta.v1.2.0-betav1.2.0-beta.v1.2.0-beta.v1.2.0-beta.v1.2.0-beta.v1.2.0-beta.v1.2.0-beta.v1.2.0-beta.v1.2.0-beta.v1.2.0-beta.v1.2.0-beta.v1.2.0-beta.${
+        a.length - i
+      }`
   )
   return (
     <Card

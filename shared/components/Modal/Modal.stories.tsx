@@ -30,10 +30,10 @@ const ModalWithControls = (args: Story['args']) => {
       <Button onClick={() => setIsOpen(true)}>Открыть модалку</Button>
       <Modal
         {...args}
-        open={isOpen}
-        onOpenChange={() => setIsOpen(false)}
-        title={args?.title || 'Заголовок модалки'}
         className="modal-header-override"
+        open={isOpen}
+        title={args?.title || 'Заголовок модалки'}
+        onOpenChange={() => setIsOpen(false)}
       >
         <div style={{ padding: '20px' }}>
           <p>Содержимое модального окна</p>

@@ -1,0 +1,12 @@
+.userProfileLink {
+  color: var(--color-light-100);
+  text-decoration: none;
+
+  &:active {
+    color: var(--color-light-100);
+  }
+
+  &:visited {
+    color: var(--color-light-100);
+  }
+}

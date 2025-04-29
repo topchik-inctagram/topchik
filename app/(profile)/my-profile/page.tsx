@@ -1,11 +1,10 @@
 'use client'
 
 import { withAuth } from '@/shared/HOC'
-import {UserProfile} from '@/widgets/userProfile/UserProfile';
-import {PageContainer} from '@/shared/components'
+import { UserProfile } from '@/widgets/userProfile/UserProfile'
+import { PageContainer } from '@/shared/components'
 
 function MyProfilePage() {
-
   const user = {
     avatarUrl: '/photos/Avatar.webp',
     userName: 'URLProfile',
@@ -18,13 +17,13 @@ function MyProfilePage() {
   return (
     <PageContainer direction="column" mt="36px" pl="24px" pr="64px">
       <UserProfile
-        isMyProfile
         avatarUrl={user.avatarUrl}
         followersCount={user.followers}
         followingCount={user.following}
         publicationsCount={user.publications}
         userId={user.userId}
-        userName={user.userName}/>
+        userName={user.userName}
+      />
     </PageContainer>
   )
 }

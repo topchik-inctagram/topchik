@@ -82,10 +82,16 @@ export const AuthService = baseApi.injectEndpoints({
           body,
         }),
       }),
-      deleteAllDevices: builder.mutation<void, void>({
+      gitHubSignIn: builder.query<void, void>({
         query: () => ({
-          url: '/api/v1/security/devices',
-          method: 'DELETE',
+          params: undefined,
+          url: '/api/v1/auth/github',
+        }),
+      }),
+      googleSignIn: builder.query<void, void>({
+        query: () => ({
+          params: undefined,
+          url: '/api/v1/auth/google',
         }),
       }),
     }
@@ -95,11 +101,13 @@ export const {
   useLoginMutation,
   useLogoutMutation,
   useMeQuery,
+  useLazyMeQuery,
   useRegistrationUserMutation,
   useForgotPasswordMutation,
   useCheckRecoveryCodeMutation,
   useNewPasswordMutation,
-  useDeleteAllDevicesMutation,
   useConfirmEmailMutation,
   useEmailResendingMutation,
+  useLazyGitHubSignInQuery,
+  useLazyGoogleSignInQuery,
 } = AuthService

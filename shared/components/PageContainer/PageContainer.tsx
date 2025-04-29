@@ -15,18 +15,20 @@ export function PageContainer({
   mt = '24px',
   pr,
   pl,
-  direction,
+  direction = 'column',
   style,
   ref,
-  ...rest }: Props) {
+  ...rest
+}: Props) {
   const classNames = {
-    page: clsx(className, s.container, direction === 'row' && s.row,
-      direction === 'column' && s.column),
+    page: clsx(
+      className,
+      s.container,
+      direction === 'row' && s.row,
+      direction === 'column' && s.column
+    ),
   }
-  const styles: CSSProperties = { marginTop: mt,
-    paddingRight: pr,
-    paddingLeft: pl,
-    ...style }
+  const styles: CSSProperties = { marginTop: mt, paddingRight: pr, paddingLeft: pl, ...style }
 
   return <main ref={ref} className={classNames.page} style={styles} {...rest} />
 }

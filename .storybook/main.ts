@@ -1,11 +1,7 @@
 import type { StorybookConfig } from '@storybook/nextjs'
-import path from 'path';
-
+import * as path from 'path'
 const config: StorybookConfig = {
-  stories: [
-    '../**/*.mdx',
-    '../**/*.stories.@(js|jsx|mjs|ts|tsx)',
-  ],
+  stories: ['../**/*.stories.@(js|jsx|mjs|ts|tsx)'],
 
   addons: [
     '@storybook/addon-essentials',
@@ -17,15 +13,15 @@ const config: StorybookConfig = {
     name: '@storybook/nextjs',
     options: {},
   },
-  // webpackFinal: async (config) => {
-  //   if (config.resolve) {
-  //     config.resolve.alias = {
-  //       ...config.resolve.alias,
-  //       'next/link': path.resolve(__dirname, '../mocks/next/link.tsx'),
-  //     };
-  //   }
-  //   return config;
-  // },
+  webpackFinal: async config => {
+    if (config.resolve) {
+      config.resolve.alias = {
+        ...config.resolve.alias,
+        'next/link': path.resolve(__dirname, '../mocks/next/link.tsx'),
+      }
+    }
+    return config
+  },
 
   // "staticDirs": [
   //   "..\\public"

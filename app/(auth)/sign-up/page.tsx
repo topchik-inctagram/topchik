@@ -6,7 +6,7 @@ import { useState } from 'react'
 import { EmailSentModal } from '@/entities/EmailSentModal'
 
 const Page = () => {
-  const [registration, { error, isError, isLoading, ...rest }] = useRegistrationUserMutation()
+  const [registration, { error, isError }] = useRegistrationUserMutation()
 
   const [emailForModal, setEmailForModal] = useState<string | null>(null)
 
@@ -24,9 +24,9 @@ const Page = () => {
   }
 
   return (
-    <PageContainer direction="column">
-      {isError && error?.data?.errorsMessages?.[0]?.message && (
-        <Toast description={error.data.errorsMessages[0].message} variant="error" />
+    <PageContainer>
+      {isError && 'data' in error && (error.data as any).errorsMessages?.[0]?.message && (
+        <Toast description={(error.data as any).errorsMessages[0].message} variant="error" />
       )}
       <SignUp onSubmit={registrationHandler} />
       {emailForModal && <EmailSentModal email={emailForModal} onClose={onCloseModalHandler} />}
