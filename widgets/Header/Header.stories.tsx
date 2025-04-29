@@ -16,7 +16,6 @@ const LoggedInTemplate = () => {
 
   return (
     <Header
-      isLoggedIn
       notificationCount={3}
       selectedLanguage={language}
       onLanguageChange={lang => {
@@ -32,7 +31,6 @@ const LoggedOutTemplate = () => {
 
   return (
     <Header
-      isLoggedIn={false}
       selectedLanguage={language}
       onLanguageChange={lang => {
         console.log(`Lang changed to: ${lang}`)

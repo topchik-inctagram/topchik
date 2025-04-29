@@ -2,7 +2,7 @@
 
 import { SignInForm } from '@/features/auth/forms/SignInForm'
 import { PageContainer, Toast } from '@/shared/components'
-import {useLazyMeQuery, useLoginMutation} from '@/features/auth/api'
+import { useLazyMeQuery, useLoginMutation } from '@/features/auth/api'
 import { useRouter } from 'next/navigation'
 import { PrivatePages } from '@/shared/enums'
 
@@ -22,9 +22,6 @@ const SignInPage = () => {
       console.log(e)
     }
   }
-
-  console.log(error, 'error ->>>')
-  console.log(rest, 'REST =>>>>>>>>>>>')
 
   // no types for error @ts-expect-error
   // fix later with types
