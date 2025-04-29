@@ -21,11 +21,13 @@ import {
   TrendUpOutline,
 } from '@/public/icons'
 import { Typography } from '@/shared/components'
-import { type ComponentPropsWithRef, useCallback } from 'react'
-import { LogoutModal } from '@/entities/LogoutModal'
-import { usePathname, useRouter, useSearchParams } from 'next/navigation'
-import { PrivatePages } from '@/shared/enums'
-import {useMeQuery} from '@/features/auth/api';
+import { type ComponentPropsWithRef, useState } from 'react'
+import { SimpleYesNoDialog } from '@/entities/SimpleYesNoDialog'
+import { usePathname, useRouter } from 'next/navigation'
+import { PrivatePages, PublicPages } from '@/shared/enums'
+import { useLogoutMutation, useMeQuery } from '@/features/auth/api'
+import { TOKEN } from '@/shared/constants'
+import { baseApi } from '@/shared/store'
 
 type Props = {
   isMobile?: boolean
@@ -72,19 +74,26 @@ function DesktopNavbar({ className, ...rest }: ComponentPropsWithRef<'nav'>) {
     firstContainer: clsx(s.desktopContainer, s.desktopFirstContainer),
     secondContainer: clsx(s.desktopSecondContainer, s.desktopContainer),
     activeLink: s.activeLink,
+    logoutText: (isDisabled: boolean) => clsx(s.logoutText, isDisabled && s.disabled),
   }
+
   const router = useRouter()
   const pathname = usePathname()
-  const searchParams = useSearchParams()
-  const createQueryString = useCallback(
-    (name: string, value: string) => {
-      const params = new URLSearchParams(searchParams.toString())
-      params.set(name, value)
+  const { data: meData } = useMeQuery()
+  const [logoutMutation, { isLoading: isLoadingLogout }] = useLogoutMutation()
+  const [isLogoutOpen, setIsLogoutOpen] = useState(false)
 
-      return params.toString()
-    },
-    [searchParams]
-  )
+  const handleConfirmLogout = async () => {
+    try {
+      await logoutMutation().unwrap()
+      localStorage.removeItem(TOKEN)
+      baseApi.util.resetApiState()
+      setIsLogoutOpen(false)
+      router.push(PublicPages.signIn)
+    } catch (error) {
+      console.error('Logout failed', error)
+    }
+  }
 
   const actualLink = (actualPath: string) => ({
     active: pathname === actualPath,
@@ -92,13 +101,9 @@ function DesktopNavbar({ className, ...rest }: ComponentPropsWithRef<'nav'>) {
   })
   const active = false
 
-  const { data: meData } = useMeQuery()
   // if you want to disable link you need to add data-disabled='disabled' in link props
   // data-disabled="disabled"
-  const action = searchParams.get('action')
 
-  const isLogoutAction = action === 'logout'
-  const logoutHandler = () => router.replace(pathname)
   return (
     <>
       <nav className={classNames.nav} {...rest}>
@@ -121,8 +126,12 @@ function DesktopNavbar({ className, ...rest }: ComponentPropsWithRef<'nav'>) {
                 href={`${PrivatePages.profile}/${meData?.id}`}
                 variant="medium_14"
               >
-                {actualLink(`${PrivatePages.profile}/${meData?.id}`).active ? <Person /> : <PersonOutline />} My
-                Profile
+                {actualLink(`${PrivatePages.profile}/${meData?.id}`).active ? (
+                  <Person />
+                ) : (
+                  <PersonOutline />
+                )}{' '}
+                My Profile
               </Typography>
             </li>
             <li>
@@ -150,16 +159,26 @@ function DesktopNavbar({ className, ...rest }: ComponentPropsWithRef<'nav'>) {
           </div>
           <li>
             <Typography
-              as={Link}
-              href={pathname + '?' + createQueryString('action', 'logout')}
+              className={classNames.logoutText(isLoadingLogout)}
               variant="medium_14"
+              onClick={() => setIsLogoutOpen(true)}
             >
               {active ? <LogOut /> : <LogOutOutline />} Log Out
             </Typography>
           </li>
         </ul>
       </nav>
-      <LogoutModal open={isLogoutAction} onClose={logoutHandler} />
+
+      {isLogoutOpen && meData?.email && (
+        <SimpleYesNoDialog
+          open
+          boldText={meData.email}
+          description='Are you really want to log out of your account "_boldText_"?'
+          title="Log Out"
+          onCancel={() => setIsLogoutOpen(false)}
+          onConfirm={handleConfirmLogout}
+        />
+      )}
     </>
   )
 }
