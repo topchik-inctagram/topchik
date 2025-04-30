@@ -16,11 +16,11 @@ import {
   PlusCircleOutline,
   ArrowIosBack,
   CloseOutline,
+  Square,
+  Rectangle,
+  HorizontalRectangle,
 } from '@/public/icons'
 import { type ChangeEvent, useState, useRef, useCallback, useEffect } from 'react'
-import HorizontalRectangle from './HorizontalRectangle'
-import Rectangle from './Rectangle'
-import Square from './Square'
 import ReactCrop, { type Crop, centerCrop, makeAspectCrop } from 'react-image-crop'
 import 'react-image-crop/dist/ReactCrop.css'
 import { z } from 'zod'
@@ -28,8 +28,6 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import ImageFilter from 'react-image-filter'
 import { TootlipModals } from './TootlipModals/TootlipModals'
-import { PinturaEditor } from '@pqina/react-pintura'
-import { getEditorDefaults } from '@pqina/pintura'
 
 const MAX_FILE_SIZE = 20 * 1024 * 1024
 const ACCEPTED_IMAGE_TYPES = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp']
@@ -267,11 +265,7 @@ export const Tootlip = ({ className, placeholder, open, onClose, onImageSelect }
       crop.width,
       crop.height
     )
-
-    // Получаем обрезанное изображение
     const croppedUrl = canvas.toDataURL('image/jpeg', 0.9)
-
-    // Обновляем состояние
     setImages(prev =>
       prev.map((img, index) =>
         index === currentImageIndex ? { ...img, url: croppedUrl, completedCrop: crop } : img
@@ -581,8 +575,6 @@ export const Tootlip = ({ className, placeholder, open, onClose, onImageSelect }
                       <Typography className={s.filterName}>{filter.name}</Typography>
                     </div>
                   ))}
-
-                  {/* Дублируем некоторые фильтры для заполнения 9 ячеек */}
                   {[...filters].slice(0, 4).map((filter, index) => (
                     <div
                       key={`duplicate-${index}`}
@@ -609,7 +601,6 @@ export const Tootlip = ({ className, placeholder, open, onClose, onImageSelect }
 
             {step === 'publish' && (
               <div className={s.containerPublish}>
-                {/* Левая колонка с изображением */}
                 <div className={s.imageColumn}>
                   {currentImage && (
                     <img
