@@ -1,0 +1,558 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+
+.placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 222px;
+  height: 228px;
+  margin-top: 60px;
+  margin-bottom: 30px;
+  border-radius: 2px;
+
+  background: var(--color-dark-500);
+}
+
+.aspectWrapper {
+  height: 503px;
+  width: 564px;
+  position: relative;
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.fullSizeImage {
+  width: 100%;
+  min-height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.controlsGroup {
+  position: absolute;
+  bottom: 20px;
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  z-index: 10;
+}
+
+.leftButtons {
+  display: flex;
+  margin-left: 10px;
+  gap: 10px;
+}
+
+.btn {
+  display: inline-flex;
+  width: 40px;
+  height: 40px;
+  border-radius: 4px;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  opacity: 0.8;
+  background: var(--color-dark-500);
+  cursor: pointer;
+}
+
+.btn:hover .icons {
+  color: var(--color-accent-500);
+  fill: var(--color-accent-500);
+}
+
+.btnimage {
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border-radius: 2px;
+
+  opacity: 0.8;
+  background: var(--color-dark-500);
+
+  svg {
+    margin-left: 24px;
+  }
+}
+
+.icons {
+  width: 24px;
+  height: 24px;
+}
+
+.groupBtn {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  margin-bottom: 48px;
+}
+
+// dropdowns
+
+.dropdownCrops,
+.dropdownZoom {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdownItem {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 128px;
+}
+
+.dropdownZoom {
+  display: flex;
+  align-items: center;
+
+  input {
+    width: 100px;
+    height: 12px;
+  }
+}
+
+// Add photo btn
+
+.thumbnailModal {
+  position: absolute;
+  bottom: 45px;
+  right: 11px;
+  background: var(--color-dark-500);
+  border-radius: 2px;
+  z-index: 999;
+
+  max-width: 100%;
+  overflow-x: auto;
+  white-space: nowrap;
+}
+
+.thumbnailGrid {
+  display: inline-flex;
+  gap: 12px;
+  padding-right: 65px;
+  position: relative;
+  margin-bottom: 12px;
+  margin-left: 12px;
+  margin-top: 12px;
+}
+
+.thumbnailItem {
+  width: 80px;
+  height: 82px;
+  position: relative;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.thumbnailImage {
+  width: 100%;
+  height: auto;
+  cursor: pointer;
+  display: block;
+}
+
+.removeButton {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 12px;
+  height: 12px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: var(--color-dark-500);
+  border: none;
+  border-radius: 2px;
+  cursor: pointer;
+
+  &:hover {
+    background: var(--color-danger-500);
+  }
+}
+
+.selected {
+  outline: 2px solid #007aff;
+}
+
+.addPhotoBtn {
+  margin-right: 11px;
+}
+
+.addButtonPhoto {
+  position: absolute;
+  right: 12px;
+  border-radius: 50%;
+  background-color: var(--color-dark-500);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  cursor: pointer;
+  z-index: 1000;
+
+  svg {
+    width: 36px;
+    height: 36px;
+  }
+}
+
+// Modal
+
+.stepHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.stepTitle {
+  flex-grow: 1;
+  text-align: center;
+}
+
+.backButton,
+.nextButton {
+  cursor: pointer;
+  border: none;
+  background: none;
+
+  &:hover {
+    color: var(--color-accent-300);
+  }
+}
+
+.closeButton {
+  margin-right: 24px;
+  border: none;
+  background: none;
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: var(--color-light-100);
+
+  &:hover {
+    color: var(--color-danger-500);
+  }
+
+  svg {
+    width: 24px;
+    height: 24px;
+    transition: color 0.2s ease;
+  }
+}
+
+.nextButton {
+  margin-right: 24px;
+  color: var(--color-accent-500);
+}
+
+.leftArrowCrop,
+.rightArrowCrop {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+  background-color: var(--color-dark-500);
+  border-radius: 2px;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  width: 36px;
+  height: 36px;
+  opacity: 80%;
+
+  svg {
+    fill: white;
+  }
+
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.8);
+  }
+}
+
+.leftArrowCrop {
+  left: 12px;
+}
+
+.rightArrowCrop {
+  right: 12px;
+}
+
+.imageDotsCrop {
+  position: absolute;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  z-index: 5;
+}
+
+.dotCrop {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #8d9094;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.activeDotCrop {
+  background-color: var(--color-accent-500);
+}
+
+// Step  filter
+
+.filterContainer {
+  display: flex;
+  align-items: flex-start;
+  align-items: stretch;
+  width: 972px;
+  height: 503px;
+}
+
+.imagePreviewContainer {
+  position: relative;
+  width: 490px;
+  height: 503px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-dark-500);
+  margin-right: 50px;
+}
+
+.leftArrowFilter,
+.rightArrowFilter {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  width: 48px;
+  height: 48px;
+  background-color: var(--color-dark-100);
+  border: none;
+  border-radius: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  opacity: 0.8;
+
+  svg {
+    fill: white;
+  }
+
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.8);
+  }
+}
+
+.leftArrowFilter {
+  left: 12px;
+}
+
+.rightArrowFilter {
+  right: 12px;
+}
+
+.imageDotsFilter {
+  position: absolute;
+  bottom: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  z-index: 10;
+  border-radius: 2px;
+  background-color: rgba(51, 51, 51, 0.5);
+}
+
+.dotFilter {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: var(--color-light-100);
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  flex-shrink: 0;
+  margin-top: 8px;
+  margin-bottom: 8px;
+  margin-right: 12px;
+  margin-left: 12px;
+}
+
+.activeDotFilter {
+  background-color: var(--color-accent-500);
+}
+
+.dotFilter:first-child {
+  margin-left: 8px;
+}
+
+.dotFilter:last-child {
+  margin-right: 8px;
+}
+
+.filtersGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  width: 350px;
+  align-content: start;
+}
+
+.mainPreviewImage {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.filterItem {
+  cursor: pointer;
+  width: 108px;
+  height: 108px;
+  border-radius: 2px;
+  margin-top: 24px;
+  margin-right: 24px;
+  margin-bottom: 10px;
+
+  &:hover {
+    border: 2px solid var(--color-accent-500);
+  }
+
+  .filterThumbnail {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .filterName {
+    font-size: 14px;
+    color: white;
+    text-align: center;
+    margin-top: 6px;
+  }
+}
+
+// Step  publish
+
+.publishContainer {
+  display: flex;
+  width: 972px;
+  height: 503px;
+  margin: 0 auto;
+}
+
+.imageColumn {
+  height: 100%;
+  max-height: 503px;
+  width: 490px;
+  margin-right: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-dark-500);
+  position: relative;
+}
+
+.publishImage {
+  height: 100%;
+  width: 490px;
+  object-fit: cover;
+  display: block;
+}
+
+.infoColumn {
+  flex: 1;
+  min-width: 0;
+  margin-top: 24px;
+}
+
+.userInfo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
+
+  .avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+}
+
+.description {
+  margin-bottom: 35px;
+}
+
+.divider {
+  border: none;
+  border-top: 1px solid var(--color-dark-300);
+  width: 100%;
+}
+
+.locationSection {
+  margin-top: 24px;
+}
+
+.leftArrowFilter,
+.rightArrowFilter {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  width: 48px;
+  height: 48px;
+  background-color: var(--color-dark-100);
+  border: none;
+  border-radius: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  opacity: 0.8;
+
+  svg {
+    fill: white;
+  }
+
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.8);
+  }
+}
+
+.leftArrowFilter {
+  left: 12px;
+}
+
+.rightArrowFilter {
+  right: 12px;
+}
+
+.inputWithLeftMargin {
+  width: 433px;
+}

@@ -21,10 +21,11 @@ import {
   TrendUpOutline,
 } from '@/public/icons'
 import { Typography } from '@/shared/components'
-import { type ComponentPropsWithRef, useCallback } from 'react'
+import { type ComponentPropsWithRef, useCallback, useState } from 'react'
 import { LogoutModal } from '@/entities/LogoutModal'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import { PrivatePages } from '@/shared/enums'
+import { Tooltip } from '@/entities/Tooltip/Tooltip'
 
 type Props = {
   isMobile?: boolean
@@ -75,6 +76,7 @@ function DesktopNavbar({ className, ...rest }: ComponentPropsWithRef<'nav'>) {
   const router = useRouter()
   const pathname = usePathname()
   const searchParams = useSearchParams()
+  const [showTootlip, setShowTootlip] = useState(false)
   const createQueryString = useCallback(
     (name: string, value: string) => {
       const params = new URLSearchParams(searchParams.toString())
@@ -107,7 +109,7 @@ function DesktopNavbar({ className, ...rest }: ComponentPropsWithRef<'nav'>) {
               </Typography>
             </li>
             <li>
-              <Typography as={Link} href="#" variant="medium_14">
+              <Typography as="button" variant="medium_14" onClick={() => setShowTootlip(true)}>
                 {active ? <PlusSquare /> : <PlusSquareOutline />} Create
               </Typography>
             </li>
@@ -157,6 +159,11 @@ function DesktopNavbar({ className, ...rest }: ComponentPropsWithRef<'nav'>) {
         </ul>
       </nav>
       <LogoutModal open={isLogoutAction} onClose={logoutHandler} />
+      <Tooltip
+        open={showTootlip}
+        placeholder="Upload an image"
+        onClose={() => setShowTootlip(false)}
+      />
     </>
   )
 }

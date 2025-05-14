@@ -9,14 +9,7 @@ type Props = {
   fullWidth?: boolean
 } & ComponentPropsWithRef<'button'>
 
-export const Button = ({
-  variant = 'primary',
-  className,
-  asChild,
-  fullWidth,
-
-  ...rest
-}: Props) => {
+export const Button = ({ variant = 'primary', className, asChild, fullWidth, ...rest }: Props) => {
   const Component = asChild ? Slot : 'button'
   const classNames = {
     button: clsx(s.button, s[variant], fullWidth && s.fullWidth, className),
