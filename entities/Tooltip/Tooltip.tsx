@@ -1,41 +1,26 @@
 import { clsx } from 'clsx'
 import s from './Tooltip.module.scss'
-import {
-  Button,
-  Dropdown,
-  DropdownItem,
-  Input,
-  Label,
-  Textarea,
-  Typography,
-} from '@/shared/components'
-import {
-  ImageOutline,
-  ExpandOutline,
-  MaximizeOutline,
-  PlusCircleOutline,
-  ArrowIosBack,
-  CloseOutline,
-  Square,
-  Rectangle,
-  HorizontalRectangle,
-  LeftArrow,
-  RightArrow,
-} from '@/public/icons'
+import { Typography } from '@/shared/components'
+import { ArrowIosBack, CloseOutline } from '@/public/icons'
 import { Toast } from '@/shared/components/Toast'
 import { type ChangeEvent, useState, useRef, useCallback, useEffect } from 'react'
-import ReactCrop, { type Crop, centerCrop, makeAspectCrop } from 'react-image-crop'
+import { type Crop } from 'react-image-crop'
 import 'react-image-crop/dist/ReactCrop.css'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { TooltipModals } from './TooltipModals/TooltipModals'
 import { useMeQuery } from '@/features/auth/api'
-import {
-  useCreatePostMutation,
-  useGetPostsQuery,
-  useUpdatePostMutation,
-} from '@/features/posts/api'
+import { useCreatePostMutation, useUpdatePostMutation } from '@/features/posts/api'
+import type { TooltipProps, UploadedImageProps, FormValuesProps } from './types'
+import { centerAspectCrop, dataURLtoFile } from './utils/imageUtils'
+import { saveTooltipDraft, loadFullTooltipDraft, parseDraftImages } from './utils/draftService'
+import { ImageUpload } from './steps/ImageUpload'
+import { CropStep } from './steps/CropStep'
+import { FilterStep } from './steps/FilterStep'
+import { PublishStep } from './steps/PublishStep'
+import { filters } from './utils/filters'
+import { handleTooltipSubmit } from './handlers/submitTooltip'
 
 const MAX_FILE_SIZE = 20 * 1024 * 1024
 const ACCEPTED_IMAGE_TYPES = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp']
@@ -52,53 +37,8 @@ const formSchema = z.object({
   images: z.array(imageSchema).max(10, 'Максимум 10 изображений'),
 })
 
-type FormValues = z.infer<typeof formSchema>
-
-type UploadedImage = {
-  id: string
-  url: string
-  originalUrl: string
-  file: File
-  filter?: string
-  crop?: Crop
-  completedCrop?: Crop
-  zoom?: number
-}
-
-type Props = {
-  className?: string
-  open: boolean
-  onClose: () => void
-  isAuth?: boolean
-  placeholder?: string
-  onImageSelect?: (file: File) => void
-}
-
-type DraftData = {
-  description: string
-  location: string
-  step: string
-  images: { url: string; filter?: string }[]
-}
-
-function centerAspectCrop(mediaWidth: number, mediaHeight: number, aspect: number) {
-  return centerCrop(
-    makeAspectCrop(
-      {
-        unit: '%',
-        width: 90,
-      },
-      aspect,
-      mediaWidth,
-      mediaHeight
-    ),
-    mediaWidth,
-    mediaHeight
-  )
-}
-
-export const Tooltip = ({ className, placeholder, open, onClose, onImageSelect }: Props) => {
-  const [images, setImages] = useState<UploadedImage[]>([])
+export const Tooltip = ({ className, placeholder, open, onClose, onImageSelect }: TooltipProps) => {
+  const [images, setImages] = useState<UploadedImageProps[]>([])
   const [currentImageIndex, setCurrentImageIndex] = useState<number>(0)
   const [aspectRatio, setAspectRatio] = useState<string>('Original')
   const [zoomLevel, setZoomLevel] = useState<number>(1)
@@ -122,148 +62,82 @@ export const Tooltip = ({ className, placeholder, open, onClose, onImageSelect }
   const [toastVariant, setToastVariant] = useState<'error' | 'success'>('error')
   const [isPublishing, setIsPublishing] = useState(false)
   const { data: user, isLoading } = useMeQuery()
-  const [createPost, { error: errorPost }] = useCreatePostMutation()
+  const [createPost] = useCreatePostMutation()
   const [updatePost] = useUpdatePostMutation()
-
-  const dataURLtoFile = (dataurl: string, filename: string): File => {
-    const arr = dataurl.split(',')
-    const mime = arr[0].match(/:(.*?);/)?.[1] || 'image/jpeg'
-    const bstr = atob(arr[1])
-    let n = bstr.length
-    const u8arr = new Uint8Array(n)
-    while (n--) {
-      u8arr[n] = bstr.charCodeAt(n)
-    }
-    return new File([u8arr], filename, { type: mime })
-  }
 
   const handleSubmit = async () => {
     setIsPublishing(true)
-    try {
-      const formData = new FormData()
 
-      for (let i = 0; i < images.length; i++) {
-        const img = images[i]
-        const canvas = previewCanvasRef.current
-        const ctx = canvas?.getContext('2d')
-        if (!ctx || !canvas) {
-          continue
-        }
-
-        const imageElement = new Image()
-        imageElement.crossOrigin = 'anonymous'
-        imageElement.src = img.url
-        await new Promise(resolve => (imageElement.onload = resolve))
-
-        canvas.width = imageElement.naturalWidth
-        canvas.height = imageElement.naturalHeight
-        ctx.filter = img.filter || 'none'
-        ctx.drawImage(imageElement, 0, 0)
-
-        const dataUrl = canvas.toDataURL('image/jpeg', 0.9)
-        const file = dataURLtoFile(dataUrl, `filtered_${i}.jpg`)
-        formData.append('files', file)
-      }
-
-      const response = await createPost(formData).unwrap()
-
-      await updatePost({
-        id: response.id,
-        data: { description },
-      })
-
-      clearTooltipDraft()
-      onClose()
-      setToastVariant('success')
-      setToastMessage('Post added')
-      setShowToast(true)
-      setIsPublishing(false)
-    } catch (err) {
-      console.error(errorPost)
-      setToastVariant('error')
-      setToastMessage('Could not add post')
-      setShowToast(true)
-    }
+    await handleTooltipSubmit({
+      images,
+      description,
+      createPost,
+      updatePost,
+      previewCanvasRef,
+      onClose,
+      onSuccess: () => {
+        setToastVariant('success')
+        setToastMessage('Post added')
+        setShowToast(true)
+        setIsPublishing(false)
+      },
+      onError: (msg: string) => {
+        setToastVariant('error')
+        setToastMessage(msg)
+        setShowToast(true)
+        setIsPublishing(false)
+      },
+    })
   }
 
   const handleSaveDraft = () => {
-    saveTooltipDraft({
-      description,
-      location,
-      step,
-      images: images.map(({ url, filter }) => ({ url, filter })),
-    })
+    saveTooltipDraft(
+      {
+        description,
+        location,
+        step,
+        images: images.map(({ url, filter }) => ({ url, filter })),
+      },
+      msg => {
+        setToastVariant('error')
+        setToastMessage(msg)
+        setShowToast(true)
+      }
+    )
     onClose()
   }
 
   const loadTooltipDraft = () => {
-    const draftRaw = localStorage.getItem('tooltip_draft')
-    if (!draftRaw) {
+    const { draft, error } = loadFullTooltipDraft()
+
+    if (error || !draft) {
       setToastVariant('error')
-      setToastMessage('No draft found.')
+      setToastMessage(error || 'Draft missing.')
       setShowToast(true)
       return
     }
-    try {
-      const draft = JSON.parse(draftRaw)
-      const loadedImages: UploadedImage[] = (draft.images || []).map((img: any, index: number) => ({
-        id: `draft-${index}`,
-        url: img.url,
-        originalUrl: img.url,
-        file: null,
-        filter: img.filter,
-        crop: undefined,
-        completedCrop: undefined,
-      }))
 
-      setDescription(draft.description || '')
-      setLocation(draft.location || '')
-      setStep(draft.step || 'add')
-      setImages(loadedImages)
-      setCurrentImageIndex(draft.currentImageIndex || 0)
-    } catch (e) {
-      console.error('Failed to parse draft:', e)
-      setToastVariant('error')
-      setToastMessage('Draft corrupted.')
-      setShowToast(true)
-    }
-  }
+    const loadedImages = parseDraftImages(draft.images)
 
-  const saveTooltipDraft = (data: DraftData) => {
-    try {
-      localStorage.setItem('tooltip_draft', JSON.stringify(data))
-    } catch (e) {
-      setToastVariant('error')
-      setToastMessage('Failed to save draft')
-      setShowToast(true)
-      console.error('Failed to save draft', e)
-    }
-  }
+    const validSteps = ['add', 'crop', 'filter', 'publish'] as const
+    const isValidStep = (step: any): step is (typeof validSteps)[number] =>
+      validSteps.includes(step)
 
-  const clearTooltipDraft = () => {
-    localStorage.removeItem('tooltip_draft')
+    setStep(isValidStep(draft.step) ? draft.step : 'add')
+    setDescription(draft.description || '')
+    setLocation(draft.location || '')
+    setImages(loadedImages)
+    setCurrentImageIndex(typeof draft.currentImageIndex === 'number' ? draft.currentImageIndex : 0)
   }
 
   const {
     formState: { errors },
-  } = useForm<FormValues>({
+  } = useForm<FormValuesProps>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       images: [],
     },
   })
-
-  const filters = [
-    { name: 'Normal', value: 'none' },
-    { name: 'Clarendon', value: 'contrast(1.2) brightness(1.1)' },
-    { name: 'Lark', value: 'brightness(1.05) saturate(1.3)' },
-    { name: 'Gingham', value: 'grayscale(0.3) contrast(1.05)' },
-    { name: 'Moon', value: 'grayscale(1) contrast(0.9)' },
-    { name: 'Juno', value: 'saturate(1.5) contrast(0.8)' },
-    { name: 'Slumber', value: 'brightness(1.1) sepia(0.2)' },
-    { name: 'Crema', value: 'brightness(1.05) sepia(0.1)' },
-    { name: 'Ludwig', value: 'saturate(1.2) brightness(0.9)' },
-  ]
 
   useEffect(() => {
     if (open) {
@@ -302,7 +176,7 @@ export const Tooltip = ({ className, placeholder, open, onClose, onImageSelect }
     }
 
     const filesToUpload = Array.from(files).slice(0, 1)
-    const newImages: UploadedImage[] = []
+    const newImages: UploadedImageProps[] = []
 
     for (const file of filesToUpload) {
       try {
@@ -384,15 +258,6 @@ export const Tooltip = ({ className, placeholder, open, onClose, onImageSelect }
         )
       )
     }
-  }
-
-  const handleZoomChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const newZoom = parseFloat(e.target.value)
-    setZoomLevel(newZoom)
-
-    setImages(prev =>
-      prev.map((img, index) => (index === currentImageIndex ? { ...img, zoom: newZoom } : img))
-    )
   }
 
   const onImageLoad = useCallback(
@@ -590,363 +455,80 @@ export const Tooltip = ({ className, placeholder, open, onClose, onImageSelect }
       >
         <div className={classNames.container}>
           {step === 'add' ? (
-            <>
-              {placeholder && (
-                <div className={s.placeholder}>
-                  <ImageOutline className={s.img} fill="white" height={48} width={48} />
-                </div>
-              )}
-              <div className={s.groupBtn}>
-                <Input
-                  accept="image/jpeg,image/jpg,image/png,image/webp"
-                  id="file-upload"
-                  style={{ display: 'none' }}
-                  type="file"
-                  onChange={handleImageUpload}
-                />
-                <Button
-                  variant="primary"
-                  onClick={() => {
-                    document.getElementById('file-upload')?.click()
-                    setShowImageModal(false)
-                  }}
-                >
-                  Select from Computer
-                </Button>
-                <Button variant="outlined" onClick={loadTooltipDraft}>
-                  Open Draft
-                </Button>
-
-                {errors.images && (
-                  <Typography color="error" variant="medium_14">
-                    {errors.images.message}
-                  </Typography>
-                )}
-              </div>
-            </>
+            <ImageUpload
+              error={errors.images?.message}
+              placeholder={placeholder}
+              onFileChange={handleImageUpload}
+              onLoadDraft={loadTooltipDraft}
+              onUploadClick={() => {
+                document.getElementById('file-upload')?.click()
+                setShowImageModal(false)
+              }}
+            />
           ) : currentImage ? (
             <>
               {step === 'crop' && (
-                <div className={s.aspectWrapper}>
-                  {!showCrop ? (
-                    <div>
-                      <img
-                        ref={imgRef}
-                        alt="Preview"
-                        className={s.fullSizeImage}
-                        crossOrigin="anonymous"
-                        src={currentImage.originalUrl}
-                        style={{
-                          transform: `scale(${zoomLevel})`,
-                          transformOrigin: 'center center',
-                          transition: 'transform 0.2s ease-in-out',
-                        }}
-                        onLoad={onImageLoad}
-                      />
-                    </div>
-                  ) : (
-                    <ReactCrop
-                      aspect={
-                        aspectRatio === '1:1'
-                          ? 1
-                          : aspectRatio === '4:5'
-                            ? 4 / 5
-                            : aspectRatio === '16:9'
-                              ? 16 / 9
-                              : undefined
-                      }
-                      crop={crop}
-                      onChange={c => setCrop(c)}
-                    >
-                      <img
-                        ref={imgRef}
-                        alt="Preview"
-                        crossOrigin="anonymous"
-                        src={currentImage.originalUrl}
-                        style={{
-                          maxWidth: '100%',
-                          maxHeight: '100%',
-                          objectFit: 'contain',
-                          transform: `scale(${zoomLevel})`,
-                          transformOrigin: 'center center',
-                        }}
-                        onLoad={onImageLoad}
-                      />
-                    </ReactCrop>
-                  )}
-                  {/* Navigation arrows */}
-                  <div className={s.imageNavigation}>
-                    {currentImageIndex > 0 && (
-                      <button className={s.leftArrowCrop} onClick={handlePreviousImage}>
-                        <LeftArrow />
-                      </button>
-                    )}
-                    {currentImageIndex < images.length - 1 && (
-                      <button className={s.rightArrowCrop} onClick={handleNextImage}>
-                        <RightArrow />
-                      </button>
-                    )}
-                    {/* Dots */}
-                    {images.length > 1 && (
-                      <div className={s.imageDotsCrop}>
-                        {images.map((_, index) => (
-                          <div
-                            key={index}
-                            className={clsx(s.dotCrop, {
-                              [s.activeDotCrop]: index === currentImageIndex,
-                            })}
-                            onClick={() => {
-                              setCurrentImageIndex(index)
-                              setShowCrop(false)
-                            }}
-                          />
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                  <div className={s.controlsGroup}>
-                    <div className={s.leftButtons}>
-                      <Dropdown
-                        align="start"
-                        className={s.dropdownCrops}
-                        trigger={
-                          <span className={s.btn}>
-                            <ExpandOutline className={s.icons} />
-                          </span>
-                        }
-                      >
-                        <DropdownItem
-                          className={s.dropdownItem}
-                          onClick={() => handleAspectRatioChange('Original')}
-                        >
-                          <Label>Original</Label>
-                          <ImageOutline />
-                        </DropdownItem>
-                        <DropdownItem
-                          className={s.dropdownItem}
-                          onClick={() => handleAspectRatioChange('1:1')}
-                        >
-                          <Label>1:1</Label>
-                          <Square />
-                        </DropdownItem>
-                        <DropdownItem
-                          className={s.dropdownItem}
-                          onClick={() => handleAspectRatioChange('4:5')}
-                        >
-                          <Label>4:5</Label>
-                          <Rectangle />
-                        </DropdownItem>
-                        <DropdownItem
-                          className={s.dropdownItem}
-                          onClick={() => handleAspectRatioChange('16:9')}
-                        >
-                          <Label>16:9</Label>
-                          <HorizontalRectangle />
-                        </DropdownItem>
-                        <DropdownItem className={s.dropdownItem} onClick={() => setShowCrop(true)}>
-                          <Label>Обрезать</Label>
-                        </DropdownItem>
-                      </Dropdown>
-                      <Dropdown
-                        align="start"
-                        className={s.dropdownZoom}
-                        trigger={
-                          <span className={s.btn}>
-                            <MaximizeOutline className={s.icons} />
-                          </span>
-                        }
-                      >
-                        <input
-                          className={s.zoomSlider}
-                          max="3"
-                          min="0.5"
-                          step="0.1"
-                          type="range"
-                          value={zoomLevel}
-                          onChange={handleZoomChange}
-                        />
-                      </Dropdown>
-                    </div>
-                    <div>
-                      {showImageModal && (
-                        <div className={s.thumbnailModal}>
-                          <Input
-                            accept="image/jpeg,image/jpg,image/png,image/webp"
-                            id="file-upload"
-                            style={{ display: 'none' }}
-                            type="file"
-                            onChange={handleImageUpload}
-                          />
-                          <div className={s.thumbnailGrid}>
-                            {images.map((img, index) => (
-                              <div key={img.id} className={s.thumbnailItem}>
-                                <img
-                                  className={clsx(s.thumbnailImage, {
-                                    [s.selected]: index === currentImageIndex,
-                                  })}
-                                  src={img.url}
-                                  onClick={() => {
-                                    setCurrentImageIndex(index)
-                                  }}
-                                />
-                                <span
-                                  className={s.removeButton}
-                                  onClick={e => {
-                                    e.stopPropagation()
-                                    handleRemoveImage(img.id)
-                                  }}
-                                >
-                                  <CloseOutline></CloseOutline>
-                                </span>
-                              </div>
-                            ))}
-                            <button
-                              className={s.addButtonPhoto}
-                              type="button"
-                              onClick={() => document.getElementById('file-upload')?.click()}
-                            >
-                              <PlusCircleOutline />
-                            </button>
-                          </div>
-                        </div>
-                      )}
-                      <span
-                        className={classNames.addPhotoBtn}
-                        onClick={() => setShowImageModal(prev => !prev)}
-                      >
-                        <ImageOutline className={s.icons} />
-                      </span>
-                    </div>
-                  </div>
-                </div>
+                <CropStep
+                  aspectRatio={aspectRatio}
+                  classNameBtnAddPhoto={classNames.addPhotoBtn}
+                  crop={crop}
+                  currentImageIndex={currentImageIndex}
+                  image={currentImage}
+                  images={images}
+                  imgRef={imgRef}
+                  setShowCrop={setShowCrop}
+                  showCrop={showCrop}
+                  showImageModal={showImageModal}
+                  toggleImageModal={() => setShowImageModal(prev => !prev)}
+                  zoom={zoomLevel}
+                  onAspectRatioChange={handleAspectRatioChange}
+                  onCropChange={setCrop}
+                  onFileChange={handleImageUpload}
+                  onFileUploadClick={() => document.getElementById('file-upload')?.click()}
+                  onImageLoad={onImageLoad}
+                  onNextImage={handleNextImage}
+                  onPrevImage={handlePreviousImage}
+                  onRemoveImage={handleRemoveImage}
+                  onSelectImage={setCurrentImageIndex}
+                  onZoomChange={val => setZoomLevel(val)}
+                />
               )}
 
               {step === 'filter' && (
-                <div className={s.filterContainer}>
-                  <div className={s.imagePreviewContainer}>
-                    {currentImageIndex > 0 && (
-                      <button className={s.leftArrowFilter} onClick={handlePreviousImage}>
-                        <LeftArrow />
-                      </button>
-                    )}
-                    <img
-                      alt="Filtered preview"
-                      className={s.mainPreviewImage}
-                      src={currentImage.url}
-                      style={{ filter: currentImage.filter || 'none' }}
-                    />
-                    {currentImageIndex < images.length - 1 && (
-                      <button className={s.rightArrowFilter} onClick={handleNextImage}>
-                        <RightArrow />
-                      </button>
-                    )}
-                    {images.length > 1 && (
-                      <div className={s.imageDotsFilter}>
-                        {images.map((_, index) => (
-                          <div
-                            key={index}
-                            className={clsx(s.dotFilter, {
-                              [s.activeDotFilter]: index === currentImageIndex,
-                            })}
-                            onClick={() => setCurrentImageIndex(index)}
-                          />
-                        ))}
-                      </div>
-                    )}
-                  </div>
-
-                  <div className={s.filtersGrid}>
-                    {filters.map((filter, index) => (
-                      <div
-                        key={index}
-                        className={s.filterItem}
-                        onClick={() => {
-                          setImages(prev =>
-                            prev.map((img, idx) =>
-                              idx === currentImageIndex ? { ...img, filter: filter.value } : img
-                            )
-                          )
-                        }}
-                      >
-                        <img
-                          alt={`Thumbnail for ${filter.name}`}
-                          className={s.filterThumbnail}
-                          src={currentImage.url}
-                          style={{ filter: filter.value }}
-                        />
-                        <Typography className={s.filterName}>{filter.name}</Typography>
-                      </div>
-                    ))}
-                  </div>
-                </div>
+                <FilterStep
+                  currentImage={currentImage}
+                  currentImageIndex={currentImageIndex}
+                  filters={filters}
+                  images={images}
+                  onFilterChange={value => {
+                    setImages(prev =>
+                      prev.map((img, idx) =>
+                        idx === currentImageIndex ? { ...img, filter: value } : img
+                      )
+                    )
+                  }}
+                  onNextImage={handleNextImage}
+                  onPrevImage={handlePreviousImage}
+                  onSelectImage={setCurrentImageIndex}
+                />
               )}
 
               {step === 'publish' && currentImage && (
-                <div className={s.publishContainer}>
-                  <div className={s.imageColumn}>
-                    <img
-                      alt="Publication preview"
-                      className={s.publishImage}
-                      src={currentImage.url}
-                      style={{ filter: currentImage.filter ?? 'none' }}
-                    />
-                    {images.length > 1 && (
-                      <>
-                        {currentImageIndex > 0 && (
-                          <button className={s.leftArrowFilter} onClick={handlePreviousImage}>
-                            <LeftArrow />
-                          </button>
-                        )}
-                        {currentImageIndex < images.length - 1 && (
-                          <button className={s.rightArrowFilter} onClick={handleNextImage}>
-                            <RightArrow />
-                          </button>
-                        )}
-                        <div className={s.imageDotsFilter}>
-                          {images.map((_, index) => (
-                            <div
-                              key={index}
-                              className={clsx(s.dotFilter, {
-                                [s.activeDotFilter]: index === currentImageIndex,
-                              })}
-                              onClick={() => setCurrentImageIndex(index)}
-                            />
-                          ))}
-                        </div>
-                      </>
-                    )}
-                  </div>
-                  <div className={s.infoColumn}>
-                    <div className={s.userInfo}>
-                      <img
-                        alt="Avatar"
-                        className={s.avatar}
-                        src={user?.profile?.avatarInfo?.url || '/default-avatar.jpg'}
-                      />
-                      <Typography variant="small">
-                        {isLoading ? 'Se încarcă...' : user?.username || 'Anonim'}
-                      </Typography>
-                    </div>
-                    <Textarea
-                      showCharacterCount
-                      className={s.description}
-                      label="Add publication descriptions"
-                      maxLength={500}
-                      style={{
-                        width: '433px',
-                        height: '120px',
-                      }}
-                      value={description}
-                      onChange={e => setDescription(e.target.value)}
-                    />
-
-                    <hr className={s.divider} />
-
-                    <div className={s.locationSection}>
-                      <Input className={s.inputWithLeftMargin} label="Add location" />
-                    </div>
-                  </div>
-                </div>
+                <PublishStep
+                  avatarUrl={user?.profile?.avatarInfo?.url}
+                  currentImage={currentImage}
+                  currentImageIndex={currentImageIndex}
+                  description={description}
+                  images={images}
+                  isLoading={isLoading}
+                  location={location}
+                  username={user?.username}
+                  onDescriptionChange={setDescription}
+                  onLocationChange={setLocation}
+                  onNextImage={handleNextImage}
+                  onPrevImage={handlePreviousImage}
+                  onSelectImage={setCurrentImageIndex}
+                />
               )}
             </>
           ) : (
