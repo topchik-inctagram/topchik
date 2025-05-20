@@ -75,11 +75,10 @@ export const CropStep = ({
           crop={crop}
           onChange={onCropChange}
         >
-          <Image
+          <img
             ref={imgRef}
             alt="Preview"
             crossOrigin="anonymous"
-            height={0}
             src={image.originalUrl}
             style={{
               maxWidth: '100%',
@@ -88,7 +87,6 @@ export const CropStep = ({
               transform: `scale(${zoom})`,
               transformOrigin: 'center center',
             }}
-            width={0}
           />
         </ReactCrop>
       )}
