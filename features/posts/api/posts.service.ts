@@ -1,9 +1,11 @@
 import { baseApi } from '@/shared/store'
 import {
   type Cursor,
+  type GetUserIdPostsArgs,
   type PostsResponse,
-  type Post,
+  type UserPostsResponse,
   type UpdatePostArgs,
+  type Post,
 } from '@/features/posts/api/posts.types'
 
 export const PostsService = baseApi.injectEndpoints({
@@ -24,13 +26,26 @@ export const PostsService = baseApi.injectEndpoints({
       }),
     }),
     updatePost: builder.mutation<Post, UpdatePostArgs>({
+      invalidatesTags: [''],
       query: ({ id, data }) => ({
         url: `/api/v1/posts/${id}`,
         method: 'PUT',
         body: data,
       }),
     }),
+    getUserIdPosts: builder.query<UserPostsResponse, GetUserIdPostsArgs>({
+      providesTags: [''],
+      query: ({ id, cursor }) => ({
+        params: cursor ? { cursor } : {},
+        url: `/api/v1/posts/${id}`,
+      }),
+    }),
   }),
 })
 
-export const { useGetPostsQuery, useCreatePostMutation, useUpdatePostMutation } = PostsService
+export const {
+  useGetPostsQuery,
+  useCreatePostMutation,
+  useUpdatePostMutation,
+  useGetUserIdPostsQuery,
+} = PostsService

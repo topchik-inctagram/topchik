@@ -3,6 +3,7 @@ import s from '../Tooltip.module.scss'
 import { Input, Textarea, Typography } from '@/shared/components'
 import { LeftArrow, RightArrow } from '@/public/icons'
 import type { PublishProps } from '../types'
+import Image from 'next/image'
 
 export const PublishStep = ({
   currentImage,
@@ -22,11 +23,13 @@ export const PublishStep = ({
   return (
     <div className={s.publishContainer}>
       <div className={s.imageColumn}>
-        <img
+        <Image
           alt="Publication preview"
           className={s.publishImage}
+          height={0}
           src={currentImage.url}
           style={{ filter: currentImage.filter ?? 'none' }}
+          width={0}
         />
         {images.length > 1 && (
           <>
@@ -56,7 +59,13 @@ export const PublishStep = ({
       </div>
       <div className={s.infoColumn}>
         <div className={s.userInfo}>
-          <img alt="Avatar" className={s.avatar} src={avatarUrl || '/default-avatar.jpg'} />
+          <Image
+            alt="Avatar"
+            className={s.avatar}
+            height={50}
+            src={avatarUrl || '/photos/Avatar.jpeg'}
+            width={50}
+          />
           <Typography variant="small">{isLoading ? 'Loading' : username || 'Anonim'}</Typography>
         </div>
 

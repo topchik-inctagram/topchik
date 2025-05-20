@@ -3,6 +3,7 @@ import s from '../Tooltip.module.scss'
 import { Typography } from '@/shared/components'
 import { LeftArrow, RightArrow } from '@/public/icons'
 import type { FilterProps } from '../types'
+import Image from 'next/image'
 
 export const FilterStep = ({
   currentImage,
@@ -22,11 +23,13 @@ export const FilterStep = ({
             <LeftArrow />
           </button>
         )}
-        <img
+        <Image
           alt="Filtered preview"
           className={s.mainPreviewImage}
+          height={0}
           src={currentImage.url}
           style={{ filter: currentImage.filter || 'none' }}
+          width={0}
         />
         {currentImageIndex < images.length - 1 && (
           <button className={s.rightArrowFilter} onClick={onNextImage}>
@@ -51,11 +54,13 @@ export const FilterStep = ({
       <div className={s.filtersGrid}>
         {filters.map((filter, index) => (
           <div key={index} className={s.filterItem} onClick={() => onFilterChange(filter.value)}>
-            <img
+            <Image
               alt={`Thumbnail for ${filter.name}`}
               className={s.filterThumbnail}
+              height={0}
               src={currentImage.url}
               style={{ filter: filter.value }}
+              width={0}
             />
             <Typography className={s.filterName}>{filter.name}</Typography>
           </div>

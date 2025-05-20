@@ -13,7 +13,7 @@ import { TooltipModals } from './TooltipModals/TooltipModals'
 import { useMeQuery } from '@/features/auth/api'
 import { useCreatePostMutation, useUpdatePostMutation } from '@/features/posts/api'
 import type { TooltipProps, UploadedImageProps, FormValuesProps } from './types'
-import { centerAspectCrop, dataURLtoFile } from './utils/imageUtils'
+import { centerAspectCrop } from './utils/imageUtils'
 import { saveTooltipDraft, loadFullTooltipDraft, parseDraftImages } from './utils/draftService'
 import { ImageUpload } from './steps/ImageUpload'
 import { CropStep } from './steps/CropStep'
@@ -60,14 +60,11 @@ export const Tooltip = ({ className, placeholder, open, onClose, onImageSelect }
   const [showToast, setShowToast] = useState(false)
   const [toastMessage, setToastMessage] = useState('')
   const [toastVariant, setToastVariant] = useState<'error' | 'success'>('error')
-  const [isPublishing, setIsPublishing] = useState(false)
   const { data: user, isLoading } = useMeQuery()
-  const [createPost] = useCreatePostMutation()
-  const [updatePost] = useUpdatePostMutation()
+  const [createPost, { isLoading: isLoadingCreatePost, error: errorPost }] = useCreatePostMutation()
+  const [updatePost, { isLoading: isLoadingUpdatePost }] = useUpdatePostMutation()
 
   const handleSubmit = async () => {
-    setIsPublishing(true)
-
     await handleTooltipSubmit({
       images,
       description,
@@ -79,13 +76,11 @@ export const Tooltip = ({ className, placeholder, open, onClose, onImageSelect }
         setToastVariant('success')
         setToastMessage('Post added')
         setShowToast(true)
-        setIsPublishing(false)
       },
       onError: (msg: string) => {
         setToastVariant('error')
         setToastMessage(msg)
         setShowToast(true)
-        setIsPublishing(false)
       },
     })
   }
@@ -404,8 +399,12 @@ export const Tooltip = ({ className, placeholder, open, onClose, onImageSelect }
             <Typography className={s.stepTitle} variant="h1">
               Publication
             </Typography>
-            <button className={s.nextButton} disabled={isPublishing} onClick={handleSubmit}>
-              {isPublishing ? 'Publishing…' : 'Publish'}
+            <button
+              className={s.nextButton}
+              disabled={isLoadingCreatePost || isLoadingUpdatePost}
+              onClick={handleSubmit}
+            >
+              {isLoadingCreatePost || isLoadingUpdatePost ? 'Publishing…' : 'Publish'}
             </button>
           </div>
         )

@@ -16,6 +16,7 @@ import {
   CloseOutline,
 } from '@/public/icons'
 import { type CropStepProps } from '../types'
+import Image from 'next/image'
 
 export const CropStep = ({
   image,
@@ -45,17 +46,18 @@ export const CropStep = ({
     <div className={s.aspectWrapper}>
       {!showCrop ? (
         <div>
-          <img
+          <Image
             ref={imgRef}
             alt="Preview"
-            className={s.fullSizeImage}
             crossOrigin="anonymous"
+            height={503}
             src={image.originalUrl}
             style={{
               transform: `scale(${zoom})`,
               transformOrigin: 'center center',
               transition: 'transform 0.2s ease-in-out',
             }}
+            width={570}
             onLoad={onImageLoad}
           />
         </div>
@@ -73,10 +75,11 @@ export const CropStep = ({
           crop={crop}
           onChange={onCropChange}
         >
-          <img
+          <Image
             ref={imgRef}
             alt="Preview"
             crossOrigin="anonymous"
+            height={0}
             src={image.originalUrl}
             style={{
               maxWidth: '100%',
@@ -85,7 +88,7 @@ export const CropStep = ({
               transform: `scale(${zoom})`,
               transformOrigin: 'center center',
             }}
-            onLoad={onImageLoad}
+            width={0}
           />
         </ReactCrop>
       )}
@@ -191,11 +194,14 @@ export const CropStep = ({
               <div className={s.thumbnailGrid}>
                 {images.map((img, index) => (
                   <div key={img.id} className={s.thumbnailItem}>
-                    <img
+                    <Image
+                      alt="img"
                       className={clsx(s.thumbnailImage, {
                         [s.selected]: index === currentImageIndex,
                       })}
+                      height={0}
                       src={img.url}
+                      width={0}
                       onClick={() => onSelectImage(index)}
                     />
                     <span
