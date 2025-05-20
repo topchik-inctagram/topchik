@@ -33,7 +33,7 @@ const Page = () => {
   }
 
   return (
-    <PageContainer direction="column" mt="35px">
+    <PageContainer mt="35px">
       <Typography className={s.title} variant="h1">
         Congratulations!
       </Typography>

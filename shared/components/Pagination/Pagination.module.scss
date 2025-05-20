@@ -1,6 +1,6 @@
 .root {
   display: flex;
-  gap: 25px;
+  gap: 24px;
   align-items: center;
 }
 
@@ -54,29 +54,31 @@
   &.selected {
     color: var(--color-dark-900);
     background-color: var(--color-light-100);
+
+    &:hover {
+      background-color: var(--color-light-900);
+    }
   }
-}
 
-.icon {
-  width: 16px;
-  height: 16px;
+  &[data-disabled] {
+    pointer-events: none;
+    color: var(--color-dark-100);
+  }
 
-  .item:disabled & {
-    // important because icons have style prop
-    color: var(--color-dark-100) !important;
+  svg {
+    width: 16px;
+    height: 16px;
   }
 }
 
 .selectBox {
   display: flex;
-  gap: 12px;
   align-items: center;
-
   color: var(--color-light-100);
   white-space: nowrap;
 }
 
 .select {
   flex-shrink: 0;
-  width: 50px;
+  margin: 0 7px 0 4px;
 }

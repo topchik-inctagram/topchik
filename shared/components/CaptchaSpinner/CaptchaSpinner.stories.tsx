@@ -11,8 +11,4 @@ const meta = {
 export default meta
 type Story = StoryObj<typeof meta>
 
-export const Loading: Story = {
-  args: {
-    isLoading: true,
-  },
-}
+export const Loading: Story = {}

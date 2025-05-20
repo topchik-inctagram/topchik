@@ -10,18 +10,18 @@ const meta = {
 export default meta
 type Story = StoryObj<typeof ForgotPassword>
 
-export const ForgotPasswordNotVerifiedForm: Story = {
-  render: () => {
-    const callback = (data: any) => console.log(data)
-
-    return <ForgotPassword isVerified={false} onSubmit={callback} />
-  },
-}
-
-export const ForgotPasswordVerifiedForm: Story = {
-  render: () => {
-    const callback = (data: any) => console.log(data)
-
-    return <ForgotPassword isVerified onSubmit={callback} />
-  },
-}
+// export const ForgotPasswordNotVerifiedForm: Story = {
+//   render: () => {
+//     const callback = (data: any) => console.log(data)
+//
+//     return <ForgotPassword isVerified={false} onSubmit={callback} />
+//   },
+// }
+//
+// export const ForgotPasswordVerifiedForm: Story = {
+//   render: () => {
+//     const callback = (data: any) => console.log(data)
+//
+//     return <ForgotPassword isVerified onSubmit={callback} />
+//   },
+// }

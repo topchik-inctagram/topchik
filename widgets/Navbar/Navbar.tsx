@@ -26,6 +26,7 @@ import { LogoutModal } from '@/entities/LogoutModal'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import { PrivatePages } from '@/shared/enums'
 import { Tooltip } from '@/entities/Tooltip/Tooltip'
+import { useMeQuery } from '@/features/auth/api'
 
 type Props = {
   isMobile?: boolean
@@ -92,6 +93,8 @@ function DesktopNavbar({ className, ...rest }: ComponentPropsWithRef<'nav'>) {
     className: pathname === actualPath ? classNames.activeLink : '',
   })
   const active = false
+
+  const { data: meData } = useMeQuery()
   // if you want to disable link you need to add data-disabled='disabled' in link props
   // data-disabled="disabled"
   const action = searchParams.get('action')
@@ -116,12 +119,16 @@ function DesktopNavbar({ className, ...rest }: ComponentPropsWithRef<'nav'>) {
             <li>
               <Typography
                 as={Link}
-                className={actualLink(PrivatePages.profile).className}
-                href={PrivatePages.profile}
+                className={actualLink(`${PrivatePages.profile}/${meData?.id}`).className}
+                href={`${PrivatePages.profile}/${meData?.id}`}
                 variant="medium_14"
               >
-                {actualLink(PrivatePages.profile).active ? <Person /> : <PersonOutline />} My
-                Profile
+                {actualLink(`${PrivatePages.profile}/${meData?.id}`).active ? (
+                  <Person />
+                ) : (
+                  <PersonOutline />
+                )}{' '}
+                My Profile
               </Typography>
             </li>
             <li>

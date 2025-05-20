@@ -47,7 +47,7 @@ const TestPics = [
 ] satisfies Props[]
 
 export const PostsGallery = () => {
-  const [cursor, setCursor] = useState<number | void>(undefined)
+  const [cursor, setCursor] = useState<number | null>(null)
   const { data } = useGetPostsQuery(cursor)
   const posts = data?.posts
 
