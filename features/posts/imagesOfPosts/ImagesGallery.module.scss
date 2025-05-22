@@ -1,15 +1,23 @@
 .imgContainer {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fill, minmax(244px, 1fr));
   gap: 12px;
-  flex-wrap: wrap;
   justify-content: center;
+  max-width: 1012px;
 }
 
 .imgBlock {
+  width: 244px;
+  height: 228px;
+  position: relative;
+  overflow: hidden;
   cursor: pointer;
 }
 
 .image {
+  object-fit: cover;
   width: 100%;
+  height: 100%;
 }
 
 .loaderPosts {

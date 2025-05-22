@@ -18,7 +18,7 @@ export const PostsService = baseApi.injectEndpoints({
       }),
     }),
     createPost: builder.mutation<Post, FormData>({
-      invalidatesTags: [''],
+      invalidatesTags: ['UserPosts'],
       query: formData => ({
         url: '/api/v1/posts',
         method: 'POST',
@@ -34,10 +34,13 @@ export const PostsService = baseApi.injectEndpoints({
       }),
     }),
     getUserIdPosts: builder.query<UserPostsResponse, GetUserIdPostsArgs>({
-      providesTags: [''],
+      providesTags: result =>
+        result
+          ? [...result.posts.map(({ id }) => ({ type: 'UserPosts' as const, id })), 'UserPosts']
+          : ['UserPosts'],
       query: ({ id, cursor }) => ({
         params: cursor ? { cursor } : {},
-        url: `/api/v1/posts/${id}`,
+        url: `/api/v1/posts/user/${id}`,
       }),
     }),
   }),
