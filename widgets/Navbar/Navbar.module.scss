@@ -86,3 +86,28 @@
     margin: 0;
   }
 }
+
+.logoutText {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  user-select: none;
+  transition: color 0.3s ease;
+
+  color: var(--color-light-100);
+
+  &:hover {
+    color: var(--color-accent-500);
+  }
+
+  &.disabled {
+    pointer-events: none;
+    opacity: 0.5;
+    cursor: default;
+  }
+
+  svg {
+    flex-shrink: 0;
+  }
+}
