@@ -37,7 +37,6 @@ export const UserProfile = ({
           <Typography as="h1" className={s.name} variant="h1">
             {userName}
           </Typography>
-
           {isMyProfile && <ProfileSettingsButton />}
           {!isMyProfile && isAuth && (
             <div className={s.followAndMessageButtonGroup}>
