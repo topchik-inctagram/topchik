@@ -4,6 +4,41 @@ import { Container, Typography } from '@/shared/components'
 import Image from 'next/image'
 import s from './ImagesGallery.module.scss'
 
+const TestPics = [
+  {
+    id: 1,
+    smallFilePath: '/photos/pic1.webp',
+  },
+  {
+    id: 2,
+    smallFilePath: '/photos/pic2.webp',
+  },
+  {
+    id: 3,
+    smallFilePath: '/photos/pic3.webp',
+  },
+  {
+    id: 4,
+    smallFilePath: '/photos/pic4.webp',
+  },
+  {
+    id: 5,
+    smallFilePath: '/photos/pic1.webp',
+  },
+  {
+    id: 6,
+    smallFilePath: '/photos/pic2.webp',
+  },
+  {
+    id: 7,
+    smallFilePath: '/photos/pic3.webp',
+  },
+  {
+    id: 8,
+    smallFilePath: '/photos/pic4.webp',
+  },
+]
+
 type Props = {
   userId: string
 }
@@ -19,6 +54,7 @@ export const ImagesGallery = ({ userId }: Props) => {
       skip: cursor === 0,
     }
   )
+
   const posts = data?.posts
 
   useEffect(() => {
@@ -54,6 +90,13 @@ export const ImagesGallery = ({ userId }: Props) => {
     }
   }, [data?.cursor])
 
+  const showEmptyStub =
+    isError &&
+    error &&
+    'data' in error &&
+    typeof error.data === 'object' &&
+    (error.data as any)?.errorsMessage === "Post doesn't exist"
+
   if (isLoading) {
     return (
       <Container className={s.imgContainer}>
@@ -69,16 +112,27 @@ export const ImagesGallery = ({ userId }: Props) => {
           post.images.map(image => (
             <div key={image.id} className={s.imgBlock}>
               <Image
-                key={image.id}
                 alt="Post image"
                 className={s.image}
                 height={228}
-                src={image.smallFilePath}
+                src={image.originFilePath}
                 width={244}
               />
             </div>
           ))
         )
+      ) : showEmptyStub ? (
+        TestPics.map(image => (
+          <div key={image.id} className={s.imgBlock}>
+            <Image
+              alt="Post image"
+              className={s.image}
+              height={228}
+              src={image.smallFilePath}
+              width={244}
+            />
+          </div>
+        ))
       ) : (
         <Typography as="p" variant="regular_16">
           Произошла ошибка при загрузке

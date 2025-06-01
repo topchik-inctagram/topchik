@@ -6,7 +6,7 @@ const SvgComponent = (
     <svg
         width={24}
         height={16}
-        viewBox="0 0 24 16"
+        viewBox="1 1 22 14"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
         ref={ref}
@@ -15,8 +15,9 @@ const SvgComponent = (
         <g clipPath="url(#clip0_3663_10330)">
             <path
                 d="M1.91304 0.5H22.087C22.8776 0.5 23.5 1.1245 23.5 1.87234V14.1277C23.5 14.8755 22.8776 15.5 22.087 15.5H1.91304C1.12245 15.5 0.5 14.8755 0.5 14.1277V1.87234C0.5 1.1245 1.12245 0.5 1.91304 0.5Z"
-                fill="white"
-                stroke="#F3F3F3"
+                fill="currentColor"
+                stroke="currentColor"
+                strokeWidth={1}
             />
             <path
                 fillRule="evenodd"

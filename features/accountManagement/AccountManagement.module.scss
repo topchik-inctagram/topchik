@@ -1,0 +1,70 @@
+.container {
+  gap: 42px;
+  margin-bottom: 12px;
+}
+
+.block {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 100%;
+}
+
+.businessBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  width: 100%;
+  align-items: end;
+}
+
+.radioGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  width: 100%;
+  border: 1px solid var(--color-dark-300);
+  padding: 16px 16px 16px 0;
+  border-radius: 2px;
+  background: var(--color-dark-500);
+}
+
+.payment {
+  display: flex;
+  align-items: center;
+  gap: 54px;
+}
+
+.icon {
+  width: 96px;
+  height: 64px;
+  cursor: pointer;
+  color: var(--color-dark-500);
+  border: 1px solid var(--color-dark-300);
+  border-radius: 4px;
+}
+
+.subscriptionDateBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 19px;
+}
+
+.subscriptionInfo {
+  display: flex;
+  gap: 45px;
+  width: 100%;
+  border: 1px solid var(--color-dark-300);
+  padding: 12px 24px;
+  border-radius: 2px;
+  background: var(--color-dark-500);
+}
+
+.checkbox {
+  padding: 0;
+  margin-top: 7px;
+}
+
+.textColor {
+  color: var(--color-light-900);
+}

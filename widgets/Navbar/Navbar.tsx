@@ -21,12 +21,15 @@ import {
   TrendUpOutline,
 } from '@/public/icons'
 import { Typography } from '@/shared/components'
-import { type ComponentPropsWithRef, useCallback, useState } from 'react'
-import { LogoutModal } from '@/entities/LogoutModal'
-import { usePathname, useRouter, useSearchParams } from 'next/navigation'
-import { PrivatePages } from '@/shared/enums'
+import { type ComponentPropsWithRef, useState } from 'react'
+import { usePathname, useRouter } from 'next/navigation'
 import { Tooltip } from '@/entities/Tooltip/Tooltip'
 import { useMeQuery } from '@/features/auth/api'
+import { SimpleYesNoDialog } from '@/entities/SimpleYesNoDialog'
+import { PrivatePages, PublicPages } from '@/shared/enums'
+import { TOKEN } from '@/shared/constants'
+import { baseApi } from '@/shared/store'
+import { useLogoutMutation } from '@/features/auth/api/auth.service'
 
 type Props = {
   isMobile?: boolean
@@ -73,34 +76,36 @@ function DesktopNavbar({ className, ...rest }: ComponentPropsWithRef<'nav'>) {
     firstContainer: clsx(s.desktopContainer, s.desktopFirstContainer),
     secondContainer: clsx(s.desktopSecondContainer, s.desktopContainer),
     activeLink: s.activeLink,
+    logoutText: (isDisabled: boolean) => clsx(s.logoutText, isDisabled && s.disabled),
   }
+
   const router = useRouter()
   const pathname = usePathname()
-  const searchParams = useSearchParams()
-  const [showTootlip, setShowTootlip] = useState(false)
-  const createQueryString = useCallback(
-    (name: string, value: string) => {
-      const params = new URLSearchParams(searchParams.toString())
-      params.set(name, value)
 
-      return params.toString()
-    },
-    [searchParams]
-  )
+  const { data: meData } = useMeQuery()
+  const [logoutMutation, { isLoading: isLoadingLogout }] = useLogoutMutation()
+  const [isLogoutOpen, setIsLogoutOpen] = useState(false)
+  const [showTooltip, setShowTooltip] = useState(false)
+
+  const handleConfirmLogout = async () => {
+    try {
+      await logoutMutation().unwrap()
+      localStorage.removeItem(TOKEN)
+      baseApi.util.resetApiState()
+      setIsLogoutOpen(false)
+      router.push(PublicPages.signIn)
+    } catch (error) {
+      console.error('Logout failed', error)
+    }
+  }
 
   const actualLink = (actualPath: string) => ({
     active: pathname === actualPath,
     className: pathname === actualPath ? classNames.activeLink : '',
   })
+
   const active = false
 
-  const { data: meData } = useMeQuery()
-  // if you want to disable link you need to add data-disabled='disabled' in link props
-  // data-disabled="disabled"
-  const action = searchParams.get('action')
-
-  const isLogoutAction = action === 'logout'
-  const logoutHandler = () => router.replace(pathname)
   return (
     <>
       <nav className={classNames.nav} {...rest}>
@@ -112,7 +117,7 @@ function DesktopNavbar({ className, ...rest }: ComponentPropsWithRef<'nav'>) {
               </Typography>
             </li>
             <li>
-              <Typography as="button" variant="medium_14" onClick={() => setShowTootlip(true)}>
+              <Typography as="button" variant="medium_14" onClick={() => setShowTooltip(true)}>
                 {active ? <PlusSquare /> : <PlusSquareOutline />} Create
               </Typography>
             </li>
@@ -156,21 +161,32 @@ function DesktopNavbar({ className, ...rest }: ComponentPropsWithRef<'nav'>) {
           </div>
           <li>
             <Typography
-              as={Link}
-              href={pathname + '?' + createQueryString('action', 'logout')}
+              className={classNames.logoutText(isLoadingLogout)}
               variant="medium_14"
+              onClick={() => setIsLogoutOpen(true)}
             >
               {active ? <LogOut /> : <LogOutOutline />} Log Out
             </Typography>
           </li>
         </ul>
       </nav>
-      <LogoutModal open={isLogoutAction} onClose={logoutHandler} />
+
       <Tooltip
-        open={showTootlip}
+        open={showTooltip}
         placeholder="Upload an image"
-        onClose={() => setShowTootlip(false)}
+        onClose={() => setShowTooltip(false)}
       />
+
+      {isLogoutOpen && meData?.email && (
+        <SimpleYesNoDialog
+          open
+          boldText={meData.email}
+          description='Are you really want to log out of your account "_boldText_"?'
+          title="Log Out"
+          onCancel={() => setIsLogoutOpen(false)}
+          onConfirm={handleConfirmLogout}
+        />
+      )}
     </>
   )
 }

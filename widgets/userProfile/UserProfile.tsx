@@ -1,7 +1,6 @@
 import s from './UserProfile.module.scss'
 import { Container, Typography } from '@/shared/components'
 import Image from 'next/image'
-import Link from 'next/link'
 import { ProfileSettingsButton, FollowToggleButton, SendMessageButton } from '@/entities/user/ui'
 
 type Props = {
@@ -29,6 +28,7 @@ export const UserProfile = ({
   about,
 }: Props) => {
   const isMyProfile = userId === meData?.id
+
   return (
     <Container className={s.profile}>
       <Image alt={userName} className={s.avatar} height={204} src={avatarUrl} width={204} />
@@ -46,6 +46,7 @@ export const UserProfile = ({
             </div>
           )}
         </div>
+
         <dl className={s.details}>
           <div className={s.detail} role="group">
             <dt>
@@ -72,12 +73,9 @@ export const UserProfile = ({
             </dd>
           </div>
         </dl>
+
         <Typography className={s.name} variant="regular_16">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
-          ut labore et dolore magna aliqua. Ut enim ad minim quis nostrud exercitation ullamco{' '}
-          <Typography as={Link} href="#">
-            laboris nisi ut aliquip ex ea commodo consequat.
-          </Typography>
+          {about ? about : 'No bio provided.'}
         </Typography>
       </div>
     </Container>
