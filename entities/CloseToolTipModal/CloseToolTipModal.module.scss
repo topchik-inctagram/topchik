@@ -1,0 +1,36 @@
+.modal {
+  margin-top: 30px;
+  margin-left: 24px;
+  margin-bottom: 18px;
+  margin-right: 21px;
+}
+
+.title {
+  font-size: 18px;
+  font-weight: 600;
+  color: white;
+  margin-bottom: 12px;
+}
+
+.text {
+  font-size: 14px;
+  color: #d1d1d1;
+  margin-bottom: 8px;
+  line-height: 1.5;
+}
+
+.actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 24px;
+
+  button {
+    flex: 1;
+  }
+}
+
+.discardBtn {
+  width: 96px;
+  height: 36px;
+  background: red;
+}

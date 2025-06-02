@@ -44,6 +44,7 @@ const config = [
       ...reactHooksPlugin.configs.recommended.rules,
       ...nextPlugin.configs.recommended.rules,
       // React rules
+      '@next/next/no-img-element': 'off',
       'react/react-in-jsx-scope': 'off',
       'react/prop-types': 'off',
       'react/jsx-boolean-value': ['error', 'never'],

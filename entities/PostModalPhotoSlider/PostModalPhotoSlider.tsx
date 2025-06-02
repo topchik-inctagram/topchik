@@ -6,7 +6,7 @@ import clsx from 'clsx'
 import { ArrowIosBackOutline, ArrowIosForwardOutline } from '@/public/icons'
 
 export type PostModalPhotoSliderProps = {
-  photoContent: StaticImageData | StaticImageData[]
+  photoContent: (string | StaticImageData)[]
 }
 
 export const PostModalPhotoSlider = ({ photoContent }: PostModalPhotoSliderProps) => {

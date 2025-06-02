@@ -24,7 +24,6 @@ export const Dropdown = ({
   return (
     <DropdownMenu.Root>
       <DropdownMenu.Trigger className={classNames.trigger}>{trigger}</DropdownMenu.Trigger>
-
       <DropdownMenu.Portal>
         <DropdownMenu.Content align={align} className={classNames.content} {...rest}>
           {children}

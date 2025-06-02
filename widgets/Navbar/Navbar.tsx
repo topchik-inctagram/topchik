@@ -22,12 +22,14 @@ import {
 } from '@/public/icons'
 import { Typography } from '@/shared/components'
 import { type ComponentPropsWithRef, useState } from 'react'
-import { SimpleYesNoDialog } from '@/entities/SimpleYesNoDialog'
 import { usePathname, useRouter } from 'next/navigation'
+import { Tooltip } from '@/entities/Tooltip/Tooltip'
+import { useMeQuery } from '@/features/auth/api'
+import { SimpleYesNoDialog } from '@/entities/SimpleYesNoDialog'
 import { PrivatePages, PublicPages } from '@/shared/enums'
-import { useLogoutMutation, useMeQuery } from '@/features/auth/api'
 import { TOKEN } from '@/shared/constants'
 import { baseApi } from '@/shared/store'
+import { useLogoutMutation } from '@/features/auth/api/auth.service'
 
 type Props = {
   isMobile?: boolean
@@ -79,9 +81,11 @@ function DesktopNavbar({ className, ...rest }: ComponentPropsWithRef<'nav'>) {
 
   const router = useRouter()
   const pathname = usePathname()
+
   const { data: meData } = useMeQuery()
   const [logoutMutation, { isLoading: isLoadingLogout }] = useLogoutMutation()
   const [isLogoutOpen, setIsLogoutOpen] = useState(false)
+  const [showTooltip, setShowTooltip] = useState(false)
 
   const handleConfirmLogout = async () => {
     try {
@@ -99,10 +103,8 @@ function DesktopNavbar({ className, ...rest }: ComponentPropsWithRef<'nav'>) {
     active: pathname === actualPath,
     className: pathname === actualPath ? classNames.activeLink : '',
   })
-  const active = false
 
-  // if you want to disable link you need to add data-disabled='disabled' in link props
-  // data-disabled="disabled"
+  const active = false
 
   return (
     <>
@@ -115,7 +117,7 @@ function DesktopNavbar({ className, ...rest }: ComponentPropsWithRef<'nav'>) {
               </Typography>
             </li>
             <li>
-              <Typography as={Link} href="#" variant="medium_14">
+              <Typography as="button" variant="medium_14" onClick={() => setShowTooltip(true)}>
                 {active ? <PlusSquare /> : <PlusSquareOutline />} Create
               </Typography>
             </li>
@@ -168,6 +170,12 @@ function DesktopNavbar({ className, ...rest }: ComponentPropsWithRef<'nav'>) {
           </li>
         </ul>
       </nav>
+
+      <Tooltip
+        open={showTooltip}
+        placeholder="Upload an image"
+        onClose={() => setShowTooltip(false)}
+      />
 
       {isLogoutOpen && meData?.email && (
         <SimpleYesNoDialog
